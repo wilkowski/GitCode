@@ -8,7 +8,8 @@
 //#include <conio.h>
 
 #define XSIZE 20
-#define YSIZE 5
+#define YSIZE 10
+#define TILE_SIZE 16
 
 using namespace std;
 
@@ -271,21 +272,73 @@ int main()
         
     }
 
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
+    sf::RenderWindow window(sf::VideoMode(TILE_SIZE * XSIZE, TILE_SIZE * YSIZE), "SFML works!");
+    sf::CircleShape shape(8.f);
     shape.setFillColor(sf::Color::Green);
+	shape.setPosition(sf::Vector2f(10, 50));
+	sf::CircleShape shape2(8.f);
+    shape2.setFillColor(sf::Color::Blue);
 
     while (window.isOpen())
     {
         sf::Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
+			bool shouldPull = false;
+			switch (event.type)
+			{
+				// window closed
+				case sf::Event::Closed:
+					window.close();
+					break;
 
-        window.clear();
-        window.draw(shape);
+				// key pressed
+				case sf::Event::KeyPressed:
+					
+					if (event.key.code == sf::Keyboard::S){
+						MoveObject(board, playerLocation, dirVec(0,-1), true, shouldPull);
+					}
+					if (event.key.code == sf::Keyboard::W){
+						 MoveObject(board, playerLocation, dirVec(0,1), true, shouldPull);
+					}
+					if (event.key.code == sf::Keyboard::A){
+						 MoveObject(board, playerLocation, dirVec(-1,0), true, shouldPull);
+					}
+					if (event.key.code == sf::Keyboard::D){
+						MoveObject(board, playerLocation, dirVec(1,0), true, shouldPull);
+					}
+					break;
+
+				// we don't process other types of events
+				default:
+					break;
+			}
+        }
+		window.clear();
+		for(int i = YSIZE-1; i>=0; i--){
+            for(int j = 0; j < XSIZE; j++){
+				switch(board[j][i]){
+					case 0:
+						shape.setFillColor(sf::Color::Black);
+						break;
+					case 1:
+						shape.setFillColor(sf::Color::Green);
+						break;
+					case 2:
+						shape.setFillColor(sf::Color::Yellow);
+						break;
+					default:
+						shape.setFillColor(sf::Color::Red);
+						break;
+				}
+				shape.setPosition(sf::Vector2f(j*TILE_SIZE, TILE_SIZE * (YSIZE-1) - i*TILE_SIZE));
+				window.draw(shape);
+                //cout << diVals[board[j][i]];
+            }
+        }
+        
+        //window.draw(shape);
+		//window.draw(shape2);
         window.display();
     }
 
