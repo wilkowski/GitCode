@@ -13,12 +13,6 @@
 
 using namespace std;
 
-class object{
-    int type;
-    int weight;
-    bool pushable;
-};
-
 class dirVec{
 public:
     int x;
@@ -54,7 +48,7 @@ class Location{
 
 class Entity{
     //iterate through these to remove refs
-    list<list<int>::iterator> listRefs;
+    list<list<Entity *>*> listRefs;
 public:
     int symbol;
     Location loc;
@@ -63,7 +57,9 @@ public:
         symbol = s;
         loc = l;
     }
-    void AddToList(list<Entity> &l){
+    void AddToList(list<Entity> *l){
+		//l->insert(l->end(), this);
+		//listRefs.insert(listRefs.end(), l);
         //first add self to l and make an iterator i pointing to it
         //add iterator to iterator list
     }
@@ -72,8 +68,6 @@ public:
         //for each delete self from list
     }
 };
-
-static char dispVals[] = {'.', '#', '@', '?', '?', '?', '?', '?', '?'};
 
 class GameBoard{
     int *board; 
@@ -97,20 +91,20 @@ public:
         //dispVals 
     }
     int* SpotRef(int x, int y){
-        return board + (x+y*(xSize-1));
+        return board + (x+y*(xSize));
     }
     int SpotVal(int x, int y){
         return *SpotRef(x,y);
     }
     int* SpotRef(Location l){
-        return board + (l.x+l.y*(xSize-1));
+        return board + (l.x+l.y*(xSize));
     }
     int SpotVal(Location l){
         return *SpotRef(l.x,l.y);
     }
     
     void SetSpot(int x, int y, int newVal){
-        board[x+y*(xSize-1)] = newVal;
+        board[x+y*(xSize)] = newVal;
     }
     bool ValidLocation(Location l){
         return (l.x >= 0 && l.x < xSize && l.y>=0 && l.y < ySize);
@@ -135,9 +129,11 @@ public:
         *SpotRef(fromLoc) = 0;//update old location
         return true;
     }
-    bool TryMoveEntity(Entity ent, dirVec dir, bool canPush, bool canPull){
+    bool TryMoveEntity(Entity &ent, dirVec dir, bool canPush, bool canPull){
+		cout << "move try" << endl;
         Location pullFrom = ent.loc.SubVec(dir);
         Location pushFrom = ent.loc.AddVec(dir);
+		cout << "from" << pushFrom.x << "," << pushFrom.y << endl;
         if(canPush){//try moving pushed block
             TryMoveBlock(pushFrom, dir); //does't matter if successful
         }
@@ -146,178 +142,20 @@ public:
         if(!success){ 
             return false;
         }
+		
         ent.loc = pushFrom; //might be done in move sec later
+		cout << "ent" << ent.loc.x << "," << ent.loc.y << endl;
         if(canPull){//is pulling?
             TryMoveBlock(pullFrom,dir); //try moving pulled block
         }
+		cout << "\n" << "Move success";
         return true;
     }
-    void DisplayBoard(){
-        for(int i = ySize-1; i>=0; i--){
-            for(int j = 0; j < xSize; j++){
-                cout << dispVals[SpotVal(j,i)];
-            }
-            cout << endl;
-        }
-    }
-    ~GameBoard(){
-        delete board;
-    }
-};
-
-bool MoveObject(int **board, Location *l, dirVec v, bool canPush, bool pull){
-    Location newLocation = Location(l->x+v.x,l->y+v.y);
-    if(! newLocation.ValidLocation(board)){
-        return false;
-    }
-    if( board[newLocation.x][newLocation.y] != 0){ //is empty?
-        Location *pushObj= new Location(newLocation.x, newLocation.y);
-        if(canPush){
-            bool success = MoveObject(board, pushObj, v, false, false);
-            if(!success){
-                return false;
-            }
-        }else{
-            return false;
-        }
-        delete pushObj;
-    }
-
-    Location *pullLocation = new Location(l->x-v.x,l->y-v.y);
-
-    int oldVal = board[l->x][l->y];
-    board[l->x][l->y] = 0;
-    board[newLocation.x][newLocation.y] = oldVal;
-    l->x+=v.x; l->y+=v.y; //update location values
-    if(pull){
-        if (pullLocation->ValidLocation(board) && board[pullLocation->x][pullLocation->y] != 0){
-                MoveObject(board, pullLocation, v, false, false);
-        }
-    }
-    delete pullLocation;
-    return true;
-}
-
-int main()
-{
-	Location *playerLocation = new Location(0,0);
-    
-    int **board = new int*[XSIZE];
-    
-    GameBoard *primaryBoard = new GameBoard();
-    primaryBoard->DisplayBoard();
-    
-    for(int i = 0; i<XSIZE; i++){
-        board[i] = new int[YSIZE];
-        for(int j = 0; j < YSIZE; j++){
-            board[i][j] = 2* (rand()%2);
-        }
-    }
-    
-    char *diVals[10] = {".", "@", "#", "?", "?", "?", "?", "?", "?", "?"};
-    
-    board [0][0] = 1;
-    //board [1][0] = 2;
-    //board [2][2] = 3;
-    //board [2][4] = 4;
-    //board [2][6] = 5;
-    //board [1][6] = 6;
-    //board [0][6] = 7;
-    //board [0][7] = 8;
-    
-    string imput;
-    
-    while(false)
-    {
-        for(int i = YSIZE-1; i>=0; i--){
+    void DisplayBoard(sf::RenderWindow &window){
+		sf::CircleShape shape(8.f);
+        for(int i = 0; i < YSIZE; i++){
             for(int j = 0; j < XSIZE; j++){
-                cout << diVals[board[j][i]];
-            }
-            cout << endl;
-        }
-        cin >> imput;
-                
-        char key = imput.c_str()[0];
-        
-        bool shouldPull = false;
-        
-        char lKey = tolower(key);
-        
-        if (lKey != key){
-            shouldPull = true;
-            key = lKey;
-        }
-        
-        if(key == 'x'){
-            break;
-        }
-        
-        
-        switch(key){
-            case 'w':
-                MoveObject(board, playerLocation, dirVec(0,1), true, shouldPull);
-                break;
-            case 'a':
-                MoveObject(board, playerLocation, dirVec(-1,0), true, shouldPull);
-                break;
-            case 's':
-                MoveObject(board, playerLocation, dirVec(0,-1), true, shouldPull);
-                break;
-            case 'd':
-                MoveObject(board, playerLocation, dirVec(1,0), true, shouldPull);
-                break;
-            default:
-                break;
-        }
-        
-    }
-
-    sf::RenderWindow window(sf::VideoMode(TILE_SIZE * XSIZE, TILE_SIZE * YSIZE), "SFML works!");
-    sf::CircleShape shape(8.f);
-    shape.setFillColor(sf::Color::Green);
-	shape.setPosition(sf::Vector2f(10, 50));
-	sf::CircleShape shape2(8.f);
-    shape2.setFillColor(sf::Color::Blue);
-
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-			bool shouldPull = false;
-			switch (event.type)
-			{
-				// window closed
-				case sf::Event::Closed:
-					window.close();
-					break;
-
-				// key pressed
-				case sf::Event::KeyPressed:
-					
-					if (event.key.code == sf::Keyboard::S){
-						MoveObject(board, playerLocation, dirVec(0,-1), true, shouldPull);
-					}
-					if (event.key.code == sf::Keyboard::W){
-						 MoveObject(board, playerLocation, dirVec(0,1), true, shouldPull);
-					}
-					if (event.key.code == sf::Keyboard::A){
-						 MoveObject(board, playerLocation, dirVec(-1,0), true, shouldPull);
-					}
-					if (event.key.code == sf::Keyboard::D){
-						MoveObject(board, playerLocation, dirVec(1,0), true, shouldPull);
-					}
-					break;
-
-				// we don't process other types of events
-				default:
-					break;
-			}
-        }
-		window.clear();
-		for(int i = YSIZE-1; i>=0; i--){
-            for(int j = 0; j < XSIZE; j++){
-				switch(board[j][i]){
+				switch(SpotVal(j,i)){
 					case 0:
 						shape.setFillColor(sf::Color::Black);
 						break;
@@ -333,12 +171,66 @@ int main()
 				}
 				shape.setPosition(sf::Vector2f(j*TILE_SIZE, TILE_SIZE * (YSIZE-1) - i*TILE_SIZE));
 				window.draw(shape);
-                //cout << diVals[board[j][i]];
             }
         }
-        
-        //window.draw(shape);
-		//window.draw(shape2);
+    }
+	void AddEntity(Entity ent){
+		entityList.insert(entityList.end(), ent);
+		*SpotRef(ent.loc) = ent.symbol;
+	}
+    ~GameBoard(){
+        delete board;
+    }
+};
+
+int main()
+{
+	Location *playerLocation = new Location(0,0);
+    
+    GameBoard *primaryBoard = new GameBoard();
+
+	Entity player = Entity(2, Location(0,0));
+	primaryBoard->AddEntity(player);
+    
+    sf::RenderWindow window(sf::VideoMode(TILE_SIZE * XSIZE, TILE_SIZE * YSIZE), "SFML works!");
+    sf::CircleShape shape(8.f);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+			bool shouldPull = true;
+			switch (event.type)
+			{
+				// window closed
+				case sf::Event::Closed:
+					window.close();
+					break;
+
+				// key pressed
+				case sf::Event::KeyPressed:
+					
+					if (event.key.code == sf::Keyboard::S){
+						primaryBoard->TryMoveEntity(player, dirVec(0,-1), true, shouldPull);
+					}
+					if (event.key.code == sf::Keyboard::W){
+						primaryBoard->TryMoveEntity(player, dirVec(0,1), true, shouldPull);
+					}
+					if (event.key.code == sf::Keyboard::A){
+						primaryBoard->TryMoveEntity(player, dirVec(-1,0), true, shouldPull);
+					}
+					if (event.key.code == sf::Keyboard::D){
+						primaryBoard->TryMoveEntity(player, dirVec(1,0), true, shouldPull);
+					}
+					break;
+				// we don't process other types of events
+				default:
+					break;
+			}
+        }
+		window.clear();
+        primaryBoard->DisplayBoard(window);
         window.display();
     }
 
