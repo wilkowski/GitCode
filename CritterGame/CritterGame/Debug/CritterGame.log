@@ -1,4 +1,4 @@
-﻿Build started 8/27/2013 4:34:53 PM.
+﻿Build started 8/27/2013 9:38:38 PM.
      1>Project "C:\Users\Wilkowski\GitCode\CritterGame\CritterGame\CritterGame.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "Debug\CritterGame.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -6,8 +6,18 @@
          All outputs are up-to-date.
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /I"C:\Users\Wilkowski\Downloads\SFML-2.1\include" /ZI /nologo /W3 /WX- /Od /Oy- /D SFML_STATIC /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\CritterGame.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(172): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
-     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(172): warning C4244: 'argument' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(111): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(112): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(113): warning C4244: 'initializing' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(216): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(216): warning C4244: 'argument' : conversion from 'double' to 'float', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(277): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(277): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(278): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(278): warning C4244: 'argument' : conversion from 'double' to 'int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(288): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(288): warning C4244: 'argument' : conversion from 'double' to 'unsigned int', possible loss of data
+     1>c:\users\wilkowski\gitcode\crittergame\crittergame\main.cpp(270): warning C4715: 'moveMonster' : not all control paths return a value
        ManifestResourceCompile:
          All outputs are up-to-date.
        Link:
@@ -17,6 +27,7 @@
          Debug\stdafx.obj
      1>LINK : warning LNK4067: ambiguous entry point; selected 'mainCRTStartup'
      1>sfml-graphics-s-d.lib(Color.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(Color.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(Font.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(Font.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-graphics-s-d.lib(GLCheck.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(GLCheck.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-graphics-s-d.lib(Image.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(Image.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-graphics-s-d.lib(ImageLoader.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(ImageLoader.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
@@ -32,6 +43,7 @@
      1>sfml-graphics-s-d.lib(Vertex.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(Vertex.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-graphics-s-d.lib(Shape.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(Shape.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-graphics-s-d.lib(CircleShape.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(CircleShape.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
+     1>sfml-graphics-s-d.lib(RectangleShape.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(RectangleShape.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-graphics-s-d.lib(VertexArray.cpp.obj) : warning LNK4099: PDB 'sfml-graphics-s-d.pdb' was not found with 'sfml-graphics-s-d.lib(VertexArray.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-graphics-s-d.pdb'; linking object as if no debug info
      1>sfml-window-s-d.lib(GlContext.cpp.obj) : warning LNK4099: PDB 'sfml-window-s-d.pdb' was not found with 'sfml-window-s-d.lib(GlContext.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-window-s-d.pdb'; linking object as if no debug info
      1>sfml-window-s-d.lib(GlResource.cpp.obj) : warning LNK4099: PDB 'sfml-window-s-d.pdb' was not found with 'sfml-window-s-d.lib(GlResource.cpp.obj)' or at 'C:\Users\Wilkowski\GitCode\CritterGame\Debug\sfml-window-s-d.pdb'; linking object as if no debug info
@@ -68,4 +80,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:03.82
+Time Elapsed 00:00:05.43
