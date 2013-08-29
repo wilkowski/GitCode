@@ -4,15 +4,16 @@
 #include <cstdlib>
 #include <windows.h> //used for sleep only
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <list>
 #include <cmath> 
 //#include <conio.h>
 
-#define XSIZE 20.0
-#define YSIZE 20.0
-#define TILE_SIZE 16.0
-#define HEADER_SIZE 20.0
+#define XSIZE 20
+#define YSIZE 20
+#define TILE_SIZE 16
+#define HEADER_SIZE 24
 
 using namespace std;
 
@@ -87,10 +88,45 @@ public:
 class GameBoard{
     int *board; 
     list<Entity *> entityList;
-    
+	sf::Font font;
+	sf::Texture rock;
+	sf::Texture player;
+	sf::Texture enemy;
+    sf::Texture goal;
+	sf::Texture background;
+
 public:
     int xSize;
     int ySize;
+	unsigned int difficulty;
+	unsigned int moveCounter;
+	unsigned int deaths;
+
+    GameBoard(){
+        xSize = XSIZE;
+        ySize = YSIZE;
+		difficulty = 1; //Must be at least 1
+		moveCounter = 0;
+		deaths = 0;
+        board = new int[XSIZE*YSIZE];
+        ResetBoard();
+		if (!rock.loadFromFile("resources/Rock.png"))
+			cout << "Rock texture failure";
+		if (!player.loadFromFile("resources/Player.png"))
+			cout << "Player texture failure";
+		if (!enemy.loadFromFile("resources/Enemy.png"))
+			cout << "Enemy texture failure";
+		if (!goal.loadFromFile("resources/End.png"))
+			cout << "Goal texture failure";
+		if (!background.loadFromFile("resources/Background.png"))
+			cout << "Background texture failure";
+		background.setRepeated(true);
+		if (!font.loadFromFile("resources/arial.ttf"))
+			cout << "ERROR font error";
+        //*SpotRef(0,0) = 2;
+        //dispVals = ;
+        //dispVals 
+    }
 	void ResetBoard(){
 		for(int i = 0; i<xSize; i++){
             for(int j = 0; j < ySize; j++){
@@ -106,17 +142,6 @@ public:
 			cout << "set loc " << (*iterator)->loc.x << "," << (*iterator)->loc.y << " symbol " << (*iterator)->symbol << endl;
 		}
 	}
-
-    GameBoard(){
-        xSize = XSIZE;
-        ySize = YSIZE;
-        board = new int[XSIZE*YSIZE];
-        ResetBoard();
-
-        //*SpotRef(0,0) = 2;
-        //dispVals = ;
-        //dispVals 
-    }
     int* SpotRef(int x, int y){
         return board + (x+y*(xSize));
     }
@@ -144,6 +169,7 @@ public:
             return false;
         }
         if(SpotVal(fromLoc) == 0){  //is there a block at location?
+			cout <<"from fail" << endl;
             return false;
         }
 		if(entity){
@@ -166,57 +192,131 @@ public:
 		//cout << "move try" << endl;
         Location pullFrom = ent->loc.SubVec(dir);
         Location pushFrom = ent->loc.AddVec(dir);
-		//cout << "from" << pushFrom.x << "," << pushFrom.y << endl;
+		cout << "-from" << pushFrom.x << "," << pushFrom.y << endl;
         if(canPush){//try moving pushed block
-            TryMoveBlock(pushFrom, dir, false); //does't matter if successful
+			if(SpotVal(pushFrom) == 1){ //only try moving rocks, not entities
+				TryMoveBlock(pushFrom, dir, false); //does't matter if successful
+			}
         }
         bool success = true;
+		cout << "move entity" << endl;
         success = TryMoveBlock(ent->loc, dir, true);  //try moving self
         if(!success){ 
+			cout << "fail";
             return false;
         }
-		
         ent->loc = pushFrom; //might be done in move sec later
-		//cout << "ent" << ent.loc.x << "," << ent.loc.y << endl;
+		cout << "ent" << ent->loc.x << "," << ent->loc.y << endl;
         if(canPull){//is pulling?
-            TryMoveBlock(pullFrom,dir, false); //try moving pulled block
+			if(SpotVal(pullFrom) == 1){
+				TryMoveBlock(pullFrom,dir, false); //try moving pulled block
+			}
         }
 		//cout << "\n" << "Move success";
         return true;
     }
+	bool moveMonster(Entity *monster, Entity *player){
+		
+		if(monster->loc == player->loc){
+			ResetBoard();
+			deaths++;
+			return false;
+		}else{
+			bool oneDirection = (monster->loc.x == player->loc.x || monster->loc.y == player->loc.y);
+			int i = 0;
+			dirVec possibleMoves[2];
+			int weight[2];
+			int absx = abs(monster->loc.x-player->loc.x);
+			if(monster->loc.x < player->loc.x){
+				possibleMoves[i] = dirVec(1,0);
+				weight[i] = absx;
+				i++;
+			}else if(monster->loc.x > player->loc.x){
+				possibleMoves[i] = dirVec(-1,0);
+				weight[i] = absx;
+				i++;
+			}
+			int absy = abs(monster->loc.y-player->loc.y);
+			if(monster->loc.y < player->loc.y){
+				possibleMoves[i] = dirVec(0,1);
+				weight[i] = absy;
+				i++;
+			}else if(monster->loc.y > player->loc.y){
+				possibleMoves[i] = dirVec(0,-1);
+				weight[i] = absy;
+				i++;
+			}
+			int choice = 0;
+			if(!oneDirection){
+				if (rand()%(weight[0]+weight[1]) >= weight[0]){
+					choice = 1;
+				}
+			}
+			cout << "M";
+			bool success = TryMoveEntity(monster, possibleMoves[choice], true, false);
+			if(!oneDirection && ! success){
+				cout << "M";
+				return TryMoveEntity(monster, possibleMoves[1-choice], true, false); //try other way
+			}
+			return success;
+		}
+	}
+
     void DisplayBoard(sf::RenderWindow &window){
+		window.clear();
+		sf::Sprite backgroundSprite;
+		backgroundSprite.setTexture(background);
+		backgroundSprite.setTextureRect(sf::IntRect(0, 0, XSIZE*TILE_SIZE, YSIZE*TILE_SIZE+HEADER_SIZE));
+		window.draw(backgroundSprite);
 		sf::RectangleShape rectangle(sf::Vector2f(120, 50));
 		rectangle.setSize(sf::Vector2f(XSIZE*TILE_SIZE, HEADER_SIZE));
 		rectangle.setFillColor(sf::Color::Blue);
 		window.draw(rectangle);
-		sf::Font font;
-		sf::CircleShape shape(8.f);
+		std::stringstream sstm;
+		sstm << "deaths: " << deaths;
+		sf::Text text;
+		text.setFont(font);
+		text.setString(sstm.str());
+		text.setColor(sf::Color::Red);
+		text.setCharacterSize(HEADER_SIZE-2);
+		window.draw(text);
+		std::stringstream sstm2;
+		sstm2 << "level: " << difficulty;
+		text.setString(sstm2.str());
+		text.setPosition(XSIZE*TILE_SIZE-text.getGlobalBounds().width-1,0);
+		window.draw(text);
+		sf::Sprite sprite;
         for(int i = 0; i < YSIZE; i++){
             for(int j = 0; j < XSIZE; j++){
+				bool draw = true;
 				switch(SpotVal(j,i)){
 					case 0:
-						shape.setFillColor(sf::Color::Black);
+						draw = false;
 						break;
 					case 1:
-						shape.setFillColor(sf::Color::Green);
+						sprite.setTexture(rock);
 						break;
 					case 2:
-						shape.setFillColor(sf::Color::Yellow);
+						sprite.setTexture(player);
 						break;
-					case 3:
-						shape.setFillColor(sf::Color::Red);
+					case 3:	
+						sprite.setTexture(enemy);
 						break;
 					case 4:
-						shape.setFillColor(sf::Color::Magenta);
+						sprite.setTexture(goal);
 						break;
 					default:
-						shape.setFillColor(sf::Color::White); //not used
+						cout << "error bad case"; //not used
 						break;
 				}
-				shape.setPosition(sf::Vector2f(j*TILE_SIZE, HEADER_SIZE + TILE_SIZE * (YSIZE-1) - i*TILE_SIZE));
-				window.draw(shape);
+				if(draw){
+					sprite.setPosition(sf::Vector2f((float) j*TILE_SIZE, (float) HEADER_SIZE + TILE_SIZE * (YSIZE-1) - i*TILE_SIZE));
+					window.draw(sprite);
+				}
             }
         }
+		
+		window.display();
     }
 	void AddEntity(Entity *ent){
 		entityList.insert(entityList.end(), ent);
@@ -227,52 +327,10 @@ public:
     }
 };
 
-bool moveMonster(GameBoard *primaryBoard, Entity *monster, Entity *player){
-	if(monster->loc == player->loc){
-		primaryBoard->ResetBoard();
-	}else{
-		bool oneDirection = (monster->loc.x == player->loc.x || monster->loc.y == player->loc.y);
-		int i = 0;
-		dirVec possibleMoves[2];
-		int weight[2];
-		int absx = abs(monster->loc.x-player->loc.x);
-		if(monster->loc.x < player->loc.x){
-			possibleMoves[i] = dirVec(1,0);
-			weight[i] = absx;
-			i++;
-		}else if(monster->loc.x > player->loc.x){
-			possibleMoves[i] = dirVec(-1,0);
-			weight[i] = absx;
-			i++;
-		}
-		int absy = abs(monster->loc.y-player->loc.y);
-		if(monster->loc.y < player->loc.y){
-			possibleMoves[i] = dirVec(0,1);
-			weight[i] = absy;
-			i++;
-		}else if(monster->loc.y > player->loc.y){
-			possibleMoves[i] = dirVec(0,-1);
-			weight[i] = absy;
-			i++;
-		}
-		int choice = 0;
-		if(!oneDirection){
-			if (rand()%(weight[0]+weight[1]) >= weight[0]){
-				choice = 1;
-			}
-		}
-		bool success = primaryBoard->TryMoveEntity(monster, possibleMoves[choice], true, false);
-		if(!oneDirection && ! success){
-			return primaryBoard->TryMoveEntity(monster, possibleMoves[1-choice], true, false); //try other way
-		}
-		return success;
-	}
-}
+
 
 int main()
 {
-	int difficulty = 3;
-	unsigned int moveCounter = 0;
 	Location playerStart = Location(0,0);
     Location monsterStart = Location(XSIZE-2, YSIZE-2);
 	Location goalLocation = Location(XSIZE-1, YSIZE-1);
@@ -319,21 +377,26 @@ int main()
 						player->loc = playerStart;
 						//monster.loc = monsterStart;
 						primaryBoard->ResetBoard();
+						primaryBoard->deaths++;
 						cout << "mon " << monster->loc.x << "," << monster->loc.y << endl;
 					}
 					if(lastPlayerLocation != player->loc){ // move monster
-						bool moved = moveMonster(primaryBoard, monster, player);
-						moveCounter++;
-						if (moved && (moveCounter %difficulty != 0)){
+						bool moved = primaryBoard->moveMonster(monster, player);
+						primaryBoard->moveCounter++;
+						if (moved && (primaryBoard->moveCounter %primaryBoard->difficulty != 0)){
 							window.clear();
 							primaryBoard->DisplayBoard(window);
 							window.display();
-							Sleep(200);
-							moveMonster(primaryBoard, monster, player);
+							//Sleep(200);
+							primaryBoard->moveMonster(monster, player);
 						}
 					}
-					if(player->loc == monster->loc || player->loc == goalLocation){
-						difficulty++;
+					if(player->loc == monster->loc){
+						primaryBoard->deaths++;
+						primaryBoard->ResetBoard();
+					}
+					if(player->loc == goalLocation){
+						primaryBoard->difficulty++;
 						primaryBoard->ResetBoard();
 					}
 					lastPlayerLocation = player->loc;
@@ -343,9 +406,9 @@ int main()
 					break;
 			}
         }
-		window.clear();
+		
         primaryBoard->DisplayBoard(window);
-        window.display();
+        
     }
 
     return 0;
