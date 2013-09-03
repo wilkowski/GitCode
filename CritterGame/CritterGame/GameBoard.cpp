@@ -5,25 +5,35 @@
 GameBoard::GameBoard(){
     xSize = XSIZE;
     ySize = YSIZE;
-	density = 3; //from 1 to 3 is reasonable corresponding to 3/7,4/8 or 5/9
+	//I tried it with larger variations of density but the game becomes impossible with too many or too few rocks
+	density = 2; //from 1 to 3 is reasonable corresponding to 3/7,4/8 or 5/9
 	difficulty = 1; //Must be at least 1
 	moveCounter = 0;
 	deaths = 0;
     board = new int[XSIZE*YSIZE];
     ResetBoard();
 	if (!rock.loadFromFile("resources/Rock.png"))
-		cout << "Rock texture failure";
+		throw "Rock texture load failure";
 	if (!player.loadFromFile("resources/Player.png"))
-		cout << "Player texture failure";
+		throw "Player texture load failure";
 	if (!enemy.loadFromFile("resources/Enemy.png"))
-		cout << "Enemy texture failure";
+		throw "Enemy texture load failure";
 	if (!goal.loadFromFile("resources/End.png"))
-		cout << "Goal texture failure";
+		throw "Goal textur load failure";
 	if (!background.loadFromFile("resources/Background.png"))
-		cout << "Background texture failure";
+		throw "Background texture load failure";
 	background.setRepeated(true);
+	if (!shade.loadFromFile("resources/Shade.png"))
+		throw "Shade texture load failure";
+	shade.setRepeated(true);
 	if (!font.loadFromFile("resources/arial.ttf"))
-		cout << "ERROR font error";
+		throw "ERROR font load error";
+	if (!deathSound.loadFromFile("resources/screammono.wav"))
+        throw "ERROR sound load error";
+	dsound.setBuffer(deathSound);
+	if (!music.openFromFile("resources/scream.wav")) //Yes this is the wilhelm scream
+		throw "ERROR sound load error";
+	
 }
 
 int* GameBoard::SpotRef(int x, int y){
@@ -61,7 +71,7 @@ void GameBoard::ResetBoard(){
 	for (list<Entity *>::iterator iterator = entityList.begin(); iterator != entityList.end(); ++iterator){
 		(*iterator)->Reset();
 		*SpotRef((*iterator)->loc) = (*iterator)->symbol;
-		cout << "set loc " << (*iterator)->loc.x << "," << (*iterator)->loc.y << " symbol " << (*iterator)->symbol << endl;
+		//cout << "set loc " << (*iterator)->loc.x << "," << (*iterator)->loc.y << " symbol " << (*iterator)->symbol << endl;
 	}
 }
 
@@ -101,21 +111,21 @@ bool GameBoard::TryMoveEntity(Entity *ent, dirVec dir, bool canPush, bool canPul
 	//cout << "move try" << endl;
     Location pullFrom = ent->loc.SubVec(dir);
     Location pushFrom = ent->loc.AddVec(dir);
-	cout << "-from" << pushFrom.x << "," << pushFrom.y << endl;
+	//cout << "-from" << pushFrom.x << "," << pushFrom.y << endl;
     if(canPush){//try moving pushed block
 		if(SpotVal(pushFrom) == WALL){ //only try moving rocks, not entities
 			TryMoveBlock(pushFrom, dir, false); //does't matter if successful
 		}
     }
     bool success = true;
-	cout << "move entity" << endl;
+	//cout << "move entity" << endl;
     success = TryMoveBlock(ent->loc, dir, true);  //try moving self
     if(!success){ 
-		cout << "fail";
+		//cout << "fail";
         return false;
     }
     ent->loc = pushFrom; //might be done in move sec later
-	cout << "ent" << ent->loc.x << "," << ent->loc.y << endl;
+	//cout << "ent" << ent->loc.x << "," << ent->loc.y << endl;
     if(canPull){//is pulling?
 		if(SpotVal(pullFrom) == WALL){
 			TryMoveBlock(pullFrom,dir, false); //try moving pulled block
@@ -127,10 +137,10 @@ bool GameBoard::TryMoveEntity(Entity *ent, dirVec dir, bool canPush, bool canPul
 
 bool GameBoard::MoveMonster(Entity *monster, Entity *player){
 	if(monster->loc == player->loc){
-		ResetBoard();
-		deaths++;
+		PlayerDied();
 		return false;
 	}else{
+		//monster has 1 or 2 directions that are toward the player.  
 		bool oneDirection = (monster->loc.x == player->loc.x || monster->loc.y == player->loc.y);
 		int i = 0;
 		dirVec possibleMoves[2];
@@ -156,19 +166,46 @@ bool GameBoard::MoveMonster(Entity *monster, Entity *player){
 			i++;
 		}
 		int choice = 0;
+		
 		if(!oneDirection){
+			//weight is porportial to distance in that direction
 			if (rand()%(weight[0]+weight[1]) >= weight[0]){
+				//for example monster is more likely to go left if player is more left than down
 				choice = 1;
 			}
 		}
-		cout << "M";
+		//cout << "M";
+		//try moving the monster one way
 		bool success = TryMoveEntity(monster, possibleMoves[choice], true, false);
-		if(!oneDirection && ! success){
-			cout << "M";
+		if(!oneDirection && ! success){ //try the other way if first direction didn't work
+			//cout << "M";
 			return TryMoveEntity(monster, possibleMoves[1-choice], true, false); //try other way
 		}
 		return success;
 	}
+}
+
+void GameBoard::PlayerDied(){
+	//cout << "SCREAM" << endl;
+	dsound.play();
+	while (dsound.getStatus() == sf::Sound::Playing)
+    {
+        // Leave some CPU time for other processes
+		//cout << "playing sound ";
+        sf::sleep(sf::milliseconds(100));
+	}
+	deaths++;
+	ResetBoard();
+	//music.play();
+}
+
+void GameBoard::ShadowText(sf::RenderWindow &window, sf::Text text){
+	sf::Color color = text.getColor();
+	text.setColor(sf::Color::Black);
+	window.draw(text);
+	text.move(1,-1);
+	text.setColor(color);
+	window.draw(text);
 }
 
 void GameBoard::DisplayTopBar(sf::RenderWindow &window){
@@ -181,14 +218,37 @@ void GameBoard::DisplayTopBar(sf::RenderWindow &window){
 	sf::Text text;
 	text.setFont(font);
 	text.setString(sstm.str());
-	text.setColor(sf::Color::Red);
+	text.setColor(sf::Color::Black);
 	text.setCharacterSize(HEADER_SIZE-2);
-	window.draw(text);
+	text.setColor(sf::Color::Red);
+	ShadowText(window, text);
+	
 	std::stringstream sstm2;
 	sstm2 << "level: " << difficulty;
 	text.setString(sstm2.str());
 	text.setPosition(XSIZE*TILE_SIZE-text.getGlobalBounds().width-1,0);
-	window.draw(text);
+	ShadowText(window, text);
+}
+
+void GameBoard::DisplayButton(sf::RenderWindow &window, sf::RectangleShape rectangle, string buttonString){
+	sf::Text text;
+	text.setFont(font);
+	text.setString(buttonString);
+	text.setColor(sf::Color::White);
+	text.setCharacterSize(22);
+	text.setPosition(rectangle.getPosition().x+4,rectangle.getPosition().y+1);
+	rectangle.setFillColor(sf::Color::Green);
+	window.draw(rectangle);
+	ShadowText(window, text);
+}
+
+void GameBoard::DisplayMenu(sf::RenderWindow &window){
+	sf::Sprite shadeSprite;
+	shadeSprite.setTexture(shade);
+	shadeSprite.setTextureRect(sf::IntRect(0, 0, XSIZE*TILE_SIZE, YSIZE*TILE_SIZE));
+	shadeSprite.setPosition(0,HEADER_SIZE);
+	window.draw(shadeSprite);
+
 }
 
 void GameBoard::DisplayBoard(sf::RenderWindow &window){
@@ -228,11 +288,14 @@ void GameBoard::DisplayBoard(sf::RenderWindow &window){
 			}
         }
     }
-		
-	window.display();
 }
 
 void GameBoard::AddEntity(Entity *ent){
 	entityList.insert(entityList.end(), ent);
 	*SpotRef(ent->loc) = ent->symbol;
+}
+
+void GameBoard::RemoveEntity(Entity *ent){
+	*SpotRef(ent->loc) = EMPTY;
+	entityList.remove(ent);
 }

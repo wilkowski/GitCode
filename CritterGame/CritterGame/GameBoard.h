@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include <SFML/Graphics.hpp>
-//#include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <cstdlib>
 #include <windows.h> //used for sleep only
 #include <iostream>
@@ -78,7 +78,6 @@ public:
 
 class GameBoard{
     int *board; 
-	int density;
     std::list<Entity *> entityList;
 	sf::Font font;
 	sf::Texture rock;
@@ -86,12 +85,16 @@ class GameBoard{
 	sf::Texture enemy;
     sf::Texture goal;
 	sf::Texture background;
+	sf::Texture shade;
 
-	//sf::SoundBuffer buffer;
+	sf::SoundBuffer deathSound; //Apparently stereo sounds dont play at all without giving an error...
+	sf::Sound dsound; 
+	sf::Music music;
 
 public:
     int xSize;
     int ySize;
+	int density;
 	unsigned int difficulty;
 	unsigned int moveCounter;
 	unsigned int deaths;
@@ -109,9 +112,14 @@ public:
     bool TryMoveBlock(Location fromLoc, dirVec dir, bool entity);
     bool TryMoveEntity(Entity *ent, dirVec dir, bool canPush, bool canPull);
 	bool MoveMonster(Entity *monster, Entity *player);
+	void GameBoard::PlayerDied();
+	void ShadowText(sf::RenderWindow &window, sf::Text text);
 	void DisplayTopBar(sf::RenderWindow &window);
+	void DisplayButton(sf::RenderWindow &window, sf::RectangleShape rectangle, string buttonString);
+	void GameBoard::DisplayMenu(sf::RenderWindow &window);
     void DisplayBoard(sf::RenderWindow &window);
 	void AddEntity(Entity *ent);
+	void RemoveEntity(Entity *ent);
     ~GameBoard(){
         delete board;
     }
