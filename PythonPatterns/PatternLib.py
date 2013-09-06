@@ -108,24 +108,30 @@ def findPattern(pattern_array):
     base_array_length = len(base_function_array) # = len
     for i in range(0,max_depth):
         func_to_add_index = randint(0, base_array_length-1)
-        print 'adding', func_names[func_to_add_index]
-        func_to_add = base_function_array[func_to_add_index]
-        func_args = []
-        func_name_added = []
-        for j in range(0,arg_count[func_to_add_index]):
-            arg_to_add = randint(0,len(func_array)-1)
-            print "giving it arg", arg_to_add
-            func_used = func_array[arg_to_add]
-            func_args += [func_used]
-            func_name_added += [func_name_array[arg_to_add]]
-        
-        def newFunc(n):
-            print "func_args:", func_args
-            print "arg_names:", func_name_added
-            args = tuple([f(n) for f in func_args])
-            return func_to_add(n, *args)
+        def addScoping(): #necessary so that func_args dont get overridded by next loop iteration
             
-        res = addFunc(working_array, newFunc, 1) #TODO: fix depth later
+            print 'adding', func_names[func_to_add_index]
+            func_to_add = base_function_array[func_to_add_index]
+            func_args = []
+            func_name_added = []
+            for j in range(0,arg_count[func_to_add_index]):
+                arg_to_add = randint(0,len(func_array)-1)
+                print "giving it arg", arg_to_add
+                func_used = func_array[arg_to_add]
+                func_args += [func_used]
+                func_name_added += [func_name_array[arg_to_add]]
+            
+            def newFunc(n):
+                print "function number", i+1
+                print "func_args:", func_args
+                print "arg_names:", func_name_added
+                args = tuple([f(n) for f in func_args])
+                return func_to_add(n, *args)
+            return newFunc
+            
+        scoped_function = addScoping()
+                
+        res = addFunc(working_array, scoped_function, 1) #TODO: fix depth later
         func_name_array += [func_names[func_to_add_index]]
         if res:
             result_function = res
@@ -141,7 +147,7 @@ def findPattern(pattern_array):
     return False
     
     
-starter_pattern = [(x%3 == 0) for x in range(0,10)]
+starter_pattern = [(x%2 == 0) for x in range(0,10)]
 
 res = findPattern(starter_pattern)
 
@@ -149,7 +155,7 @@ print "done, now getting more stuff"
 if res:
     print res
 
-    res_array = [res(n) for n in range(10,20)]
+    res_array = [res(n) for n in range(10,20)] 
 
     print "extra results:", res_array
 
