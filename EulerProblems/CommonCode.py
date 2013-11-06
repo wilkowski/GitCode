@@ -136,7 +136,14 @@ def to_list(num):
     
 def reverse_list(list):
     list_len = len(list)
-    return [list[list_len-1-i] for i in range(0,list_len)]    
+    return [list[list_len-1-i] for i in range(0,list_len)]
+
+#gcd
+def gcd(a,b):
+    if a%b == 0:
+        return b
+    else:
+        return gcd(b,a%b)    
     
 #import a file and get the words out of it as a lsit    
     
