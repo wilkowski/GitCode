@@ -88,26 +88,6 @@ def pow_mod(var, power, mod):
     return pow_mod_prod(var, power, mod, 1)
 
 
-
-#factorials
-factorial_range = 10
-
-factorials = [1 for x in range(0,factorial_range)]
-
-for n in range(1,factorial_range):
-    factorials[n] = factorials[n-1]*n
-    #print n, factorials[n]
-    
-    
-#fibonacci numbers
-fib = [1]
-
-for i in range(1,12):
-    fib = fib + [fib[i-1]*i]
-    
-#print fib[4]
-
-
 def digits(x):
     digit_count = 0
     xx = x
@@ -117,6 +97,21 @@ def digits(x):
     return digit_count
     
     
+#a hash table implementation  
+HASH_SIZE = 1000000
+hash_value_table = [False]*HASH_SIZE
+    
+def hash(value):
+    return value%HASH_SIZE
+    
+def add_to_hash(value):
+    index = hash(value)
+    while(hash_value_table[index]):
+        if(hash_value_table[index] == value):
+            return True
+        index = (index + 1)%HASH_SIZE
+    hash_value_table[index] = value
+    return False 
     
 #convert back and forth between number and list of its digits
 def to_num(list):
