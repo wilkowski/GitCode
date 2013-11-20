@@ -113,6 +113,14 @@ def add_to_hash(value):
     hash_value_table[index] = value
     return False 
     
+def is_square(n):
+    root = float(n) ** .5
+    root = int(root+.5)
+    if root*root == n:
+        return root
+    else:
+        return False
+    
 #convert back and forth between number and list of its digits
 def to_num(list):
     sum = 0
@@ -143,7 +151,6 @@ def gcd(a,b):
 #import a file and get the words out of it as a lsit    
     
 import re
-
 file = open('names.txt','r')
 pattern = re.compile('[\\w]+') #matches alpha numeric in double quotes
-nameList = re.findall(pattern, file.read())
+word_list = re.findall(pattern, file.read())
