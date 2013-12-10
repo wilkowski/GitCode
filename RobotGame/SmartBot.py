@@ -8,12 +8,12 @@ print "running careful bot"
 
 class Robot:
     def act(self, game):
-        def Get_Action_For(self_bot, game, depth):            
+        def Get_Action_For(self_bot, game):            
             def adjacent_bots(loc, game):
                 ret_list = []
                 robot_dict = game['robots']
                 for targ in rg.locs_around(loc , filter_out=('invalid', 'obstacle')):
-                    if robot_dict.has_key(targ):
+                    if targ in robot_dict:
                         ret_list.append(robot_dict[targ])
                 if robot_dict.has_key(loc):
                     ret_list.append(robot_dict[loc])
@@ -34,6 +34,24 @@ class Robot:
                     if not occupied(targ,occupied_space_list):
                         ret_list.append(targ)
                 return ret_list
+                
+            def priority(bot_location):
+                center_dist = rg.wdist(bot_location, rg.CENTER_POINT)
+                return (center_dist*100+bot_location[0])*100+bot_location[1]
+                
+            def retreat(occupied_space_list):
+                for targ in places_to_go(self_bot.location , occupied_space_list):
+                    nearby_enemy = False
+                    for enemy_bot in adjacent_bots(targ, game):
+                        if enemy_bot.player_id != self_bot.player_id: 
+                            nearby_enemy = True
+                            break
+                    #print nearby_enemy
+                    if not nearby_enemy:
+                        return ['move', targ]        
+                return False
+                
+            my_priotiry = priority(self_bot.location)
             
             is_in_spawn = False
             loc_types = rg.loc_types(self_bot.location)
@@ -47,18 +65,19 @@ class Robot:
             occupied_locations = []
                 
             bots_attacking_me = 0.0
-            adjacent_enemies = 0
+            
+            adjacent_enemies = {}
 
             for bot in adjacent_bots(self_bot.location, game):
                 if bot.player_id != self_bot.player_id:
-                    adjacent_enemies +=1
+                    adjacent_enemies[bot.location] = bot.hp
                     attention = 0.000000001 #should always be at least 1
                     friendlies = adjacent_bots(bot.location, game)
                     for f_bot in friendlies:
                         if f_bot.player_id == self_bot.player_id:
                             attention +=1.0
                     bots_attacking_me += 1.0/attention
-                
+            
             for loc, bot in game['robots'].iteritems():
                 if loc != self_bot.location:
                     if bot.player_id != self_bot.player_id:
@@ -68,35 +87,38 @@ class Robot:
                             closest_enemy = loc
 
                     if(bot.player_id == self_bot.player_id and rg.wdist(loc, self_bot.location) <=4):
-                        if(depth > 0):
-                            action = Get_Action_For(bot, game, depth-1)
+                        if(priority(bot.location) > my_priotiry):
+                            action = Get_Action_For(bot, game)
                             if action[0] == 'move':
                                 occupied_locations.append(action[1])
                                 if(action[1] == self_bot.location): #moving into this bots space
                                     occupied_locations.append(loc)
                             else:
                                 occupied_locations.append(loc)
+                                
+                            if action[0] == 'attack':
+                                attack_spot = action[1]
+                                if attack_spot in adjacent_enemies:
+                                    adjacent_enemies[attack_spot] = adjacent_enemies[attack_spot] - min_attack
+                            elif action[0] == 'suicide':
+                                for enemy_loc in rg.locs_around(bot.location , filter_out=('invalid', 'obstacle')):
+                                    if enemy_loc in adjacent_enemies:
+                                        adjacent_enemies[enemy_loc] = adjacent_enemies[enemy_loc] - 15 
                         else:
                             occupied_locations.append(loc)
 
-            if(bots_attacking_me > 1.6 or (adjacent_enemies > 0 and is_in_spawn and game['turn']%10 == 0)): #try to run away or suicide
+            if(bots_attacking_me > 1.6 or (len(adjacent_enemies) > 0 and is_in_spawn and game['turn']%10 == 0)): #try to run away or suicide
                 if(self_bot.hp <= max_attack):
                     return ['suicide']
                 else:
-                    #try to run away
-                    for targ in places_to_go(self_bot.location , occupied_locations):
-                        nearby_enemy = False
-                        for enemy_bot in adjacent_bots(targ, game):
-                            if enemy_bot.player_id != self_bot.player_id: 
-                                nearby_enemy = True
-                                break
-                        #print nearby_enemy
-                        if not nearby_enemy:
-                            return ['move', targ] 
+                    retreat_move = retreat(occupied_locations)
+                    if retreat_move:
+                        return retreat_move
                     #failed to find escape:
-                    if(self_bot.hp <= bots_attacking_me*max_attack):
+                    if(self_bot.hp <= bots_attacking_me*max_attack or game['turn']%10 == 0):
                         return ['suicide']
-            if(self_bot.hp < max_attack and adjacent_enemies >=2):
+                        
+            if(self_bot.hp < max_attack and len(adjacent_enemies) >=2):
                 return ['suicide']
                 
             if(closest_enemy):
@@ -112,7 +134,12 @@ class Robot:
                         return ['move', best_target]
                     else:
                         return ['guard'] #stuck bot, do nothing
-                if(min_dist <= 1):
+                if(min_dist <= 1): #there is an adjacent enemy
+                    for loc, hp in adjacent_enemies:
+                        if hp <= 0:
+                            retreat_move = retreat(occupied_locations)
+                            if retreat_move:
+                                return retreat_move
                     return ['attack', closest_enemy]
                 else:
                     if(best_target):
@@ -127,4 +154,4 @@ class Robot:
             else:
                 return ['guard']
 
-        return Get_Action_For(self, game, 1+random()%2)
+        return Get_Action_For(self, game)
