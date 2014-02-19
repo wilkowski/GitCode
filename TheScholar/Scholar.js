@@ -1,3 +1,5 @@
+var debug = true;
+var debug_multiplier = 5
 
 var player = {
     version: '.1',
@@ -37,11 +39,19 @@ var player = {
     dev_tools: 0,
     developers: 0,
     
-    
-    //calculator_cost: 5.00,
-    
-    research_projects: {}
+    in_contest: false,
+    contest_strength: 0,
+    contest_progress: 0,
+    contest_winnings: 200, //rewards are 1st: 50%, 2nd: 25%, 3rd: 10%
+    math_research_projects: {},
+    cs_projects: {}
 };
+
+if(debug){
+    player.show_math_level = true;
+}
+
+var contest_time = 300 //TODO random number around 5-10 minutes
 
 //button order is as it appears on page
 //Buttons become available in reverse order
@@ -52,14 +62,14 @@ main_tab_button.requirements = {math_level: 5};
 //main classes
 var learn_logic_button = document.getElementById("learn_logic");
 learn_logic_button.requirements = {school: 1, math_level:50};
-learn_logic_button.cost = {effort: 5};
+learn_logic_button.cost = {effort: 20};
 learn_logic_button.reward = {cs_level: 1};
 learn_logic_button.disable = {cs_level: 5};
 
 var learn_math_button = document.getElementById("learn_math");
 learn_math_button.style.display = 'none';
-learn_math_button.requirements = {reading_level: 5};
-learn_math_button.disable = {math_level: 5};
+learn_math_button.requirements = {grade: 2};
+learn_math_button.disable = {math_level: 10};
 learn_math_button.cost = {effort: 2};
 learn_math_button.reward = {math_level: 1};
 
@@ -70,66 +80,70 @@ learn_reading_button.cost = {effort: 1};
 learn_reading_button.disable = {reading_level: 5};
 learn_reading_button.reward = {reading_level: 1};
 //main grades/schools
+var grade_up_4_button = document.getElementById("grade_up_4");
+grade_up_4_button.requirements = {school: 5};
+grade_up_4_button.disable = {grade: 20}; //unused
+grade_up_4_button.cost = {effort: 1.953125};
+grade_up_4_button.exponent = {grade: 2.0};
+grade_up_4_button.reward = {grade: 1, effort_per_second: 1.0};
+//grad school
 var school_up_4_button = document.getElementById("school_up_4");
 school_up_4_button.requirements = {school: 3, math_level: 500, grade:16};
 school_up_4_button.disable = {school: 4};
 school_up_4_button.cost = {effort: 100};
-school_up_4_button.reward = {school: 1, effort_per_second: 0.5, money_per_second:0.5};
+school_up_4_button.reward = {school: 1, grade:1, effort_per_second: 2.0, money_per_second:0.5};
 
 var grade_up_3_button = document.getElementById("grade_up_3");
 grade_up_3_button.requirements = {school: 4};
-grade_up_3_button.innerHTML = textify('Grade Up');
-grade_up_3_button.disable = {grade: 4};
-grade_up_3_button.cost = {effort: 2};
+grade_up_3_button.disable = {grade: 16}; //unused
+grade_up_3_button.cost = {effort: 1.953125};
 grade_up_3_button.exponent = {grade: 2.0};
-grade_up_3_button.reward = {grade: 1, effort_per_second: 0.25};
-
+grade_up_3_button.reward = {grade: 1, effort_per_second: 0.5};
+//college
 var school_up_3_button = document.getElementById("school_up_3");
 school_up_3_button.requirements = {school: 2, math_level: 200, grade:12};
 school_up_3_button.disable = {school: 4};
 school_up_3_button.cost = {effort: 100};
-school_up_3_button.reward = {school: 1, effort_per_second: 0.25, money:100};
+school_up_3_button.reward = {school: 1, grade:1, effort_per_second: 1.0, money:100};
 
 var grade_up_2_button = document.getElementById("grade_up_2");
 grade_up_2_button.requirements = {school: 3};
-grade_up_2_button.innerHTML = textify('Grade Up');
-grade_up_2_button.disable = {grade: 4};
-grade_up_2_button.cost = {effort: 2};
+grade_up_2_button.disable = {grade: 12}; //unused
+grade_up_2_button.cost = {effort: 1.953125};
 grade_up_2_button.exponent = {grade: 2.0};
-grade_up_2_button.reward = {grade: 1, effort_per_second: 0.25};
-
+grade_up_2_button.reward = {grade: 1, effort_per_second: 0.5};
+//high school
 var school_up_2_button = document.getElementById("school_up_2");
 school_up_2_button.requirements = {school: 1, math_level: 100, grade:8};
 school_up_2_button.disable = {school: 3};
-school_up_2_button.cost = {effort: 20};
-school_up_2_button.reward = {school: 1, effort_per_second: 0.25, money_per_second:0.1};
+school_up_2_button.cost = {effort: 500};
+school_up_2_button.reward = {school: 1, grade:1, show_math_level:1, effort_per_second: 0.75, money_per_second:0.1};
 
 var grade_up_1_button = document.getElementById("grade_up_1");
-grade_up_1_button.requirements = {school: 2};
-grade_up_1_button.disable = {grade: 4};
-grade_up_1_button.cost = {effort: 2};
+grade_up_1_button.requirements = {school: 2}; //math level: 100, 400, 900
+grade_up_1_button.disable = {grade: 8}; //unused
+grade_up_1_button.cost = {effort: 2.5};
 grade_up_1_button.exponent = {grade: 2.0};
 grade_up_1_button.reward = {grade: 1, effort_per_second: 0.25};
-
+//middle school
 var school_up_1_button = document.getElementById("school_up_1");
-school_up_1_button.requirements = {math_level: 35, grade:4};
+school_up_1_button.requirements = {math_level: 60, grade:4};
 school_up_1_button.disable = {school: 2};
-school_up_1_button.cost = {effort: 5};
-school_up_1_button.reward = {school: 1, effort_per_second: 0.5, money:10};
+school_up_1_button.cost = {effort: 40};
+school_up_1_button.reward = {school: 1, grade:1, effort_per_second: 0.5, money:10};
 
 var grade_up_0_button = document.getElementById("grade_up_0");
 grade_up_0_button.requirements = {reading_level: 5};
-//grade_up_0_button.innerHTML = textify('Grade Up');
-grade_up_0_button.disable = {grade: 4};
-grade_up_0_button.cost = {effort: 2};
-grade_up_0_button.exponent = {grade: 2.0};
+grade_up_0_button.disable = {grade: 4}; //unused
+grade_up_0_button.cost = {effort: 5.0/3.0};
+grade_up_0_button.exponent = {grade: 3.0};
 grade_up_0_button.reward = {grade: 1, effort_per_second: 0.25};
-
+//elementary school
 var school_up_0_button = document.getElementById("school_up_0");
 school_up_0_button.innerHTML = textify('Start School');
 school_up_0_button.disable = {school: 1};
 school_up_0_button.cost = {effort: 2};
-school_up_0_button.reward = {school: 1, effort_per_second: 0.25};
+school_up_0_button.reward = {school: 1, grade: 1, effort_per_second: 0.25};
 
 
 //math section buttons
@@ -142,7 +156,7 @@ learn_advanced_calculus_button.cost = {effort: 10, calculations:20};
 learn_advanced_calculus_button.reward = {math_level: 50};
 
 var learn_calculus_button = document.getElementById("learn_calculus");
-learn_calculus_button.requirements = {school: 2, math_level: 300};
+learn_calculus_button.requirements = {school: 2, math_level: 500};
 learn_calculus_button.cost = {effort: 5, calculations:10};
 learn_calculus_button.reward = {math_level: 20};
 
@@ -152,17 +166,17 @@ learn_trigonometry_button.cost = {effort: 5, calculations:5};
 learn_trigonometry_button.reward = {math_level: 12};
 
 var learn_algebra_2_button = document.getElementById("learn_algebra_2");
-learn_algebra_2_button.requirements = {school: 2};
+learn_algebra_2_button.requirements = {school: 2,math_level: 100};
 learn_algebra_2_button.cost = {effort: 3, calculations:2};
 learn_algebra_2_button.reward = {math_level: 5};
 
 var learn_algebra_button = document.getElementById("learn_algebra");
-learn_algebra_button.requirements = {math_level: 20};
+learn_algebra_button.requirements = {math_level: 40};
 learn_algebra_button.cost = {effort: 3, calculations:1};
 learn_algebra_button.reward = {math_level: 3};
 
 var learn_geometry_button = document.getElementById("learn_geometry");
-learn_geometry_button.requirements = {math_level: 10};
+learn_geometry_button.requirements = {math_level: 15};
 learn_geometry_button.cost = {effort: 3};
 learn_geometry_button.reward = {math_level: 2};
 
@@ -182,10 +196,8 @@ do_math_research_button.requirements = {grade: 12, math_level:500};
 do_math_research_button.cost = {effort:1000};//subject to change
 do_math_research_button.reward = {money: 1000.00, math_level:100};//subject to change
 
-var do_math_competition_button = document.getElementById("do_math_competition");
-do_math_competition_button.requirements = {grade: 10, math_level:200};
-do_math_competition_button.cost = {effort:100};//subject to change
-do_math_competition_button.reward = {money: 50.00};//subject to change
+var start_math_contest_button = document.getElementById("start_math_contest");
+var do_math_contest_button = document.getElementById("do_math_contest");
 
 var do_tutoring_button = document.getElementById("do_tutoring");
 do_tutoring_button.requirements = {school: 2, math_level:100};
@@ -210,14 +222,14 @@ buy_graphing_calculator_button.exponent = {graphing_calculators: 1.5};
 buy_graphing_calculator_button.reward = {calculations_per_second: 1, graphing_calculators:1};
 
 var buy_calculator_button = document.getElementById("buy_calculator");
-buy_calculator_button.requirements = {school: 1};
+buy_calculator_button.requirements = {school: 2};
 buy_calculator_button.cost = {money:5.00};
 buy_calculator_button.exponent = {calculators: 1.5};
 buy_calculator_button.reward = {calculations_per_second: 0.1, calculators:1};
 //buy_calculator_button.cost.money = round_to(5.00 * Math.pow(1.5,player.calculators), 2);
 
 var buy_answers_button = document.getElementById("buy_answers");
-buy_answers_button.requirements = {school: 1};
+buy_answers_button.requirements = {school: 2};
 buy_answers_button.cost = {money:5.00};
 buy_answers_button.reward = {bought_answers:1};
 buy_answers_button.disable = {bought_answers:1};
@@ -258,14 +270,18 @@ calculations_count_element.requirements = {show_calculations: 1};
 //calculations have special requirements
 
 var math_label_element = document.getElementById("math_skill_label");
+math_label_element.requirements = {show_math_level: 1};
 var math_count_element = document.getElementById("math_skill_count");
+math_count_element.requirements  = {show_math_level: 1};
 
 var tab_bar = document.getElementById("tab_bar");
-tab_bar.requirements = {math_level: 5};
+tab_bar.requirements = {math_level: 10};
 
 var visible_list = [
     calculations_label_element,
     calculations_count_element,
+    math_label_element,
+    math_count_element,
 
     tab_bar,
     
@@ -275,6 +291,7 @@ var visible_list = [
     learn_reading_button,
     learn_math_button,
     
+    grade_up_4_button,
     school_up_4_button,
     grade_up_3_button,
     school_up_3_button,
@@ -296,7 +313,8 @@ var visible_list = [
     
     do_math_super_project_button,
     do_math_research_button,
-    do_math_competition_button,
+    start_math_contest_button,
+    do_math_contest_button,
     do_tutoring_button,
     do_calculation_button,
     
@@ -318,8 +336,6 @@ var note_list = new Array();
 var note_text_list = new Array();
 
 var tab_bar = document.getElementById("tab_bar");
-
-var debug = true;
 
 var popup = document.getElementById("popup");
 var popup_cost = document.getElementById("popup_cost");
@@ -382,7 +398,7 @@ function update_counts() { //this function updates the number of clicks displaye
     effort_label_element.innerHTML = textify('Effort');
     var effort_count_element = document.getElementById("effort_count");
     var shown_effort = number_to_text(Math.floor(player.effort));
-    if(player.math_level >= 25){
+    if(player.math_level >= 40){
         shown_effort = shown_effort + ' (' + round_to(player.effort_per_second,2) + '/s)';
     }
     effort_count_element.innerHTML = textify(shown_effort);
@@ -390,21 +406,41 @@ function update_counts() { //this function updates the number of clicks displaye
     money_label_element.innerHTML = textify('Money');
     
     var shown_money = number_to_text(round_to(player.money,2));
-    if(player.math_level >= 25 && player.money_per_second > 0){
+    if(player.math_level >= 40 && player.money_per_second > 0){
         shown_money = shown_money + ' (' + round_to(player.money_per_second,2) + '/s)';
     }
     money_count_element.innerHTML = textify(shown_money);
     
     var math_skill_count_element = document.getElementById("math_skill_count");
-    var shown_math_skill = number_to_text(player.math_skill);
+    var shown_math_skill = number_to_text(player.math_level);
     math_skill_count_element.innerHTML = textify(shown_math_skill);
     
     var calculations_count_element = document.getElementById("calculations_count");
     var shown_calculations = number_to_text(round_to(player.calculations,0));
-    if(player.math_level >= 25 && player.calculations_per_second > 0){
-        shown_calculations = shown_calculations + ' (' + round_to(player.calculations_per_second) + '/s)';
+    if(player.math_level >= 40 && player.calculations_per_second > 0){
+        shown_calculations = shown_calculations + ' (' + round_to(player.calculations_per_second,2) + '/s)';
     }
     calculations_count_element.innerHTML = textify(shown_calculations);
+}
+
+function set_button_size(button, x_size, y_size){
+    button.style.width = x_size + "px";
+    button.style.height = y_size + "px";
+}
+
+function grow_button(button, size){
+    var steps = 20.0;
+    var n = 1.0
+    var id = setInterval(function(){
+        var x_size = size * n/steps;
+        var y_size = 23.0 * n/steps;
+        set_button_size(button, x_size, y_size);
+        n++;
+    }, 300.0 * n/steps)
+    setTimeout(function(){
+        set_button_size(button, size, 23.0);
+        clearInterval(id);
+    }, 300.0 )
 }
 
 function update_screen(){
@@ -412,6 +448,7 @@ function update_screen(){
     //If this function gets too slow
     for(var i = 0; i < visible_list.length; i++){
         var cur_button = visible_list[i];
+        //check if the current button should be visible now
         if(cur_button.requirements){
             var meets_requirements = true;
             for (var key in cur_button.requirements){
@@ -422,14 +459,17 @@ function update_screen(){
                 }
             }
             if(meets_requirements){
-                if(cur_button.style.display == 'none'){
+                if(cur_button.style.display == 'none'){ // new button appears
+                    grow_button(cur_button, 150);
+                    //TODO: highlight tab button is made if it isn't open
                     popup.style.display = 'none'; //hide the popup if we add a new button
                 } 
-                cur_button.style.display = '';
+                cur_button.style.display = 'inline';
             }else{
                 cur_button.style.display = 'none';
             }
         }
+        //check if the current button should be disabled now
         if(cur_button.disable){
             var should_disable = true;
             for (var key in cur_button.disable){
@@ -440,33 +480,36 @@ function update_screen(){
                 }
             }
             if(should_disable){
-                cur_button.disabled = true;
+                if(! cur_button.disabled){
+                    popup.style.display = 'none'; //hide popup when disabling a button
+                    cur_button.disabled = true;
+                }
             }else{
                 cur_button.disabled = false;
             }
         }
     }
+    //Custom button behavior (normal conditions aren't satifactory)
+    //grades 1->2: free ,2->3:10, 3->4:40
+    if((player.grade > 1 && player.math_level < (player.grade-1)*(player.grade-1) *10) || player.grade >=4){
+        grade_up_0_button.disabled = true;
+    }else{
+        grade_up_0_button.disabled = false;
+    }
+    //grades 5->6,6->7,7->8
+    if((player.math_level < (player.grade-4)*(player.grade-4) *150) || player.grade >=8){
+        grade_up_1_button.disabled = true;
+    }else{
+        grade_up_1_button.disabled = false;
+    }
     
-    var math_label_element = document.getElementById("math_skill_label");
-    var math_count_element = document.getElementById("math_skill_count");
-    if(player.show_math_level > 0){
-        math_label_element.style.display = '';
-        math_count_element.style.display = '';
-    }else{
-        math_label_element.style.display = 'none';
-        math_count_element.style.display = 'none';
+    if(player.bought_answers > 0){
+        learn_trigonometry_button.style.display = 'inline'; 
     }
-    /*
-    if(player.show_calculations > 0){
-        do_calculation_button.style.display = '';
-        calculations_label_element.style.display = '';
-        calculations_count_element.style.display = '';
-    }else{
-        do_calculation_button.style.display = 'none';
-        calculations_label_element.style.display = 'none';
-        calculations_count_element.style.display = 'none';
+    if(player.bought_answers > 1){
+        learn_calculus_button.style.display = 'inline'; 
     }
-    */
+    
 }
 
 function textify(some_text){
@@ -502,6 +545,16 @@ function insert_after(element, target){
 }
 
 function try_to_get_something(button) {
+    if(button.requirements){
+        if(button.requirements.math_level){
+            if(button.requirements.math_level > player.math_level){
+                add_note("Math skill not high enough");
+                player.show_math_level = 1;
+                update_screen();
+                return;
+            }
+        }
+    }
     if(button.cost){
         //var can_buy = true;
         var effort_cost = 0;
@@ -556,6 +609,7 @@ function do_button_clicked(button){
     }
     update_counts();
     update_screen();
+    update_popup(button);
     return true;
 }
 
@@ -575,7 +629,7 @@ function update_popup(button){
         popup_text_1 += '- ';
         if(button.cost.effort){
             popup_text_1 += number_to_text(round_to(button.cost.effort*multiplier,0));
-            popup_text_1 += ' effort';
+            popup_text_1 += ' Effort';
             previous = true;
         }
         if(button.cost.money){
@@ -586,7 +640,7 @@ function update_popup(button){
         if(button.cost.calculations && player.show_calculations > 0){
             if(previous){popup_text_1 += ', ';}
             popup_text_1 += number_to_text(round_to(button.cost.calculations*multiplier,0));
-            popup_text_1 += ' calculations';
+            popup_text_1 += ' Calculations';
             previous = true;
         }
     }
@@ -594,33 +648,37 @@ function update_popup(button){
         previous = false;
         if(button.reward.math_level){
             if(player.show_math_level > 0){
-                popup_text_2 += '+ ' + button.reward.math_level + ' math skill';
+                popup_text_2 += '+ ' + button.reward.math_level + ' Math Skill';
             }else{
-                popup_text_2 += '+ skill';
+                popup_text_2 += '+ Skill';
             }
         }
         if(button.reward.cs_level){
             if(player.show_cs_level > 0){
-                popup_text_2 += '+ ' + button.reward.cs_level + ' programming skill';
+                popup_text_2 += '+ ' + button.reward.cs_level + ' Programming Skill';
             }else{
-                popup_text_2 += '+ skill';
+                popup_text_2 += '+ Skill';
             }
-        }
-        if(button.reward.effort_per_second){
-            popup_text_2 += '+ ' + button.reward.effort_per_second + ' effort per second';
         }
         if(button.reward.money){
             popup_text_2 += '+ $' + round_to(button.reward.money,2);
         }
         if(button.reward.code){
-            popup_text_2 += '+ ' + button.reward.code + ' code';
+            popup_text_2 += '+ ' + button.reward.code + ' Code';
+        }
+        if(button.reward.effort_per_second){
+            popup_text_2 += '+ ' + button.reward.effort_per_second + ' Effort /s';
         }
         if(button.reward.code_per_second){
-            popup_text_2 += '+ ' + round_to(button.reward.code_per_second,2) + ' code per second';
+            popup_text_2 += '+ ' + round_to(button.reward.code_per_second,2) + ' Code /s';
         }
         if(button.reward.calculations_per_second){
-            popup_text_2 += '+ ' + round_to(button.reward.calculations_per_second,2) + ' calculations per second';
+            popup_text_2 += '+ ' + round_to(button.reward.calculations_per_second,2) + ' Calculations /s';
         }
+        if(button.reward.text){
+            popup_text_2 += button.reward.text;
+        }
+        //TODO: add commas to everything then delete the last comma
     }
     popup_cost.innerHTML = textify(popup_text_1);
     popup_reward.innerHTML = textify(popup_text_2);
@@ -630,7 +688,7 @@ var mouse_outs = 0;
 
 function popup_display(check){
     if(mouse_outs == check){
-        popup.style.display = '';
+        popup.style.display = 'inline';
     }
 }
 
@@ -640,10 +698,12 @@ function button_mouse_over(button){
     update_popup(button);
     
    // popup.style.display = 'none';
-    setTimeout(function()
-    {
-        popup_display(check_val);
-    },1500);
+   if(button.cost || button.reward){
+        setTimeout(function()
+        {
+            popup_display(check_val);
+        },1500);
+    }
 }
 
 popup.style.display = 'none';
@@ -656,8 +716,8 @@ function button_mouse_out(button){
 popup.style.position = 'absolute';
 
 document.onmousemove = function follow(evt){
-    popup.style.left = (evt.pageX+20) + 'px'
-    popup.style.top = (evt.pageY+20) + 'px'
+    popup.style.left = (evt.pageX+20) + 'px';
+    popup.style.top = (evt.pageY+20) + 'px';
 }
 
 
@@ -716,6 +776,61 @@ learn_reading_button.onclick = function() {
     update_counts(); //updates the text
 };
 
+grade_up_4_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    var note_text = 'Started Grade ' + player.grade;
+    add_note(note_text);
+}
+
+school_up_4_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    add_note('Started Grad School');
+}
+
+grade_up_3_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    var note_text = 'Started Grade ' + player.grade;
+    add_note(note_text);
+}
+
+school_up_3_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    add_note('Started College');
+}
+
+grade_up_2_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    var note_text = 'Started Grade ' + player.grade;
+    add_note(note_text);
+}
+
+school_up_2_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    add_note('Started High School');
+}
+
+grade_up_1_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    var note_text = 'Started Grade ' + player.grade;
+    add_note(note_text);
+}
+
+school_up_1_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    add_note('Started Middle School');
+}
+
+grade_up_0_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    var note_text = 'Started Grade ' + player.grade;
+    add_note(note_text);
+}
+
+school_up_0_button.onclick = function() {
+    if(!do_button_clicked(this)){ return; }
+    add_note('Started School');
+}
+
 //math section buttons
 //learn_logic_button.onclick = function() {do_button_clicked(this)}
 //learn_algebra_2_button.onclick = function() {do_button_clicked(this)}
@@ -740,13 +855,16 @@ function open_menu(menu_name){
     document.getElementById("math_tab_button").disabled = false;
     document.getElementById("cs_tab_button").disabled = false;
     if(menu_name == 'main'){
-        document.getElementById("main_section").style.display = '';
+        main_tab_button.inner_html = "main";
+        document.getElementById("main_section").style.display = 'inline';
         document.getElementById("main_tab_button").disabled = true;
     }else if(menu_name == 'math'){
-        document.getElementById("math_section").style.display = '';
+        main_tab_button.inner_html = "math";
+        document.getElementById("math_section").style.display = 'inline';
         document.getElementById("math_tab_button").disabled = true;
     }else if(menu_name == 'cs'){
-        document.getElementById("cs_section").style.display = '';
+        main_tab_button.inner_html = "cs";
+        document.getElementById("cs_section").style.display = 'inline';
         document.getElementById("cs_tab_button").disabled = true;
     }
 }
@@ -758,17 +876,117 @@ cs_tab_button.onclick = function() {open_menu('cs')}
 update_screen();
 update_counts();
 
+if(player.in_contest){
+    do_math_contest_button.style.display = 'inline';
+}else{
+    do_math_contest_button.style.display = 'none';
+}
+
+function math_contest_popup_text(){ //also sets the button cost
+    //rewards are 1st: 50%, 2nd: 25%, 3rd: 10%
+    var reward_text = '1st: $';
+    reward_text += round_to(player.contest_winnings * 0.5, 2);
+    reward_text += ' 2nd: $';
+    reward_text += round_to(player.contest_winnings * 0.25, 2);
+    reward_text += ' 3rd: $';
+    reward_text += round_to(player.contest_winnings * 0.1, 2);
+    do_math_contest_button.reward = {text: reward_text};
+    
+    do_math_contest_button.cost = { calculations: round_to(player.contest_winnings *0.025,0),
+                                    effort: round_to(player.contest_winnings *0.005,0)}
+}
+math_contest_popup_text();
+
+start_math_contest_button.onclick = function() {
+    start_math_contest_button.disabled = true;
+    do_math_contest_button.style.display = 'inline';
+    player.in_contest = true;
+    math_contest_popup_text();
+}
+
+do_math_contest_button.onclick = function() {
+    if(!try_to_get_something(this)){
+        return;
+    }
+    player.contest_strength += player.math_level *0.1; //TODO: randomize it a bit
+    player.contest_progress += 1;
+    add_note(player.contest_progress + '0% completed');
+    if(player.contest_progress == 10){
+        var base_competitor_strength = player.contest_winnings * 2.0;
+        var ranking = 1;
+        for(var i = 0; i<9; i++){
+            var competitor_strength = (i+1) * .01 * base_competitor_strength//TODO randomize a bit
+            if(competitor_strength > player.contest_strength){ //someone did better than you
+                ranking+=1;
+            }
+        }
+        //TODO make this a switch statement if possible
+        if(ranking == 1){
+            var first_prize = round_to(player.contest_winnings * 0.5,2);
+            player.money += first_prize;
+            player.contest_winnings += first_prize * 0.8; //slight bonus of easier next round
+            add_note("Got 1st place and won $" + first_prize);
+        }else if(ranking == 2){
+            var second_prize = round_to(player.contest_winnings * 0.25,2)
+            player.money += second_prize;
+            player.contest_winnings += second_prize;
+            add_note("Got 2nd place and won $" + second_prize);
+        }else if(ranking == 3){
+            var third_prize = round_to(player.contest_winnings * 0.1,2)
+            player.money += third_prize;
+            player.contest_winnings += third_prize;
+            add_note("Got 3rd place and won $" + third_prize);
+        }else if(ranking == 10) {
+            add_note("Got last place, no prize for you");
+        }else{
+            add_note("Got "+ ranking + "th place, no prize");
+        }
+        player.in_contest = false;
+        do_math_contest_button.style.display = 'none';
+        start_math_contest_button.style.display = 'none';
+        reset_math_timer();
+    }
+    update_counts();
+}
+
+function reset_math_timer(){
+    contest_time = 300* (1.0+ Math.random()); //TODO: random around 5 minutes
+}
+reset_math_timer()
+
+function math_timer(){
+    if(! player.in_contest){ //disabled means active math contest
+        if(start_math_contest_button.style.display == 'none'){
+            if(player.math_level > 300){ //TODO
+                start_math_contest_button.style.display == 'inline'; //make button visible
+                contest_time = 30; //but only for 30 seconds
+            }else{
+                start_math_contest_button.style.display == 'none';
+                reset_math_timer(); //restart the wait 
+            }
+        }else{ //30 seconds ran out, hide again
+            start_math_contest_button.style.display == 'none';
+            reset_math_timer();
+        }
+    }
+}
+
 setInterval(function () { 
     var effort_rate = player.effort_per_second;
     var money_rate = player.money_per_second;
     var calculation_rate = player.calculations_per_second;
-    debug_multiplier = 1;
+    var multiplier = 1;
     if(debug){
-        debug_multiplier = 5;
+        multiplier = debug_multiplier;
     }
-    player.effort += effort_rate*debug_multiplier;
-    player.money += money_rate*debug_multiplier;
-    player.calculations += calculation_rate*debug_multiplier;
+    player.effort += effort_rate*multiplier;
+    player.money += money_rate*multiplier;
+    player.calculations += calculation_rate*multiplier;
+    
+    contest_time -= 1 * multiplier;
+    if(contest_time <= 0){
+        math_timer()
+    }
     
     //clicks += auto_clicks;
     update_counts(); 
