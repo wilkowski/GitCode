@@ -1,0 +1,47 @@
+TODO LIST FOR GAME:
+
+FIX BUGS
+
+Test in multiple browsers/window sizes
+
+Reset button confirmation
+(donation button?)
+
+Clean up button look/fix size bugs
+
+Finish balancing math section
+	Test everything, test at normal speed
+
+make math researches
+	FEATURES:
+	random name (if reasonable to do)
+	random bonus to something (has a chance of no bonus = hit research dead end)
+		bonus/chance of failure is based on math level
+	already gotten bonuses are less likely
+	exponential cost
+	can start a bunch a once but not really useful to do so
+	
+
+add background to popup text	
+
+Make Math button dependencies depend on solely math level
+Make grade up button dependencies depend on all skill levels
+
+make cs projects
+	FEATURES:
+	Exponential cost
+	Gives a semi-permanent bonus to something (+$/s, calc/s, code/s, -bugs/s, etc)
+	Player Names the project
+	Random number of bugs appear =rand(current # -1)
+	At each interval there is a small chance project will break 
+		(requires small number of bug fixes to restore use)
+
+Change button code so that there can be popups when button is disabled
+
+better tab highlighting when something new appears in them
+Clean up popup text code (see todo)
+fix popup bug (empty popup sometimes)
+
+balance so that it is significantly faster to stick to one subject
+	(completion amount of money takes a while if effort is divided, faster if focused)
+

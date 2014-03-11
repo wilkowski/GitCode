@@ -1,0 +1,52 @@
+body {
+background-color:#ffffff;
+}
+
+#notifications{
+float:right;
+}
+
+#popup{
+position:absolute;
+border:2px solid #a1a1a1;
+background: #dddddd;
+}
+
+#footer_bar{
+position: fixed; 
+bottom: 0px; 
+width: 100%;
+margin: 0;
+}
+
+#save_buttons{
+float:left;
+}
+#autosaving{
+float:left;
+}
+
+#credits{
+position: fixed; 
+right:15px;
+
+}
+
+button{
+width:150px;
+height:23px;
+border:2px solid #aaaaaa;
+background-color:#dddddd;
+margin:1px;
+}
+
+td{
+height:42px;
+}
+
+.tab_button{
+margin:0px;
+border-style: solid;
+border-bottom-style: none;
+
+}

@@ -1,4 +1,7 @@
-<div id="notifications" style="float: right;">
+<head>
+<link rel="stylesheet" type="text/css" href="scholar.css">
+</head>
+<div id="notifications" >
 
 </div>
 <table id="resources" class="fixed">
@@ -8,20 +11,22 @@
         <td id="effort_label">Effort</td>
         <td id="money_label">Money</td>
         <td id="calculations_label">Calculations</td>
+        <td id="code_label">Code</td>
         <td id="math_skill_label">Math Skill</td>
     </tr>
     <tr>
         <td id="effort_count">None</td>
         <td id="money_count">None</td>  
         <td id="calculations_count">None</td>
+        <td id="code_count">None</td>
         <td id="math_skill_count">None</td>
     </tr>
 </table>
 <p>
 <div id="tab_bar">
-    <button id="main_tab_button">main</button>
-    <button id="math_tab_button">math</button>
-    <button id="cs_tab_button">cs</button>
+    <button id="main_tab_button" class="tab_button">main</button>
+    <button id="math_tab_button" class="tab_button">math</button>
+    <button id="cs_tab_button" class="tab_button">cs</button>
 </div>
 </p>
 <div id="main_section">
@@ -46,26 +51,35 @@
 </div>
 <div id="math_section">
     <div id="math_classes" style="float:left;">
+        <div><button id="learn_number_theory">Number Theory</button></div>
         <div><button id="learn_advanced_calculus">Advanced Calculus</button></div>
         <div><button id="learn_calculus">Calculus</button></div>
         <div><button id="learn_trigonometry">Trigonometry</button></div>
         <div><button id="learn_algebra_2">Algebra 2</button></div>
         <div><button id="learn_algebra">Algebra</button></div>
         <div><button id="learn_geometry">Geometry</button></div>
+        <div><button id="learn_prealgebra">Pre-Algebra</button></div>
+        <div><button id="learn_decimals">Decimals</button></div>
         <div><button id="learn_arithmetic">Arithmetic</button></div>
     </div>
     <div id="math_store" style="float:left;">
         <div><button id="buy_computer_math">Computer</button></div>
         <div><button id="buy_graphing_calculator">Graphing Calculator</button></div>
         <div><button id="buy_calculator">Calculator</button></div>
+        <div><button id="buy_notebook">Notebook</button></div>
         <div><button id="buy_answers">Test Answers</button></div> 
     </div>
     <div id="math_research" style="float:left;">
         <div><button id="do_math_super_project">Start Super Project</button></div>
-        <div><button id="do_math_research">Research Project</button></div>
-        <div><button id="start_math_contest">Start Math Contest</button><button id="do_math_contest">Solve Problem</div>
+        <div><button id="start_math_research">Start Research Project</button></div>
+        <div>
+            <button id="start_math_contest">Start Math Contest</button>
+            <button id="do_math_contest">Solve Problem</button>
+        </div>
         <div><button id="do_tutoring">Tutoring</button> </div>
         <div><button id="do_calculation">Calculate</button></div>
+    </div>
+    <div id="math_ongoing" style="float:left;">
     </div>
 
 </div>
@@ -73,10 +87,10 @@
     <div id="cs_classes" style="float:left;">
         <div><button id="learn_haskell">Haskell</button></div>
         <div><button id="learn_javascript">Javascript</button></div>
+        <div><button id="learn_cplusplus">c++</button></div>
         <div><button id="learn_html">HTML</button></div>
-        <div><button id="learn_c++">c++</button></div>
         <div><button id="learn_c">c</button></div>
-        <div><button id="learn_Scheme">Python</button></div>
+        <div><button id="learn_python">Python</button></div>
         <div><button id="learn_logo">Logo</button></div>
     </div>
     <div id="cs_store" style="float:left;">
@@ -90,14 +104,26 @@
         <div><button id="create_website">Create Website</button></div>
         <div><button id="create_math_solver">Create Equation Solver</button></div>
         <div><button id="create_game">Create Game</button></div>
+        <div><button id="write_code">Write Code</button></div>
     </div>
-
 </div>
 
-<div id ="popup" style="border:2px solid #a1a1a1">
+<div id ="popup">
     <div id = "popup_cost"></div>
     <div id = "popup_reward"></div>
 </div>
+
+<div id="footer_bar">
+    <div id="save_buttons">
+        <button id="save_game">Save Game</button>
+        <button id="reset_game">Reset Game</button>
+        
+    </div>
+    <div id="autosaving"> autosaving...</div>
+    <div id="credits">Created by Wilkowski</div>
+</div>
+
+
 
 <script src="Scholar.js"></script>
 
