@@ -1,30 +1,29 @@
 TODO LIST FOR GAME:
 
+Put up on a website
+
+add google analytics
+
 FIX BUGS
 
 Test in multiple browsers/window sizes
 
-Reset button confirmation
 (donation button?)
+
+Test everything, test at normal speed
 
 Clean up button look/fix size bugs
 
-Finish balancing math section
-	Test everything, test at normal speed
+adjust resource table top part size
 
-make math researches
-	FEATURES:
-	random name (if reasonable to do)
-	random bonus to something (has a chance of no bonus = hit research dead end)
-		bonus/chance of failure is based on math level
-	already gotten bonuses are less likely
-	exponential cost
-	can start a bunch a once but not really useful to do so
+Remove button.disable, replace with is_disabled/color change
 	
+balance math contest and math projects
 
 add background to popup text	
 
-Make Math button dependencies depend on solely math level
+
+
 Make grade up button dependencies depend on all skill levels
 
 make cs projects
@@ -45,3 +44,14 @@ fix popup bug (empty popup sometimes)
 balance so that it is significantly faster to stick to one subject
 	(completion amount of money takes a while if effort is divided, faster if focused)
 
+
+FINISHED (ish)
+
+make math researches
+	FEATURES:
+	random name (if reasonable to do)
+	random bonus to something (has a chance of no bonus = hit research dead end)
+		bonus/chance of failure is based on math level
+	already gotten bonuses are less likely
+	exponential cost
+	can start a bunch a once but not really useful to do so

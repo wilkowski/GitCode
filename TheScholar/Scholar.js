@@ -66,7 +66,13 @@ var player = {
     cs_language_projects: 0, //reduces bug frequency/count
     cs_website_projects: 0, //haven't decided
     cs_math_solver_projects: 0, //+ calculations/s
-    cs_game_projects:0, //money/s
+    cs_game_projects: 0, //money/s
+    //Active projects are completed and contributing, bugs can make them inactive
+    cs_active_ais: 0, 
+    cs_active_languages: 0,
+    cs_active_websites: 0,
+    cs_active_math_solvers: 0,
+    cs_active_games: 0,
     cs_projects: {}
 };
 
@@ -268,7 +274,7 @@ var buy_computer_math_button = document.getElementById("buy_computer_math");
 buy_computer_math_button.requirements = {school: 3};
 buy_computer_math_button.cost = {money:1000.00};
 buy_computer_math_button.exponent = {computers: 1.5};
-buy_computer_math_button.reward = {calculations_per_second: 5, code_per_second: 1, computers:1, show_code:1};
+buy_computer_math_button.reward = {calculations_per_second: 2, code_per_second: .5, computers:1, show_code:1};
 
 var buy_graphing_calculator_button = document.getElementById("buy_graphing_calculator");
 buy_graphing_calculator_button.requirements = {calculators: 2, math_level: 70};
@@ -284,7 +290,7 @@ buy_calculator_button.reward = {calculations_per_second: 0.1, calculators:1};
 //buy_calculator_button.cost.money = round_to(5.00 * Math.pow(1.5,player.calculators), 2);
 
 var buy_notebook_button = document.getElementById("buy_notebook");
-buy_notebook_button.requirements = {school: 2};
+buy_notebook_button.requirements = {school: 2, show_calculations: 1};
 buy_notebook_button.cost = {money:10.00};
 buy_notebook_button.reward = {max_calculations: 100};
 
@@ -311,20 +317,22 @@ learn_javascript_button.requirements = {cs_level: 3000};
 learn_javascript_button.cost = {effort: 10, code:2};
 learn_javascript_button.reward = {cs_level: 40};
 
+//TODO: algorithms button (requires math level and cs level)
+
 var learn_cplusplus_button = document.getElementById("learn_cplusplus");
 learn_cplusplus_button.requirements = {cs_level: 1000};
 learn_cplusplus_button.cost = {effort: 10, code:1};
 learn_cplusplus_button.reward = {cs_level: 25};
 
-var learn_html_button = document.getElementById("learn_html");
-learn_html_button.requirements = {cs_level: 300};
-learn_html_button.cost = {effort: 8};
-learn_html_button.reward = {cs_level: 10};
-
 var learn_c_button = document.getElementById("learn_c");
 learn_c_button.requirements = {cs_level: 100};
-learn_c_button.cost = {effort: 5};
-learn_c_button.reward = {cs_level: 5};
+learn_c_button.cost = {effort: 3, code:1};
+learn_c_button.reward = {cs_level: 10};
+
+var learn_html_button = document.getElementById("learn_html");
+learn_html_button.requirements = {cs_level: 300};
+learn_html_button.cost = {effort: 5};
+learn_html_button.reward = {cs_level: 5};
 
 var learn_python_button = document.getElementById("learn_python");
 learn_python_button.requirements = {cs_level: 30};
@@ -341,19 +349,24 @@ var buy_developer_button = document.getElementById("buy_developer");
 buy_developer_button.requirements = {school: 5, computers:5, dev_toos:2};
 buy_developer_button.cost = {money: 50000};
 buy_developer_button.exponent = {developers: 1.5};
-buy_developer_button.reward = {code_per_second: 100, developers:1};
+buy_developer_button.reward = {code_per_second: 25, developers:1};
 
 var buy_dev_tools_button = document.getElementById("buy_dev_tools");
 buy_dev_tools_button.requirements = {cs_level: 1000, computers:1};
 buy_dev_tools_button.cost = {money: 2000};
 buy_dev_tools_button.exponent = {dev_tools: 1.5};
-buy_dev_tools_button.reward = {code_per_second: 3, dev_tools:1};
+buy_dev_tools_button.reward = {code_per_second: 2, dev_tools:1};
 
 var buy_computer_cs_button = document.getElementById("buy_computer_cs");
 buy_computer_cs_button.requirements = buy_computer_math_button.requirements;
 buy_computer_cs_button.cost = buy_computer_math_button.cost;
 buy_computer_cs_button.exponent = buy_computer_math_button.exponent;
-buy_computer_cs_button.reward = buy_computer_math_button.exponent;
+buy_computer_cs_button.reward = buy_computer_math_button.reward;
+
+var buy_memory_button = document.getElementById("buy_memory");
+buy_memory_button.requirements = {show_code:1};
+buy_memory_button.cost = {money: 100};
+buy_memory_button.reward = {max_code: 128};
 
 //CS projects
 var create_cs_super_project_button = document.getElementById("create_cs_super_project");
@@ -375,6 +388,8 @@ var write_code_button = document.getElementById("write_code");
 write_code_button.requirements = {show_code:1};
 write_code_button.cost = {effort:5};
 write_code_button.reward = {code:1};
+
+var cs_ongoing_section = document.getElementById("cs_ongoing");
 
 //Top table:
 
@@ -472,6 +487,7 @@ var visible_list = [
     buy_developer_button,
     buy_dev_tools_button,
     buy_computer_cs_button,
+    buy_memory_button,
     
     create_cs_super_project_button,
     create_language_button,
@@ -631,7 +647,11 @@ function grow_button(button, x_size, y_size){
 function button_appears(button){
     popup.style.display = 'none'; //hide the popup if we add a new button
     if(button.nodeName == "BUTTON"){ //if its a button animate its appearance
-        grow_button(button, 150.0, 23.0);
+        if(button.className == "tab_button"){
+            grow_button(button, 50.0, 23.0);
+        }else{
+            grow_button(button, 150.0, 23.0);
+        }
     }
     var parent_node = button.parentNode;
     while(parent_node != null){
@@ -765,7 +785,8 @@ function update_screen(){
     if(player.developers > 0){
         buy_developer_button.innerHTML = "(" + player.developers + ") Developer";
     }
-    
+    buy_memory_button.reward = {max_code: player.max_code};
+    buy_memory_button.cost = {money: (player.max_code/128)*100};
 }
 
 function textify(some_text){
@@ -885,6 +906,11 @@ function do_button_clicked(button){
 function update_popup(button){
     var popup_text_1 = '';
     var popup_text_2 = '';
+    if(button.disabled == true){
+        popup.style.display = 'none';
+        mouse_outs += 1;
+        return;
+    }
     if(button.cost){
         multiplier = 1;
         previous = false;
@@ -947,16 +973,22 @@ function update_popup(button){
         if(button.reward.effort_per_second){
             popup_text_2 += '+ ' + button.reward.effort_per_second + ' Effort/s, ';
         }
+        if(button.reward.calculations_per_second){
+            popup_text_2 += '+ ' + round_to(button.reward.calculations_per_second,2) + ' Calculations/s, ';
+        }
         if(button.reward.code_per_second){
             popup_text_2 += '+ ' + round_to(button.reward.code_per_second,2) + ' Code/s, ';
         }
-        if(button.reward.calculations_per_second){
-            popup_text_2 += '+ ' + round_to(button.reward.calculations_per_second,2) + ' Calculations/s, ';
+        if(button.reward.max_calculations){
+            popup_text_2 += '+ ' + round_to(button.reward.max_calculations,0) + ' Max Calculations, ';
+        }
+        if(button.reward.max_code){
+            popup_text_2 += '+ ' + round_to(button.reward.max_code,0) + ' Max Code, ';
         }
         if(button.reward.text){ //specail reward text
             popup_text_2 += button.reward.text + ', ';
         }
-        if(popup_text_2.length >= 2){ //chop off last 2 characters: ', '
+        if(popup_text_2.length >= 2){ //chop off last 2 characters which are: ', '
             popup_text_2 = popup_text_2.slice(0, -2); 
         }
     }
@@ -1157,7 +1189,7 @@ math_tab_button.onclick = function() {open_menu('math')}
 cs_tab_button.onclick = function() {open_menu('cs')}
 
 function math_project_clicked(button){
-    if(!try_to_get_something(this)){
+    if(!try_to_get_something(button)){
         return;
     }
     var project_id = button.id;
@@ -1167,12 +1199,10 @@ function math_project_clicked(button){
         return;
     }
     players_project.progress += 1;
-    
 
     if(players_project.progress >= players_project.max_progress){
         players_project.value = player.math_level* Math.random();
         players_project.status = "completed" + " with value" + players_project.value;
-        add_note(players_project.value + " > " + player.math_research_money);
 
         if(players_project.value > 50000 * Math.pow(2.0,player.math_research_calculation_bonus)){
             add_note("Discovered new " + players_project.name + " computational method");
@@ -1215,7 +1245,7 @@ function update_math_projects(){
     for(var i = 0; i < player.math_research_projects_count; i++){
         var project_id = "math_project_" + i;
         var players_project = player.math_research_projects[project_id];
-        current_project = document.getElementById(project_id);
+        var current_project = document.getElementById(project_id);
         if(current_project == null){
             current_project = document.createElement('button');
             container_div = document.createElement('div');
@@ -1390,8 +1420,121 @@ function math_timer(){
         }
     }
 }
-function update_cs_projects(){
 
+function cs_project_clicked(button){
+    if(!try_to_get_something(button)){
+        return;
+    }
+    var project_id = button.id;
+    var players_project = player.cs_projects[project_id];
+    if(! players_project){
+        add_note("Error: missing "+ project_id + " from player data");
+        return;
+    }
+    if(project.status == 'started'){
+        players_project.progress += 1;
+    }else if(project.status == 'bugged'){
+        players_project.bug_count -= 1;
+    }
+
+    if(players_project.progress >= players_project.max_progress && players_project.bug_count <= 0){
+        players_project.bug_count = Math.floor(Math.random() * players_project.max_bugs);
+        players_project.max_bugs = players_project.bug_count;
+        if(players_project.bug_count > 0){
+            add_note(players_project.bug_count + " bugs appeared");
+            
+            project.status = 'bugged';
+        }else{
+            add_note("Project fully debugged");
+            add_note("For now");
+            project.status = 'active';
+        }
+
+        update_cs_projects();
+    }else{
+        
+        var percent = 100.0*players_project.progress/ players_project.max_progress;
+        add_note("Project " + round_to(percent,1) + "% complete"); //TODO: add name
+    }
+    update_screen();
+    update_counts();
+}
+
+function check_cs_project(project_id){
+    var current_project = document.getElementById(project_id);
+    var players_project = player.cs_projects[project_id];
+    if(current_project == NULL){
+        current_project = document.createElement('button');
+        container_div = document.createElement('div');
+        insert_start(container_div, cs_ongoing_section);
+        insert_start(current_project, container_div);
+        //TODO: set button style
+        current_project.style.height = "46px";
+        current_project.id = project_id;
+        current_project.innerHTML = players_project.name;
+        current_project.cost = {};
+        current_project.cost.effort = players_project.cost_effort;
+        current_project.cost.code = players_project.cost_code;
+        current_project.reward = {text: "+ ???"};
+        grow_button(current_project, 150, 46);
+        
+        current_project.onclick = function(){
+            cs_project_clicked(current_project);
+        }
+        current_project.onmouseover = function(){
+            button_mouse_over(current_project);
+        }
+        current_project.onmouseout = function(){
+            button_mouse_out(current_project);
+        }
+    }
+}
+
+function update_cs_projects(){
+    var active_games = 0;
+    for(var i = 0; i < player.cs_game_projects; i++){
+        var project_id = "cs_game_projects" + i;
+        check_cs_project(project_id);
+        var players_project = player.cs_projects[project_id];
+        if(players_project.active){
+            active_games += 1;
+        }
+    }
+    player.cs_active_games = active_games;
+    
+    var active_math_solvers = 0;
+    for(var i = 0; i < player.cs_math_solver_projects; i++){
+        var project_id = "cs_math_solver_projects" + i;
+        check_cs_project(project_id);
+        var players_project = player.cs_projects[project_id];
+        if(current_project.active){
+            active_math_solvers += 1;
+        }
+    }
+    player.cs_active_math_solvers = active_math_solvers;
+    
+    var active_websites = 0;
+    for(var i = 0; i < player.cs_website_projects; i++){
+        var project_id = "cs_website_projects" + i;
+        check_cs_project(project_id);
+        var players_project = player.cs_projects[project_id];
+        if(current_project.active){
+            active_websites += 1;
+        }
+    }
+    player.cs_active_websites = active_websites;
+    
+    var active_languages = 0;
+    for(var i = 0; i < player.cs_language_projects; i++){
+        var project_id = "cs_language_projects" + i;
+        check_cs_project(project_id);
+        var players_project = player.cs_projects[project_id];
+        if(current_project.active){
+            active_languages += 1;
+        }
+    }
+    player.cs_active_languages = active_languages;
+    //TODO: ai prjects, somehow
 }
 
 function start_cs_project(project_type){
@@ -1401,17 +1544,51 @@ function start_cs_project(project_type){
     
     player.cs_projects[project_id] = {};
     players_project = player.cs_projects[project_id];
-    players_project.name = "cs projject"; //TODO NAME
+    players_project.name = "TODO: name this projject "; //TODO NAME
     players_project.progress = 0.0;
-    players_project.max_progress = Math.floor(exponent_multiplier*20.0);
+    players_project.max_progress = Math.floor(exponent_multiplier*10.0);
     players_project.cost_effort = Math.floor(exponent_multiplier*(10.0+20.0*Math.random()));
-    players_project.cost_code = Math.floor(exponent_multiplier*(2+10*Math.random()));;
+    players_project.cost_code = Math.floor(exponent_multiplier*(2+9*Math.random()));;
     players_project.value = 0;
+    players_project.max_bugs = max_progress;
+    players_project.bug_count = 0;
     players_project.status = 'started';
     
     player[project_type] += 1;
     update_cs_projects();
 }
+
+//create_cs_super_project_button.requirements = {grade:12, cs_level:9999999999};
+
+create_language_button.onclick = function() {
+    if(!try_to_get_something(this)){
+        return;
+    }
+    start_cs_project("cs_language_projects");
+}
+
+create_website_button.onclick = function() {
+    if(!try_to_get_something(this)){
+        return;
+    }
+    start_cs_project("cs_website_projects");
+}
+
+create_math_solver_button.onclick = function() {
+    if(!try_to_get_something(this)){
+        return;
+    }
+    start_cs_project("cs_math_solver_projects");
+}
+
+create_game_button.onclick = function() {
+    if(!try_to_get_something(this)){
+        return;
+    }
+    start_cs_project("cs_game_projects");
+}
+
+
 
 function initialize(){ //run all the update type functions
     if(player.effort_per_second == 0){ //new game or game reset
@@ -1431,6 +1608,7 @@ function initialize(){ //run all the update type functions
     update_counts();
     autosaving.style.display = 'none';
     update_math_projects();
+    update_cs_projects();
     if(player.in_contest){
         start_math_contest_button.disabled = true;
         do_math_contest_button.style.display = 'inline';
