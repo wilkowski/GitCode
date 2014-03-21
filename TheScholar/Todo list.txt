@@ -4,6 +4,14 @@ Put up on a website
 
 add google analytics
 
+balance math contest and math projects
+
+CS_website does something?
+
+CS_bonuses working
+
+cs project bugs
+
 FIX BUGS
 
 Test in multiple browsers/window sizes
@@ -12,19 +20,22 @@ Test in multiple browsers/window sizes
 
 Test everything, test at normal speed
 
-Clean up button look/fix size bugs
+//White background on footer bar (not required)
 
-adjust resource table top part size
+Make grade up button dependencies depend on all skill levels (math level +5*cs level)
+								(or multiply all cs levels by 5
+
+//Code Cleanup
+
+Make each button have its own inner html data, -> do textify, counts automagically
+
+Clean up button look/fix size bugs
 
 Remove button.disable, replace with is_disabled/color change
 	
-balance math contest and math projects
-
 add background to popup text	
 
-
-
-Make grade up button dependencies depend on all skill levels
+move some stuff to separate files
 
 make cs projects
 	FEATURES:

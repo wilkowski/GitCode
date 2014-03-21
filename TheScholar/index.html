@@ -1,10 +1,14 @@
 <head>
 <link rel="stylesheet" type="text/css" href="scholar.css">
+<title>Scholar Clicker</title>
 </head>
 <div id="notifications" >
 
 </div>
 <table id="resources" class="fixed">
+    <col width="100px" />
+    <col width="100px" />
+    <col width="100px" />
     <col width="100px" />
     <col width="100px" />
     <tr>
@@ -13,6 +17,7 @@
         <td id="calculations_label">Calculations</td>
         <td id="code_label">Code</td>
         <td id="math_skill_label">Math Skill</td>
+        <td id="cs_skill_label">CS Skill</td>
     </tr>
     <tr>
         <td id="effort_count" class="count">None</td>
@@ -20,6 +25,7 @@
         <td id="calculations_count" class="count">None</td>
         <td id="code_count" class="count">None</td>
         <td id="math_skill_count" class="count">None</td>
+        <td id="cs_skill_count" class="count">None</td>
     </tr>
 </table>
 <p>
@@ -36,6 +42,7 @@
         <div><button id="learn_reading">Reading</button></div>
     </div>
     <div id="main_schools" style="float:left;">
+        <div><button id="school_up_5">Graduate</button> </div>
         <div><button id="grade_up_4">Grade Up</button> </div>
         <div><button id="school_up_4">Start Grad School</button> </div>
         <div><button id="grade_up_3">Grade Up</button> </div>
@@ -47,7 +54,9 @@
         <div><button id="grade_up_0">Grade Up</button> </div>
         <div><button id="school_up_0">Start School</button> </div>
     </div>
-    
+    <div id="main_shop" style="float:left;">
+        <div><button id="buy_vacation">Vacation</button> </div>
+    </div>
 </div>
 <div id="math_section">
     <div id="math_classes" style="float:left;">
@@ -63,10 +72,10 @@
         <div><button id="learn_arithmetic">Arithmetic</button></div>
     </div>
     <div id="math_store" style="float:left;">
+        <div><button id="buy_notebook">Notebook</button></div>
         <div><button id="buy_computer_math">Computer</button></div>
         <div><button id="buy_graphing_calculator">Graphing Calculator</button></div>
         <div><button id="buy_calculator">Calculator</button></div>
-        <div><button id="buy_notebook">Notebook</button></div>
         <div><button id="buy_answers">Test Answers</button></div> 
     </div>
     <div id="math_research" style="float:left;">
@@ -87,6 +96,7 @@
     <div id="cs_classes" style="float:left;">
         <div><button id="learn_haskell">Haskell</button></div>
         <div><button id="learn_javascript">Javascript</button></div>
+        <div><button id="learn_algorithms">Algorithms</button></div>
         <div><button id="learn_cplusplus">c++</button></div>
         <div><button id="learn_c">c</button></div>
         <div><button id="learn_html">HTML</button></div>
@@ -94,10 +104,10 @@
         <div><button id="learn_logo">Logo</button></div>
     </div>
     <div id="cs_store" style="float:left;">
+        <div><button id="buy_memory">Memory</button></div>
         <div><button id="buy_developer">Hire Developer</button></div>
         <div><button id="buy_dev_tools">Dev Tools</button></div>
         <div><button id="buy_computer_cs">Computer</button></div>
-        <div><button id="buy_memory">Memory</button></div>
     </div>
     <div id="cs_projects" style="float:left;">
         <div><button id="create_cs_super_project">Start Super Project</button></div>

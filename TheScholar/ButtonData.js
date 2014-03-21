@@ -1,4 +1,4 @@
-
+//This file not currently being used, I'll set it up later maybe
 
 var main_tab_button = document.getElementById("main_tab_button");
 main_tab_button.requirements = {math_level: 5};
