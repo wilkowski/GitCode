@@ -1,5 +1,13 @@
 body {
 background-color:#ffffff;
+-moz-user-select: none; 
+-webkit-user-select: none; 
+-ms-user-select: none; 
+user-select: none;
+}
+
+td{
+border-left: 1px solid #000000;
 }
 
 #notifications{

@@ -5,9 +5,10 @@ var math_calc_multiplier = 1.05;
 var math_code_multiplier = 1.05;
 var cs_calc_multiplier = 1.10;
 var cs_money_multiplier = 1.10;
+var cs_bug_multiplier = 1.20;
 
 var player = {
-    version: '.1',
+    version: '0.11',
 
     musters: 0,
     effort: 2,
@@ -121,7 +122,7 @@ cs_count_element.requirements  = {show_cs_level: 1};
 
 var muster_button = document.getElementById("muster");
 muster_button.requirements = {grade: 3};
-muster_button.reward = {musters: 1, text: "4 musters for 1 effort"};
+muster_button.reward = {musters: 1, text: "4 musters = 1 effort"};
 
 var tab_bar = document.getElementById("tab_bar");
 tab_bar.requirements = {math_level: 5};
@@ -541,8 +542,13 @@ function save_game(){
 }
 
 function load_save(){
+    var current_version = player.version;
     if(localStorage['scholar_clicker_save']){
         player = JSON.parse(atob(localStorage['scholar_clicker_save']));
+    }
+    if(player.version != current_version){
+        add_note("updated game to version " + current_version);
+        player.version = current_version;
     }
 }
 
@@ -595,8 +601,6 @@ function number_to_text(num){
         return num;
     }
 }
-
-
 
 function update_counts() { //this function updates the number of clicks displayed
     if(player.musters >= 4){
@@ -833,6 +837,16 @@ function update_screen(){
     }
     buy_memory_button.reward = {max_code: player.max_code};
     buy_memory_button.cost = {money: (player.max_code/128)*100};
+    if(player.calculations >= player.max_calculations){
+        do_calculation_button.disabled = true;
+    }else{
+        do_calculation_button.disabled = false;
+    }
+    if(player.code >= player.max_code){
+        write_code_button.disabled = true;
+    }else{
+        write_code_button.disabled = false;
+    }
 }
 
 function textify(some_text){
@@ -1490,7 +1504,8 @@ function cs_project_clicked(button){
     }
 
     if(players_project.progress >= players_project.max_progress && players_project.bug_count <= 0){
-        players_project.bug_count = Math.floor(Math.random() * players_project.max_bugs);
+        var bug_special = Math.pow(cs_bug_multiplier, player.cs_active_languages);
+        players_project.bug_count = Math.floor(Math.random() * players_project.max_bugs / bug_special);
         players_project.max_bugs = players_project.bug_count;
         if(players_project.bug_count > 0){
             if(players_project.bug_count == 1){
@@ -1577,19 +1592,19 @@ function update_cs_projects(){
         var project_id = "cs_project" + i;
         check_cs_project(project_id);
         var players_project = player.cs_projects[project_id];
-        if(players_project.type = "cs_game_projects"){
+        if(players_project.type == "cs_game_projects"){
             if(players_project.status == 'active'){
                 active_games += 1;
             }
-        }else if(players_project.type = "cs_math_solver_projects"){
+        }else if(players_project.type == "cs_math_solver_projects"){
             if(players_project.status == 'active'){
                 active_math_solvers += 1;
             }
-        }else if(players_project.type = "cs_website_projects"){
+        }else if(players_project.type == "cs_website_projects"){
             if(players_project.status == 'active'){
                 active_websites += 1;
             }
-        }else if(players_project.type = "cs_language_projects"){
+        }else if(players_project.type == "cs_language_projects"){
             if(players_project.status == 'active'){
                 active_languages += 1;
             }
@@ -1768,9 +1783,9 @@ setInterval(function () {
     for(var key in player.cs_projects){
         //1 in 20000 chance to bug per second (lasts ~6 hours on average)
         var players_project = player.cs_projects[key];
-        if(players_project.status == "active"  && Math.random()*200 < 1.0){
-            
-            players_project.bug_count = Math.floor(players_project.max_progress/10* Math.random());
+        var bug_special = Math.pow(cs_bug_multiplier, player.cs_active_languages);
+        if(players_project.status == "active"  && Math.random() * 20000 * bug_special < 1.0){
+            players_project.bug_count = Math.floor(players_project.max_progress/10 * Math.random()/bug_special);
             if(players_project.bug_count > 0){
                 add_note(players_project.bug_count + " bugs appeared in " + players_project.name);
                 players_project.status = 'bugged';
