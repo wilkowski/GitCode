@@ -9,6 +9,7 @@ var cs_money_multiplier = 1.10;
 var player = {
     version: '.1',
 
+    musters: 0,
     effort: 2,
     money: 0.00,
     calculations: 0.0,
@@ -81,6 +82,8 @@ var player = {
     cs_projects: {}
 };
 
+
+
 var player_reset_copy = {};
 for(var key in player){ //copy all the default values immediately, use these values during a reset
     player_reset_copy[key] = player[key];
@@ -113,8 +116,12 @@ var math_count_element = document.getElementById("math_skill_count");
 math_count_element.requirements  = {show_math_level: 1};
 var cs_label_element = document.getElementById("cs_skill_label");
 cs_label_element.requirements  = {show_cs_level: 1};
-var cs_count_element = document.getElementById("math_skill_count");
+var cs_count_element = document.getElementById("cs_skill_count");
 cs_count_element.requirements  = {show_cs_level: 1};
+
+var muster_button = document.getElementById("muster");
+muster_button.requirements = {grade: 3};
+muster_button.reward = {musters: 1, text: "4 musters for 1 effort"};
 
 var tab_bar = document.getElementById("tab_bar");
 tab_bar.requirements = {math_level: 5};
@@ -434,6 +441,8 @@ var reset_game_button = document.getElementById("reset_game");
 var autosaving = document.getElementById("autosaving");
 
 var visible_list = [
+    muster_button,
+
     calculations_label_element,
     calculations_count_element,
     code_label_element,
@@ -590,6 +599,12 @@ function number_to_text(num){
 
 
 function update_counts() { //this function updates the number of clicks displayed
+    if(player.musters >= 4){
+        player.musters -= 4;
+        player.effort += 1;
+    }
+    muster_button.innerHTML = textify("Muster " + player.musters + "/4");
+
     player.effort = Math.min(player.effort, player.max_effort);
     player.calculations = Math.min(player.calculations, player.max_calculations);
     player.code = Math.min(player.code, player.max_code);
@@ -612,7 +627,7 @@ function update_counts() { //this function updates the number of clicks displaye
     
     if(show_rate && player.money_per_second > 0){
         var money_rate = player.cs_active_games * 1.0 + player.money_per_second;
-        money_rate = money_rate * Math.pow(cs_money_multiplier, cs_active_websites);
+        money_rate = money_rate * Math.pow(cs_money_multiplier, player.cs_active_websites);
         shown_money = shown_money + ' (' + round_to(money_rate,2) + '/s)';
     }
     money_count_element.innerHTML = textify(shown_money);
@@ -620,11 +635,14 @@ function update_counts() { //this function updates the number of clicks displaye
     var shown_math_skill = number_to_text(player.math_level);
     math_count_element.innerHTML = textify(shown_math_skill);
     
+    var shown_cs_skill = number_to_text(player.cs_level);
+    cs_count_element.innerHTML = textify(shown_cs_skill);
+    
     var shown_calculations = number_to_text(round_to(player.calculations,0));
     shown_calculations += "/" + number_to_text(player.max_calculations);
     if(show_rate && player.calculations_per_second > 0){
         var calc_rate = player.calculations_per_second*Math.pow(math_calc_multiplier, player.math_research_calculation_bonus);
-        calc_rate = calc_rate * Math.pow(cs_calc_multiplier, cs_active_math_solvers);
+        calc_rate = calc_rate * Math.pow(cs_calc_multiplier, player.cs_active_math_solvers);
         shown_calculations += ' (' + round_to(calc_rate,2) + '/s)';
     }
     calculations_count_element.innerHTML = textify(shown_calculations);
@@ -922,7 +940,9 @@ function do_button_clicked(button){
     }
     if(button.reward){
         for (var key in button.reward){
-            player[key] += button.reward[key];
+            if(key != "text"){
+                player[key] += button.reward[key];
+            }
         }
     }
     update_counts();
@@ -999,7 +1019,11 @@ function update_popup(button){
             popup_text_2 += '+ ' + button.reward.code + ' Code, ';
         }
         if(button.reward.effort_per_second){
-            popup_text_2 += '+ ' + button.reward.effort_per_second + ' Effort/s, ';
+            if(player.math_level >= 5){
+                popup_text_2 += '+ ' + button.reward.effort_per_second + ' Effort/s, ';
+            }else{
+                popup_text_2 += '+ Effort/s, ';
+            }
         }
         if(button.reward.calculations_per_second){
             popup_text_2 += '+ ' + round_to(button.reward.calculations_per_second,2) + ' Calculations/s, ';
@@ -1712,9 +1736,9 @@ var autosave_timer = 0;
 setInterval(function () { 
     var effort_rate = player.effort_per_second;
     var money_rate = player.money_per_second + player.cs_active_games * 1.0;
-    money_rate = money_rate * Math.pow(cs_money_multiplier, cs_active_websites);
+    money_rate = money_rate * Math.pow(cs_money_multiplier, player.cs_active_websites);
     var calculation_rate = player.calculations_per_second * Math.pow(math_calc_multiplier, player.math_research_calculation_bonus);
-    calculation_rate = calculation_rate * Math.pow(cs_calc_multiplier, cs_active_math_solvers);
+    calculation_rate = calculation_rate * Math.pow(cs_calc_multiplier, player.cs_active_math_solvers);
     var code_rate = player.code_per_second * Math.pow(math_code_multiplier,player.math_research_code_bonus);
     var multiplier = 1;
     if(debug){

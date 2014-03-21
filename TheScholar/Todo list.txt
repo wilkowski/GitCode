@@ -1,16 +1,24 @@
 TODO LIST FOR GAME:
 
+#some level requirements on cs stuff?
+
+update textify popup on reading click
+
 Put up on a website
 
 add google analytics
 
-balance math contest and math projects
+add cost to start cs projects
+
+make it so most stuff is not loaded initally (it shows up for a fraction of a sec)
 
 CS_website does something?
 
 CS_bonuses working
 
 cs project bugs
+
+Do some animated text on button click+skill thingy
 
 FIX BUGS
 
