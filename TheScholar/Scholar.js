@@ -8,7 +8,7 @@ var cs_money_multiplier = 1.10;
 var cs_bug_multiplier = 1.20;
 
 var player = {
-    version: '0.11',
+    version: '0.111',
 
     musters: 0,
     effort: 2,
@@ -183,7 +183,7 @@ grade_up_3_button.reward = {grade: 1, effort_per_second: 2.0};
 var school_up_3_button = document.getElementById("school_up_3");
 school_up_3_button.requirements = {school: 2, math_level: 200000, grade:12};
 school_up_3_button.disable = {school: 4};
-school_up_3_button.cost = {effort: 16000};
+school_up_3_button.cost = {effort: 10000};
 school_up_3_button.reward = {school: 1, grade:1, effort_per_second: 2.0, money:100, max_effort: 90000};
 
 var grade_up_2_button = document.getElementById("grade_up_2"); //special disable condition at 12
