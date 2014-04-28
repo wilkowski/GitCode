@@ -1,26 +1,99 @@
 TODO LIST FOR GAME:
+//fixed nasty math research bug
+//Lots of balancing done yay
+//new math classes
+//added chalkboard
 
-#some level requirements on cs stuff?
+put all new files up on website
 
-update textify popup on reading click
+make cancel button work for naming projects
+(alternately rework the way projects are named)
 
 Put up on a website
 
 add google analytics
 
-add cost to start cs projects
+math requirements for grade up should show up properly too
+(and or add more math classes corresponding to grade up requirements)
+(add more cs classes)
 
-make it so most stuff is not loaded initally (it shows up for a fraction of a sec)
+Figure out how to make each button column be only as wide as necessary
+(with some max width in case people put long names of stuff in)
 
-CS_website does something?
+SUPER PROJECT
+	new tab for super project items
+	button to start super project
 
-CS_bonuses working
+MATH SUPER PROJECT
+	Finished advanced math research, graduated school
+	hit super project button (very large requirements, yes/ no option)
+	a few research projects become available to try to prove or disprove.
+	each has only one solution and each has a chance of failure
+	research unlocks new theorems
+	one theorem gives a permanent reward: 
+	ulocks [mathematical universe theorem]
+	Build portal to new dimesion
+	
 
-cs project bugs
+CS SUPER PROJECT
+	Get some ais, have graduated school
+	hit super project button (very large requirements, yes/ no option)
+	button opens up super project tab
+	3 programs need to be made and debugged
+	reward program opens up (gives permanent reward)
+	self improving ai becomes available
+	each one reduces cost of next one
+	when cost is at 0 you win the game
+	button appears that allows you to [enter the matrix]
+	button brings up yes/no menu
+	if yes, reset game keeping permanent bonus
+	new game has new font
+
+Acheivements tab
+	1 for each school up
+	1 for each win
+	for large numbers of stuff
+	muster less win
+	minimal other stuff wins
+	graduate without cs/other classes
+	graduate without cheating.  
+	
+Add colors! (art class)
+money -> dark green
+effort -> dark yellow
+calc -> dark red
+code -> dark blue? (TODO: figure out code color)
+bug-> red
+in progress -> yellow
+complete-> bright green
+color highlighting for tabs
+
+Icons for tabs and popups
+effort->fist
+money -> ($)
+calculations -> [+-*/]
+code -> circuit board?
+math skill -> thought bubbled math equation?
+cs skill -> thought bubbled code?
+
+
+main section teaching job:
+	no job option	(move tutoring here maybe?)
+			startup effort cost
+	math teacher: 	reward money/s based on math skill
+			costs effort/s and calculations/s
+	cs teacher:	reward money/s based on cs skill
+			costs effort/s and code/s
+
+#some level requirements on cs stuff? maybe not
+
+more testing of cs project bugs
 
 Do some animated text on button click+skill thingy
 
 FIX BUGS
+
+Figure out what happens when numbers get too large & how to beat limits
 
 Test in multiple browsers/window sizes
 
@@ -28,33 +101,25 @@ Test in multiple browsers/window sizes
 
 Test everything, test at normal speed
 
-//White background on footer bar (not required)
+Physics section (also uses calculations)
+
+Engineering section
 
 Make grade up button dependencies depend on all skill levels (math level +5*cs level)
 								(or multiply all cs levels by 5
+Only for college +
+in high school require pysics/x and math/x 
 
-//Code Cleanup
+	Code Cleanup
 
 Make each button have its own inner html data, -> do textify, counts automagically
+(hard since innerHTML may contain other buttons, not really a requirement)
 
 Clean up button look/fix size bugs
 
 Remove button.disable, replace with is_disabled/color change
-	
-add background to popup text	
-
-move some stuff to separate files
-
-make cs projects
-	FEATURES:
-	Exponential cost
-	Gives a semi-permanent bonus to something (+$/s, calc/s, code/s, -bugs/s, etc)
-	Player Names the project
-	Random number of bugs appear =rand(current # -1)
-	At each interval there is a small chance project will break 
-		(requires small number of bug fixes to restore use)
-
 Change button code so that there can be popups when button is disabled
+	
 
 better tab highlighting when something new appears in them
 Clean up popup text code (see todo)
@@ -65,6 +130,16 @@ balance so that it is significantly faster to stick to one subject
 
 
 FINISHED (ish)
+
+make cs projects
+	FEATURES:
+	Exponential cost
+	Gives a semi-permanent bonus to something (+$/s, calc/s, code/s, -bugs/s, etc)
+	Player Names the project
+	Random number of bugs appear =rand(current # -1)
+	At each interval there is a small chance project will break 
+		(requires small number of bug fixes to restore use)
+
 
 make math researches
 	FEATURES:

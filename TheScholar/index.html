@@ -2,9 +2,47 @@
 <link rel="stylesheet" type="text/css" href="scholar.css">
 <title>Scholar Clicker</title>
 </head>
+<div id="main_body">
 <div id="notifications" >
 
 </div>
+<table id="resources" class="fixed">
+    <col width="220px" />
+    <col width="220px" />
+    <col width="220px" />
+    <col width="220px" />
+    <tr>
+        <td id="math_skill_box" style="display:none;">
+            <div id="math_skill_label" class="table_label">Math Skill</div>
+            <div id="math_skill_count" class="table_count">None</div>
+        </td>
+        <td id="cs_skill_box" style="display:none;">
+            <div id="cs_skill_label" class="table_label">CS Skill</div>
+            <div id="cs_skill_count" class="table_count">None</div>
+        </td>
+    </tr>
+    <tr>
+        <td id="calculations_box" style="display:none;">
+            <div id="calculations_label" class="table_label">Calculations</div>
+            <div id="calculations_count" class="table_count">None</div>
+        </td>
+        <td id="code_box" style="display:none;">
+            <div id="code_label" class="table_label">Code</div>
+            <div id="code_count" class="table_count">None</div>
+        </td>
+    </tr>
+    <tr>
+        <td id="effort_box">
+            <div id="effort_label" class="table_label">Effort</div>
+            <div id="effort_count" class="table_count">None</div>
+        </td>
+        <td id="money_box">
+            <div id="money_label" class="table_label">Money</div>
+            <div id="money_count" class="table_count">None</div>
+        </td>
+    </tr>
+</table>
+<!--
 <table id="resources" class="fixed">
     <col width="100px" />
     <col width="100px" />
@@ -28,12 +66,14 @@
         <td id="cs_skill_count" class="count" style="display:none;">None</td>
     </tr>
 </table>
+-->
 <button id="muster" style="display:none;">Muster 0/4</button>
 <p>
 <div id="tab_bar" style="display:none;">
     <button id="main_tab_button" class="tab_button">main</button>
     <button id="math_tab_button" class="tab_button">math</button>
     <button id="cs_tab_button" class="tab_button">cs</button>
+    <button id="special_tab_button" class="tab_button">special</button>
 </div>
 </p>
 <div id="main_section" style="display:none;">
@@ -57,10 +97,13 @@
     </div>
     <div id="main_shop" style="float:left;">
         <div><button id="buy_vacation">Vacation</button> </div>
+        <div><button id="buy_motivation">Motivational Book</button> </div>
     </div>
 </div>
 <div id="math_section" style="display:none;">
     <div id="math_classes" style="float:left;">
+        <div><button id="learn_complex_analysis">Complex Analysis</button></div>
+        <div><button id="learn_linear_algebra">Linear Algebra</button></div>
         <div><button id="learn_number_theory">Number Theory</button></div>
         <div><button id="learn_advanced_calculus">Advanced Calculus</button></div>
         <div><button id="learn_calculus">Calculus</button></div>
@@ -73,19 +116,18 @@
         <div><button id="learn_arithmetic">Arithmetic</button></div>
     </div>
     <div id="math_store" style="float:left;">
+        <div><button id="buy_chalkboard">Chalkboard</button></div>
         <div><button id="buy_notebook">Notebook</button></div>
         <div><button id="buy_computer_math">Computer</button></div>
-        <div><button id="buy_graphing_calculator">Graphing Calculator</button></div>
+        <div><button id="buy_graphing_calculator">CAS Calculator</button></div>
         <div><button id="buy_calculator">Calculator</button></div>
         <div><button id="buy_answers">Test Answers</button></div> 
     </div>
     <div id="math_research" style="float:left;">
         <div><button id="do_math_super_project">Start Super Project</button></div>
+        <div><button id="do_math_contest">Solve Problem</button></div>
+        <div><button id="start_math_contest">Start Math Contest</button></div>
         <div><button id="start_math_research">Start Research Project</button></div>
-        <div>
-            <button id="start_math_contest">Start Math Contest</button>
-            <button id="do_math_contest">Solve Problem</button>
-        </div>
         <div><button id="do_tutoring">Tutoring</button> </div>
         <div><button id="do_calculation">Calculate</button></div>
     </div>
@@ -106,13 +148,13 @@
     </div>
     <div id="cs_store" style="float:left;">
         <div><button id="buy_memory">Memory</button></div>
-        <div><button id="buy_developer">Hire Developer</button></div>
+        <div><button id="buy_developer">Developer</button></div>
         <div><button id="buy_dev_tools">Dev Tools</button></div>
         <div><button id="buy_computer_cs">Computer</button></div>
     </div>
     <div id="cs_projects" style="float:left;">
         <div><button id="create_cs_super_project">Start Super Project</button></div>
-        <div><button id="create_language">Design Programming Language</button></div>
+        <div><button id="create_language">Design Language</button></div>
         <div><button id="create_website">Create Website</button></div>
         <div><button id="create_math_solver">Create Equation Solver</button></div>
         <div><button id="create_game">Create Game</button></div>
@@ -121,22 +163,33 @@
     <div id="cs_ongoing" style="float:left;">
     </div>
 </div>
+<div id="footer_copy"></div>
+
+</div>
 
 <div id ="popup">
+    <div id = "popup_special_text"></div>
     <div id = "popup_cost"></div>
     <div id = "popup_reward"></div>
 </div>
 
 <div id="footer_bar">
-    <div id="save_buttons">
+    <div id="save_buttons" style="float:left;">
         <button id="save_game">Save Game</button>
         <button id="reset_game">Reset Game</button>
-        
     </div>
-    <div id="autosaving"> autosaving...</div>
+    <div id="autosaving"  style="float:left;"> autosaving...</div>
+    <div id="timer"  style="float:left;">00:00:00</div>
+    <button id="speed_up" style="float:left; display:none;">x2</button>
+    <button id="slow_down" style="float:left; display:none;">/2</button>
+    <div id="multiplier_text" style="float:left; display:none;">x1</div>
     <div id="credits">Created by Wilkowski</div>
 </div>
 
+<div id="donate_popup" style="display:none;">
+    Donation stuff goes here
+</div>
 
 
+<script src="ButtonData.js"></script>
 <script src="Scholar.js"></script>
