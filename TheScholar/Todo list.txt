@@ -1,10 +1,12 @@
 TODO LIST FOR GAME:
-//fixed nasty math research bug
-//Lots of balancing done yay
-//new math classes
-//added chalkboard
 
-put all new files up on website
+
+adjust grade up 1 cost to 4 or something easy like that
+update google drives site to redirect to scholarclicker.com
+
+add web adress icon thingy for game
+
+force capitalization of project names
 
 make cancel button work for naming projects
 (alternately rework the way projects are named)
@@ -20,14 +22,17 @@ math requirements for grade up should show up properly too
 Figure out how to make each button column be only as wide as necessary
 (with some max width in case people put long names of stuff in)
 
+add confirmation box after hitting super project start button
 SUPER PROJECT
 	new tab for super project items
 	button to start super project
+	~10 mil effort cost
 
 MATH SUPER PROJECT
 	Finished advanced math research, graduated school
 	hit super project button (very large requirements, yes/ no option)
 	a few research projects become available to try to prove or disprove.
+		
 	each has only one solution and each has a chance of failure
 	research unlocks new theorems
 	one theorem gives a permanent reward: 
@@ -39,10 +44,14 @@ CS SUPER PROJECT
 	Get some ais, have graduated school
 	hit super project button (very large requirements, yes/ no option)
 	button opens up super project tab
-	3 programs need to be made and debugged
+	a few programs need to be made and debugged
+		code analizer: less bugs show up in completed projects
+		self correcting code: bugs no longer show up in completed projects
 	reward program opens up (gives permanent reward)
+		AI buddy = permanent money/s bonus
+		AI buddy = button next to muster used to earn money
 	self improving ai becomes available
-	each one reduces cost of next one
+	each one reduces cost of next one (and other cs stuff maybe?)
 	when cost is at 0 you win the game
 	button appears that allows you to [enter the matrix]
 	button brings up yes/no menu

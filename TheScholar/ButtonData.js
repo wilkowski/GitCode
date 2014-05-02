@@ -131,13 +131,15 @@ var buy_vacation_button = document.getElementById('buy_vacation');
 buy_vacation_button.requirements = {school: 6};
 buy_vacation_button.cost = {money: 250000};
 buy_vacation_button.exponent = {vacations: 2.0}
-buy_vacation_button.reward = {vacations:1, effort_per_second: 5.0,  max_effort: 10000000}
+buy_vacation_button.reward = {vacations:1, effort_per_second: 5.0,  max_effort: 5000000}
+buy_vacation_button.text_counter = 'vacations';
 
 var buy_motivation_button = document.getElementById('buy_motivation');
 buy_motivation_button.requirements = {school: 3};
 buy_motivation_button.cost = {money: 625};
 buy_motivation_button.exponent = {motivations: 4};
 buy_motivation_button.reward = {motivations: 1, text: "+1 muster reward"}; //text is updated in main section
+buy_motivation_button.text_counter = 'motivations'
 
 //MATH section buttons
 var math_tab_button = document.getElementById('math_tab_button');
@@ -205,9 +207,10 @@ learn_arithmetic_button.reward = {math_level: 2};
 
 //do math things
 var do_math_super_project_button = document.getElementById('do_math_super_project');
-do_math_super_project_button.requirements = {school: 6, math_level:100000000};
-do_math_super_project_button.cost = {effort:100000};//subject to change
-do_math_super_project_button.reward = {money: 100000.00, math_level:10000};//subject to change
+do_math_super_project_button.requirements = {school: 6, math_level:100000000, math_research_calculation_bonus: 4};
+do_math_super_project_button.cost = {effort:1000000, money: 100000.00};//subject to change
+do_math_super_project_button.disable = {super_project_started: 1};
+do_math_super_project_button.reward = {super_project_started: 1, math_super_project_status: 1, text:"Start math super project"};
 
 var start_math_research_button = document.getElementById('start_math_research');
 start_math_research_button.requirements = {school: 4, math_level:200000}; //TODO: balance numbers
@@ -234,7 +237,6 @@ buy_chalkboard_button.requirements = {max_calculations:100000};
 buy_chalkboard_button.cost = {money:1000};
 buy_chalkboard_button.exponent = {chalkboards: 1.05};
 buy_chalkboard_button.reward = {max_calculations: 10000, chalkboards:1};
-buy_chalkboard_button.inner_text = "Chalkboard";
 buy_chalkboard_button.text_counter = 'chalkboards';
 
 var buy_notebook_button = document.getElementById('buy_notebook');
@@ -242,7 +244,6 @@ buy_notebook_button.requirements = {calculations_per_second:1};
 buy_notebook_button.cost = {money:19.8808}; //  20/1.006
 buy_notebook_button.exponent = {notebooks: 1.006}
 buy_notebook_button.reward = {max_calculations: 250, notebooks:1};
-buy_notebook_button.inner_text = "Notebook";
 buy_notebook_button.text_counter = 'notebooks';
 
 var buy_computer_math_button = document.getElementById('buy_computer_math');
@@ -250,7 +251,6 @@ buy_computer_math_button.requirements = {school: 3, cs_level:10};
 buy_computer_math_button.cost = {money:1000.00};
 buy_computer_math_button.exponent = {computers: 1.5};
 buy_computer_math_button.reward = {calculations_per_second: 2, code_per_second: .5, computers:1, show_code:1};
-buy_computer_math_button.inner_text = "Computer";
 buy_computer_math_button.text_counter = 'computers';
 
 var buy_graphing_calculator_button = document.getElementById('buy_graphing_calculator');
@@ -258,7 +258,6 @@ buy_graphing_calculator_button.requirements = {calculators: 2, math_level: 70};
 buy_graphing_calculator_button.cost = {money:100.00};
 buy_graphing_calculator_button.exponent = {graphing_calculators: 1.5};
 buy_graphing_calculator_button.reward = {calculations_per_second: .5, graphing_calculators:1};
-buy_graphing_calculator_button.inner_text = "CAS Calculator";
 buy_graphing_calculator_button.text_counter = 'graphing_calculators';
 
 var buy_calculator_button = document.getElementById('buy_calculator');
@@ -266,7 +265,6 @@ buy_calculator_button.requirements = {grade: 8, show_calculations: 1};
 buy_calculator_button.cost = {money:10.00};
 buy_calculator_button.exponent = {calculators: 1.5};
 buy_calculator_button.reward = {calculations_per_second: 0.1, calculators:1};
-buy_calculator_button.inner_text = "Calculator";
 buy_calculator_button.text_counter = 'calculators';
 
 var buy_answers_button = document.getElementById('buy_answers');
@@ -283,9 +281,14 @@ var cs_tab_button = document.getElementById('cs_tab_button');
 cs_tab_button.requirements = {cs_level: 10};
 
 var learn_haskell_button =  document.getElementById('learn_haskell');
-learn_haskell_button.requirements = {cs_level: 25000};//
-learn_haskell_button.cost = {effort: 40, code:40};
-learn_haskell_button.reward = {cs_level: 200};
+learn_haskell_button.requirements = {cs_level: 75000, school:5};//
+learn_haskell_button.cost = {effort: 100, code:150};
+learn_haskell_button.reward = {cs_level: 800};
+
+var learn_assembly_button = document.getElementById('learn_assembly');
+learn_assembly_button.requirements = {cs_level: 25000};//
+learn_assembly_button.cost = {effort: 50, code:50};
+learn_assembly_button.reward = {cs_level: 250};
 
 var learn_javascript_button = document.getElementById('learn_javascript');
 learn_javascript_button.requirements = {cs_level: 7000};// ()
@@ -327,7 +330,6 @@ var buy_memory_button = document.getElementById('buy_memory');
 buy_memory_button.requirements = {computers:2};
 buy_memory_button.cost = {money: 100};
 buy_memory_button.reward = {max_code: 128, memories: 1}; //gets changed in main
-buy_memory_button.inner_text = "Memory";
 buy_memory_button.text_counter = 'memories';
 
 var buy_developer_button = document.getElementById('buy_developer');
@@ -335,7 +337,6 @@ buy_developer_button.requirements = {school: 5, computers:5, dev_tools:2};
 buy_developer_button.cost = {money: 40000};
 buy_developer_button.exponent = {developers: 1.5};
 buy_developer_button.reward = {code_per_second: 5, developers:1};
-buy_developer_button.inner_text = "Developer";
 buy_developer_button.text_counter = 'developers';
 
 var buy_dev_tools_button = document.getElementById('buy_dev_tools');
@@ -343,7 +344,6 @@ buy_dev_tools_button.requirements = {cs_level: 2000, computers:1};
 buy_dev_tools_button.cost = {money: 2000};
 buy_dev_tools_button.exponent = {dev_tools: 1.5};
 buy_dev_tools_button.reward = {code_per_second: 2, dev_tools:1};
-buy_dev_tools_button.inner_text = "Dev Tools";
 buy_dev_tools_button.text_counter = 'dev_tools';
 
 var buy_computer_cs_button = document.getElementById('buy_computer_cs');
@@ -351,32 +351,46 @@ buy_computer_cs_button.requirements = buy_computer_math_button.requirements;
 buy_computer_cs_button.cost = buy_computer_math_button.cost;
 buy_computer_cs_button.exponent = buy_computer_math_button.exponent;
 buy_computer_cs_button.reward = buy_computer_math_button.reward;
-buy_computer_cs_button.inner_text = buy_computer_math_button.inner_text;
 buy_computer_cs_button.text_counter = buy_computer_math_button.text_counter;
 
 //CS projects
 var create_cs_super_project_button = document.getElementById('create_cs_super_project');
-create_cs_super_project_button.requirements = {grade:12, cs_level:9999999999};
+create_cs_super_project_button.requirements = {grade:13, cs_level:9999999999};
+
+var create_neural_net_button = document.getElementById('create_neural_net');
+create_neural_net_button.requirements = {grade:20, cs_level:200000, school:5, cs_language_projects:2};
+create_neural_net_button.cost =  {effort: 1000, code: 1000, calculations: 1000};
+create_neural_net_button.reward = {text: "+ 15% Code/s when complete"};
+create_neural_net_button.exponent = {cs_neural_net_projects: 1.5};
+create_neural_net_button.text_counter  = 'cs_neural_net_projects';
 
 var create_language_button = document.getElementById('create_language');
-create_language_button.requirements = {grade:11, cs_level:15000, dev_tools:1};
+create_language_button.requirements = {grade:11, cs_level:35000, dev_tools:1};
 create_language_button.cost = {effort: 500, code:200};
+create_language_button.reward = {text: "+ 20% Fewer bugs and less frequent bugs when complete"};
 create_language_button.exponent = {cs_language_projects: 1.4142135624}; //sqrt(2)
+create_language_button.text_counter = 'cs_language_projects'
 
 var create_website_button = document.getElementById('create_website');
-create_website_button.requirements = {grade:10, cs_level:7000, computers:1};
+create_website_button.requirements = {grade:10, cs_level:10000, computers:1};
 create_website_button.cost = {effort: 200, code: 50};
+create_website_button.reward = {text: "+ 10% Money/s when complete"};
 create_website_button.exponent = {cs_website_projects: 1.4142135624}; //sqrt(2)
+create_website_button.text_counter = 'cs_website_projects';
 
 var create_math_solver_button = document.getElementById('create_math_solver');
 create_math_solver_button.requirements = {grade:9, cs_level:1000, math_level:5000, computers:1};
 create_math_solver_button.cost = {effort: 100, code: 25, calculations: 25};
+create_math_solver_button.reward = {text: "+ 10% Calculations/s when complete"};
 create_math_solver_button.exponent = {cs_math_solver_projects: 1.4142135624}; //sqrt(2)
+create_math_solver_button.text_counter = 'cs_math_solver_projects';
 
 var create_game_button = document.getElementById('create_game');
 create_game_button.requirements = {grade:8, cs_level:500, show_code:1}
 create_game_button.cost = {effort: 50, code:10};
+create_game_button.reward = {text: "+ $0.50/s when complete"};
 create_game_button.exponent = {cs_game_projects: 1.4142135624}; //sqrt(2)
+create_game_button.text_counter = 'cs_game_projects';
 
 var write_code_button = document.getElementById('write_code');
 write_code_button.requirements = {show_code:1};

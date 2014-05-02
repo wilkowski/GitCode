@@ -1,17 +1,18 @@
-var debug = true;
+var debug = false;
 var debug_multiplier = 1;
 
-var math_calc_multiplier = 1.05;
-var math_code_multiplier = 1.05;
-var math_money_multiplier = 1.05;
-var cs_calc_multiplier = 1.10;
-var cs_money_multiplier = 1.10;
+var math_calc_multiplier = 1.1;
+var math_code_multiplier = 1.1;
+var math_money_multiplier = 1.1;
+var cs_code_multiplier = 1.15;
+var cs_calc_multiplier = 1.15;
+var cs_money_multiplier = 1.15;
 var cs_bug_multiplier = 1.20;
 
 var button_width = 150.0
 
 var player = {
-    version: '0.145',
+    version: '0.15',
 
     musters: 0,
     effort: 9,
@@ -84,13 +85,13 @@ var player = {
     cs_projects_count:0,
     cs_super_project_stage: 0, //+code/s multiplier of 1.1, (effort scales with .95, code with 1.05)
                                 //gradual scale up of starting progress (at starting progress > cost game ends)
-    cs_ai_projects: 0, //+code/s (eventually unlocks cs super project)
+    cs_neural_net_projects: 0, //+code/s (eventually unlocks cs super project)
     cs_language_projects: 0, //reduces bug frequency/count
     cs_website_projects: 0, //haven't decided
     cs_math_solver_projects: 0, //+ calculations/s
     cs_game_projects: 0, //money/s
     //Active projects are completed and contributing, bugs can make them inactive
-    cs_active_ais: 0, 
+    cs_active_neural_nets: 0,
     cs_active_languages: 0,
     cs_active_websites: 0,
     cs_active_math_solvers: 0,
@@ -137,6 +138,7 @@ var tab_bar = document.getElementById('tab_bar');
 var main_section = document.getElementById('main_section');
 var math_section = document.getElementById('math_section');
 var cs_section = document.getElementById('cs_section');
+var special_section = document.getElementById('special_section')
 var main_tab_button = document.getElementById('main_tab_button');
 //main classes
 var learn_logic_button = document.getElementById('learn_logic');
@@ -198,6 +200,7 @@ var do_calculation_button = document.getElementById('do_calculation');
 var cs_tab_button = document.getElementById('cs_tab_button');
 //cs classes buttons
 var learn_haskell_button =  document.getElementById('learn_haskell');
+var learn_assembly_button = document.getElementById('learn_assembly');
 var learn_javascript_button = document.getElementById('learn_javascript');
 var learn_algorithms_button = document.getElementById('learn_algorithms');
 var learn_cplusplus_button = document.getElementById('learn_cplusplus');
@@ -212,6 +215,7 @@ var buy_dev_tools_button = document.getElementById('buy_dev_tools');
 var buy_computer_cs_button = document.getElementById('buy_computer_cs');
 //CS projects
 var create_cs_super_project_button = document.getElementById('create_cs_super_project');
+var create_neural_net_button = document.getElementById('create_neural_net');
 var create_language_button = document.getElementById('create_language');
 var create_website_button = document.getElementById('create_website');
 var create_math_solver_button = document.getElementById('create_math_solver');
@@ -290,6 +294,7 @@ var visible_list = [
     
     cs_tab_button, //CS
     learn_haskell_button,
+    learn_assembly_button,
     learn_javascript_button,
     learn_algorithms_button,
     learn_cplusplus_button,
@@ -304,6 +309,7 @@ var visible_list = [
     buy_memory_button,
     
     create_cs_super_project_button,
+    create_neural_net_button,
     create_language_button,
     create_website_button,
     create_math_solver_button,
@@ -332,25 +338,24 @@ function save_game(){
 }
 
 function load_save(){
-    var current_version = player.version;
+    var current_version = player_reset_copy.version; //version before loading save
     if(localStorage['scholar_clicker_save']){
         player = JSON.parse(atob(localStorage['scholar_clicker_save']));
     }
     if(player.version != current_version){
-        add_note("updated game to version " + current_version);
+        add_note("Updated game to version " + current_version);
         
-        //heck player variables against reset player variables to see if any are missing
+        //check player variables against reset player variables to see if any are missing
         //If they are then update them to reset values and notify player that there may be errors
         var variable_warning = false;
         for(var key in player_reset_copy){
             if(player[key] == null){ //new variable added this version
                 variable_warning = true;
-                add_note("missing var" + key);
                 player[key] = player_reset_copy[key];
             }
         }
         if(variable_warning){
-            add_note("Some features may not work with your save");
+            add_note("Some new features may not work with old save version");
             add_note("WARNING: You may need to reset");
         }
         player.version = current_version;
@@ -399,10 +404,10 @@ function number_to_text(num){
             return 'Tons';
         }
     }else{
-        if(num >= 10000000){
-            return round_to(num/1000000,1) + "m";
+        if(num >= 1000000){
+            return round_to(num/1000000.0,2) + "m";
         }else if(num >= 10000){
-            return round_to(num/1000,1) + "k";
+            return round_to(num/1000.0,1) + "k";
         }
         return num;
     }
@@ -437,7 +442,7 @@ function update_counts() { //this function updates the number of clicks displaye
         player.effort += 1 + player.motivations;
     }
     muster_button.innerHTML = textify("Muster " + player.musters + "/4");
-    muster_button.reward = {musters: 1, text: "4 musters = " + (1 + player.motivations) +" effort"};
+    muster_button.reward = {musters: 1, text: "4 musters = " + (1 + player.motivations) +" Effort"};
 
     player.effort = Math.min(player.effort, player.max_effort);
     player.calculations = Math.min(player.calculations, player.max_calculations);
@@ -447,7 +452,7 @@ function update_counts() { //this function updates the number of clicks displaye
         show_rate = true;
     }
     
-    effort_label_element.innerHTML = textify('Effort');
+    effort_label_element.innerHTML = textify("Effort");
     var shown_effort = number_to_text(Math.floor(player.effort));
     shown_effort += "/" + number_to_text(player.max_effort);
     if(show_rate){
@@ -504,7 +509,9 @@ function update_counts() { //this function updates the number of clicks displaye
     shown_code = number_to_text(round_to(player.code,0));
     shown_code += "/" + number_to_text(player.max_code);
     if(show_rate && player.code_per_second > 0){
-        shown_code += " (" + round_to(Math.pow(math_code_multiplier,player.math_research_code_bonus)* player.code_per_second,2) + "/s)";
+        var code_rate = player.code_per_second * Math.pow(math_code_multiplier,player.math_research_code_bonus); 
+        code_rate = code_rate *Math.pow(cs_code_multiplier, player.cs_active_neural_nets);
+        shown_code += " (" + round_to(code_rate,2) + "/s)";
     }
     code_count_element.innerHTML = textify(shown_code);
     if(start_math_contest_button.disabled == false){
@@ -515,7 +522,7 @@ function update_counts() { //this function updates the number of clicks displaye
     if(debug){//TODO: eventually move this to some stats screen (make true time count, not fake time count)
         var seconds = player.seconds_played%60;
         var minutes = (round_to(player.seconds_played/60, 0))%60;
-        var hours = (round_to(player.seconds_played/3600, 0))%60;
+        var hours = (round_to(player.seconds_played/3600, 0));
         timer_text = "" + seconds
         if(seconds <10){
             timer_text = "0" + timer_text;
@@ -577,6 +584,10 @@ function button_appears(button){
                 cs_tab_button.innerHTML = "*cs*";
             }
             break;
+        }else if(parent_node == special_section){
+            if(special_tab_button.disabled == false){
+                special_tab_button.innerHTML = "*special*";
+            }
         }
         parent_node = parent_node.parentNode;
     }
@@ -768,7 +779,7 @@ function try_to_get_something(button) {
             effort_cost = round_to(button.cost.effort * multiplier, 0);
         }
         if (player.effort < effort_cost) {
-            add_note('Not enough effort');
+            add_note('Not enough Effort');
             return false;
         }
         if(button.cost.calculations){
@@ -826,9 +837,9 @@ function do_button_clicked(button){
 }
 
 function update_popup(button){
-    var popup_text_0 = '';
-    var popup_text_1 = '';
-    var popup_text_2 = '';
+    var popup_text_0 = "";
+    var popup_text_1 = "";
+    var popup_text_2 = "";
     if(button.disabled == true){
         popup.style.display = 'none';
         mouse_outs += 1;
@@ -845,24 +856,24 @@ function update_popup(button){
                 multiplier = Math.pow(button.exponent[key],player[key]);
             }
         }
-        popup_text_1 += '- ';
+        popup_text_1 += "- ";
         if(button.cost.effort){
             popup_text_1 += number_to_text(round_to(button.cost.effort*multiplier,0));
-            popup_text_1 += ' Effort, ';
+            popup_text_1 += " " + textify("Effort") + ", ";
             previous = true;
         }
         if(button.cost.money){
-            popup_text_1 += '$' + number_to_text(round_to(button.cost.money*multiplier,2)) + ', ';
+            popup_text_1 += "$" + number_to_text(round_to(button.cost.money*multiplier,2)) + ", ";
             previous = true;
         }
         if(button.cost.calculations && player.show_calculations > 0){
             popup_text_1 += number_to_text(round_to(button.cost.calculations*multiplier,0));
-            popup_text_1 += ' Calculations, ';
+            popup_text_1 += " Calculations, ";
             previous = true;
         }
         if(button.cost.code && player.show_code > 0){
             popup_text_1 += number_to_text(round_to(button.cost.code*multiplier,0));
-            popup_text_1 += ' Code, ';
+            popup_text_1 += " Code, ";
         }
         if(popup_text_1.length >= 2){ //chop off last 2 characters: ', '
             popup_text_1 = popup_text_1.slice(0, -2); 
@@ -873,52 +884,52 @@ function update_popup(button){
         previous = false;
         if(button.reward.math_level){
             if(player.show_math_level > 0){
-                popup_text_2 += '+ ' + button.reward.math_level + ' Math Skill, ';
+                popup_text_2 += "+ " + button.reward.math_level + " Math Skill, ";
             }else{
-                popup_text_2 += '+ Skill, ';
+                popup_text_2 += "+ Skill, ";
             }
         }
         if(button.reward.cs_level){
             if(player.show_cs_level > 0){
-                popup_text_2 += '+ ' + button.reward.cs_level + ' CS Skill, ';
+                popup_text_2 += "+ " + button.reward.cs_level + " CS Skill, ";
             }else{
-                popup_text_2 += '+ Skill, ';
+                popup_text_2 += "+ Skill, ";
             }
         }
         if(button.reward.money){
-            popup_text_2 += '+ $' + number_to_text(round_to(button.reward.money,2)) + ', ';
+            popup_text_2 += "+ $" + number_to_text(round_to(button.reward.money,2)) + ", ";
         }
         if(button.reward.calculations){
-            popup_text_2 += '+ ' + round_to(button.reward.calculations,0) + 'Calculation';
-            if(round_to(button.reward.calculations,0) != 1){popup_text_2 += 's';}
-            popup_text_2 += ', ';
+            popup_text_2 += "+ " + round_to(button.reward.calculations,0) + "Calculation";
+            if(round_to(button.reward.calculations,0) != 1){popup_text_2 += "s";}
+            popup_text_2 += ", ";
         }
         if(button.reward.code){
-            popup_text_2 += '+ ' + button.reward.code + ' Code, ';
+            popup_text_2 += "+ " + button.reward.code + " Code, ";
         }
         if(button.reward.effort_per_second){
             if(player.math_level >= 5){
-                popup_text_2 += '+ ' + button.reward.effort_per_second + ' Effort/s, ';
+                popup_text_2 += "+ " + button.reward.effort_per_second + " Effort/s, ";
             }else{
-                popup_text_2 += '+ Effort/s, ';
+                popup_text_2 += "+ Effort/s, ";
             }
         }
         if(button.reward.calculations_per_second){
-            popup_text_2 += '+ ' + round_to(button.reward.calculations_per_second,2) + ' Calculations/s, ';
+            popup_text_2 += "+ " + round_to(button.reward.calculations_per_second,2) + " Calculations/s, ";
         }
         if(button.reward.code_per_second){
-            popup_text_2 += '+ ' + round_to(button.reward.code_per_second,2) + ' Code/s, ';
+            popup_text_2 += "+ " + round_to(button.reward.code_per_second,2) + " Code/s, ";
         }
         if(button.reward.max_calculations){
-            popup_text_2 += '+ ' + number_to_text(round_to(button.reward.max_calculations,0)) + ' Max Calculations, ';
+            popup_text_2 += "+ " + number_to_text(round_to(button.reward.max_calculations,0)) + " Max Calculations, ";
         }
         if(button.reward.max_code){
-            popup_text_2 += '+ ' + number_to_text(round_to(button.reward.max_code,0)) + ' Max Code, ';
+            popup_text_2 += "+ " + number_to_text(round_to(button.reward.max_code,0)) + " Max Code, ";
         }
-        if(button.reward.text){ //special reward text
-            popup_text_2 += button.reward.text + ', ';
+        if(button.reward.text){ //special reward text added as well
+            popup_text_2 += button.reward.text + ", ";
         }
-        if(popup_text_2.length >= 2){ //chop off last 2 characters which are: ', '
+        if(popup_text_2.length >= 2){ //chop off last 2 characters which are: ", "
             popup_text_2 = popup_text_2.slice(0, -2); 
         }
     }
@@ -975,6 +986,9 @@ for(var i = 0; i < visible_list.length; i++){
         cur_item.onmouseout = function(){
             button_mouse_out(this);
         }
+    }
+    if(cur_item.text_counter){
+        cur_item.inner_text = cur_item.innerHTML;
     }
 }
 
@@ -1089,27 +1103,34 @@ function open_menu(menu_name){
     main_section.style.display = 'none';
     math_section.style.display = 'none';
     cs_section.style.display = 'none';
+    special_section.style.display = 'none';
     main_tab_button.disabled = false;
     math_tab_button.disabled = false;
     cs_tab_button.disabled = false;
+    special_tab_button.disabled = false;
     if(menu_name == 'main'){
+        main_tab_button.disabled = true;
         main_tab_button.innerHTML = "main";
         main_section.style.display = 'inline';
-        main_tab_button.disabled = true;
     }else if(menu_name == 'math'){
+        math_tab_button.disabled = true;
         math_tab_button.innerHTML = "math";
         math_section.style.display = 'inline';
-        math_tab_button.disabled = true;
     }else if(menu_name == 'cs'){
+        cs_tab_button.disabled = true;
         cs_tab_button.innerHTML = "cs";
         cs_section.style.display = 'inline';
-        cs_tab_button.disabled = true;
+    }else if(menu_name == 'special'){
+        special_tab_button.disabled = true;
+        special_tab_button.innerHTML = "special";
+        special_section.style.display = 'inline';
     }
 }
 
 main_tab_button.onclick = function() {open_menu('main')}
 math_tab_button.onclick = function() {open_menu('math')}
 cs_tab_button.onclick = function() {open_menu('cs')}
+special_tab_button.onclick = function() {open_menu('special')}
 
 function math_project_clicked(button){
     if(!try_to_get_something(button)){
@@ -1127,37 +1148,39 @@ function math_project_clicked(button){
         players_project.value = player.math_level* Math.random();
         players_project.status = 'completed';
 
-        if(players_project.value > 500000 * Math.pow(3.0,player.math_research_calculation_bonus)){
-            add_note("+" + round_to((math_calc_multiplier-1)*100,1) + "% bonus to calculations/s" );
+        if(players_project.value > 500000 * Math.pow(2.7,player.math_research_calculation_bonus)){
+            add_note("+" + round_to((math_calc_multiplier-1)*100,1) + "% bonus to Calculations/s" );
             add_note("Discovered new computational method");
             add_note(players_project.name);
             //calculations/s multiplier
             player.math_research_calculation_bonus += 1;
         }else if(players_project.value > 200000*Math.pow(2.4,player.math_research_money_bonus)){
             //money/s multiplier
-            add_note("+5% bonus to money/s");
+            add_note("+5% bonus to Money/s");
             add_note("Found money management technique");
             add_note(players_project.name);
             player.math_research_money_bonus += 1;
         }else if(players_project.value > 100000*Math.pow(2.3,player.math_research_code_bonus)){
-            add_note("+5% bonus to code/s");
+            add_note("+5% bonus to Code/s");
             add_note("Computational breakthrough"); 
             add_note(players_project.name);
             player.math_research_code_bonus += 1;
         }else if(players_project.value > 50000*Math.pow(1.7,player.math_research_money)){
             players_project.status = 'failed';
-            add_note("Won prize worth $5,000");
+            var prize_val = 2500 + 2500 * player.math_research_projects_count;
+            add_note("Won prize worth $" + number_to_text(prize_val));
             add_note("Novel discovery");
             add_note(players_project.name);
-            player.money += 5000.0;
+            player.money += prize_val;
             //+ money/s
             player.math_research_money += 1;
         }else{
             players_project.status = 'failed';
+            var prize_val = 10000 * player.math_research_projects_count;
             add_note(players_project.name);
-            add_note("hit a dead end");
-            add_note("got 1000 Math Skill for the experience");
-            player.math_level += 1000.0;
+            add_note("Hit a dead end");
+            add_note("Got " +  number_to_text(prize_val) + " Math Skill for the experience");
+            player.math_level += prize_val;
         }  
     }
     update_math_projects();
@@ -1182,7 +1205,7 @@ function set_up_project_functions(project_button){
 
 function update_math_projects(){
     for(var i = 0; i < player.math_research_projects_count; i++){
-        var project_id = "math_project_" + i;
+        var project_id = 'math_project_' + i;
         var players_project = player.math_research_projects[project_id];
         var current_project = document.getElementById(project_id);
         if(current_project == null){
@@ -1190,7 +1213,7 @@ function update_math_projects(){
             container_div = document.createElement('div');
             insert_start(container_div, math_ongoing_section);
             insert_start(current_project, container_div);
-            current_project.style.height = "46px";
+            current_project.style.height = '46px';
             current_project.id = project_id;
             current_project.innerHTML = players_project.name;
             current_project.cost = {};
@@ -1243,7 +1266,7 @@ start_math_research_button.onclick = function() {
     new_project_name = new_project_name + midfix;
     //TODO: give bonus attributes for certain names
     
-    var project_id = "math_project_" + player.math_research_projects_count;
+    var project_id = 'math_project_' + player.math_research_projects_count;
     var exponent_multiplier = Math.pow(1.15, player.math_research_projects_count);
     //calculation costs increase much faster since calculation makers are much easier to get
     var calculation_multiplier = Math.pow(1.26, player.math_research_projects_count); 
@@ -1252,7 +1275,7 @@ start_math_research_button.onclick = function() {
     players_project = player.math_research_projects[project_id];
     players_project.name = new_project_name;
     players_project.progress = 0.0;
-    players_project.max_progress = Math.floor(Math.pow(exponent_multiplier,.7)*20.0); //max progress increases slower
+    players_project.max_progress = Math.floor(Math.pow(exponent_multiplier,.5)*20.0); //max progress increases slower
     players_project.cost_effort = Math.floor(exponent_multiplier*(10.0+20.0*Math.random()));
     players_project.cost_calculations = Math.floor(calculation_multiplier*(10+40*Math.random()));;
     players_project.value = 0;
@@ -1265,11 +1288,11 @@ start_math_research_button.onclick = function() {
 function math_contest_popup_text(){ 
     //rewards are 1st: 100%, 2nd: 50%, 3rd: 20%
     var reward_text = "1st: $";
-    reward_text += round_to(player.contest_winnings * 1.0, 2);
+    reward_text += number_to_text(round_to(player.contest_winnings * 1.0, 2));
     reward_text += ", 2nd: $";
-    reward_text += round_to(player.contest_winnings * 0.5, 2);
+    reward_text += number_to_text(round_to(player.contest_winnings * 0.5, 2));
     reward_text += ", 3rd: $";
-    reward_text += round_to(player.contest_winnings * 0.2, 2);
+    reward_text += number_to_text(round_to(player.contest_winnings * 0.2, 2));
     do_math_contest_button.reward = {text: reward_text};
     if(player.contest_progress > 0){
         do_math_contest_button.special_text = player.contest_progress + "0% completed";
@@ -1310,24 +1333,28 @@ do_math_contest_button.onclick = function() {
             }
         }
         //TODO make this a switch statement if possible
-        if(ranking == 1){
+        switch(ranking){
+        case 1:
             var first_prize = round_to(player.contest_winnings * 1.0,2);
             player.money += first_prize;
             player.contest_winnings += first_prize * 0.8; //20% not counted bonus for easier next round 
             add_note("Got 1st place and won $" + first_prize);
-        }else if(ranking == 2){
+            break;
+        case 2:
             var second_prize = round_to(player.contest_winnings * 0.5,2)
             player.money += second_prize;
             player.contest_winnings += second_prize;
             add_note("Got 2nd place and won $" + second_prize);
-        }else if(ranking == 3){
+            break
+        case 3:
             var third_prize = round_to(player.contest_winnings * 0.2,2)
             player.money += third_prize;
             player.contest_winnings += third_prize;
             add_note("Got 3rd place and won $" + third_prize);
-        }else if(ranking == 10) {
+            break
+        case 10:
             add_note("Got last place, no prize for you");
-        }else{
+        default:
             add_note("Got "+ ranking + "th place, no prize"); //4th-9th
         }
         player.contest_progress = 0;
@@ -1395,7 +1422,7 @@ function cs_project_clicked(button){
             add_note(players_project.name);
             players_project.status = 'bugged';
         }else{
-            add_note("fully debugged for now");
+            add_note("Fully debugged for now");
             add_note(players_project.name);
             players_project.status = 'active';
             player.show_cs_level = 1;  //bonus prize: now show your cs level for first project finished
@@ -1437,11 +1464,13 @@ function check_cs_project(project_id){
         if(players_project.type == 'cs_game_projects'){
             current_project_button.reward = {text: "+ $0.50/s when active"};
         }else if(players_project.type == 'cs_math_solver_projects'){
-            current_project_button.reward = {text: "+ 10% calculations/s when active"};
+            current_project_button.reward = {text: "+ 15% Calculations/s when active"};
         }else if(players_project.type == 'cs_website_projects'){
-            current_project_button.reward = {text: "+ 10% money/s when active"};
+            current_project_button.reward = {text: "+ 15% Money/s when active"};
         }else if(players_project.type == 'cs_language_projects'){
-            current_project_button.reward = {text: "+ 20% fewer bugs/less frequent bugs"};
+            current_project_button.reward = {text: "+ 20% fewer bugs and less frequent bugs when active"};
+        }else if(players_project.type == 'cs_neural_net_projects'){
+            current_project_button.reward = {text: "+ 15% Code/s when active"};
         }else{ 
             add_note("ERROR: bad project type");
         }
@@ -1480,25 +1509,22 @@ function update_cs_projects(){
     var active_math_solvers = 0;
     var active_websites = 0;
     var active_languages = 0;
+    var active_neural_nets = 0;
     for(var i = 0; i < player.cs_projects_count; i++){
         var project_id = 'cs_project' + i;
         check_cs_project(project_id);
         var players_project = player.cs_projects[project_id];
-        if(players_project.type == 'cs_game_projects'){
-            if(players_project.status == 'active'){
+        if(players_project.status == 'active'){
+            if(players_project.type == 'cs_game_projects'){
                 active_games += 1;
-            }
-        }else if(players_project.type == 'cs_math_solver_projects'){
-            if(players_project.status == 'active'){
+            }else if(players_project.type == 'cs_math_solver_projects'){
                 active_math_solvers += 1;
-            }
-        }else if(players_project.type == 'cs_website_projects'){
-            if(players_project.status == 'active'){
+            }else if(players_project.type == 'cs_website_projects'){
                 active_websites += 1;
-            }
-        }else if(players_project.type == 'cs_language_projects'){
-            if(players_project.status == 'active'){
+            }else if(players_project.type == 'cs_language_projects'){
                 active_languages += 1;
+            }else if(players_project.type == 'cs_neural_net_projects'){
+                active_neural_nets += 1;
             }
         }
     }
@@ -1506,11 +1532,11 @@ function update_cs_projects(){
     player.cs_active_math_solvers = active_math_solvers;
     player.cs_active_websites = active_websites;
     player.cs_active_languages = active_languages;
-    //TODO: ai projects, somehow
+    player.cs_active_neural_nets = active_neural_nets;
 }
 
 function start_cs_project(project_type){
-    var project_name = prompt("Enter a name for your project","");
+    var project_name = prompt("Name the project","");
     if(project_name == null || project_name == ""){
         project_name = "Project " + player.cs_projects_count;
     }
@@ -1527,11 +1553,14 @@ function start_cs_project(project_type){
         difficulty_multiplier = 4.0;
     }else if(project_type == 'cs_language_projects'){
         difficulty_multiplier = 10.0;
+    }else if(project_type == 'cs_neural_net_projects'){
+        difficulty_multiplier = 25.0;
+        calculation_cost_multiplier = 0.5;
     }
     
     var exponent_multiplier = difficulty_multiplier * Math.pow(1.75, player[project_type]);
     //effort gets a smaller multiplier since its harder to get
-    var effort_multiplier = Math.pow(difficulty_multiplier, .65);
+    var effort_multiplier = Math.pow(difficulty_multiplier, .80);
     //max progress is linear so it doesn't matter in the long run O(n)<O(e^n)
     var progress_multiplier = difficulty_multiplier * (1.0 + (player[project_type])/3.0);
     
@@ -1544,7 +1573,7 @@ function start_cs_project(project_type){
     players_project.cost_effort = Math.floor(effort_multiplier*(12.0+25.0*Math.random()));
     players_project.cost_code = Math.floor(exponent_multiplier*(3+8*Math.random()));
     if(calculation_cost_multiplier > 0){
-        players_project.cost_calculations = Math.floor(exponent_multiplier*(6+6*Math.random()));
+        players_project.cost_calculations = Math.floor(calculation_cost_multiplier * exponent_multiplier*(6+6*Math.random()));
     }
     players_project.value = 0;
     players_project.max_bugs = players_project.max_progress;
@@ -1557,6 +1586,12 @@ function start_cs_project(project_type){
 }
 
 //create_cs_super_project_button.requirements = {grade:12, cs_level:9999999999};
+create_neural_net_button.onclick = function() {
+    if(!try_to_get_something(this)){
+        return;
+    }
+    start_cs_project('cs_neural_net_projects');
+}
 
 create_language_button.onclick = function() {
     if(!try_to_get_something(this)){
@@ -1609,12 +1644,6 @@ function initialize(){ //run all the update type functions
         add_note('Born');
     }
     textify_update();
-    //buy_calculator_button.innerHTML = "Calculator";
-    //buy_graphing_calculator_button.innerHTML = "Graphing Calculator";
-    //buy_computer_math_button.innerHTML = "Computer";
-    //buy_computer_cs_button.innerHTML = "Computer";
-    //buy_dev_tools_button.innerHTML = "Dev Tools";
-    //buy_developer_button.innerHTML = "Developer";
     math_contest_popup_text();
     math_timer();
     open_menu('main');
@@ -1668,18 +1697,18 @@ setInterval(function () {
     var calculation_rate = player.calculations_per_second * Math.pow(math_calc_multiplier, player.math_research_calculation_bonus);
     calculation_rate = calculation_rate * Math.pow(cs_calc_multiplier, player.cs_active_math_solvers);
     var code_rate = player.code_per_second * Math.pow(math_code_multiplier,player.math_research_code_bonus);
+    code_rate = code_rate * Math.pow(cs_code_multiplier, player.cs_active_neural_nets);
+    
     var multiplier = 1;
     if(debug){
         multiplier = debug_multiplier;
     }
     player.effort += effort_rate*multiplier;
-    
     player.money += money_rate*multiplier;
     player.calculations += calculation_rate*multiplier;
     player.code += code_rate*multiplier;
     
     player.seconds_played += debug_multiplier;
-    
     
     contest_time -= 1 * multiplier;
     //player.money = contest_time; //Test line
@@ -1700,7 +1729,7 @@ setInterval(function () {
         var players_project = player.cs_projects[key];
         var bug_special = Math.pow(cs_bug_multiplier, player.cs_active_languages);
         //x times speed means x times bug chance
-        if(players_project.status == "active"  && Math.random() * 10000/multiplier * bug_special < 1.0){
+        if(players_project.status == 'active'  && Math.random() * 10000/multiplier * bug_special < 1.0){
             players_project.bug_count = Math.floor(players_project.max_progress/10 * Math.random()/bug_special);
             if(players_project.bug_count > 0){
                 add_note(players_project.bug_count + " bugs appeared in " + players_project.name);
