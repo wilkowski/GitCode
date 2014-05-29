@@ -1,5 +1,24 @@
 TODO LIST FOR GAME:
 
+//added flavor text!
+//flavor text on stuff!
+//Remove button.disable, replace with is_disabled/color change
+//Change button code so that there can be popups when button is disabled
+make poup move up or left if at bottom or right
+use undo on cs project cancel button
+test undo
+add in data for super project stuff
+
+grow stuff boxes (animate)
+
+export import buttons for saves, (helpful for testing too)
+
+
+FLAVOR TEXT ON POPUPS
+
+british/english spelling? (flavour/ flavor, color/colour, analyze/analize)
+
+round extra digits off of long numbers (like contest prizes)
 
 adjust grade up 1 cost to 4 or something easy like that
 update google drives site to redirect to scholarclicker.com
@@ -10,8 +29,6 @@ force capitalization of project names
 
 make cancel button work for naming projects
 (alternately rework the way projects are named)
-
-Put up on a website
 
 add google analytics
 
@@ -28,6 +45,15 @@ SUPER PROJECT
 	button to start super project
 	~10 mil effort cost
 
+possible super project rewards:
+10% faster passage of time (time travel reward)
+clicks count +1 times (alternate dimension?)
+permanent 25% bonus to code/calc resource
+permanent /s bonus to a resource
+
+muster adds money
+
+
 MATH SUPER PROJECT
 	Finished advanced math research, graduated school
 	hit super project button (very large requirements, yes/ no option)
@@ -38,18 +64,21 @@ MATH SUPER PROJECT
 	one theorem gives a permanent reward: 
 	ulocks [mathematical universe theorem]
 	Build portal to new dimesion
-	
+	New dimension has little squiggles on some of the letters
 
 CS SUPER PROJECT
+	Gflops item needed
 	Get some ais, have graduated school
 	hit super project button (very large requirements, yes/ no option)
 	button opens up super project tab
 	a few programs need to be made and debugged
 		code analizer: less bugs show up in completed projects
 		self correcting code: bugs no longer show up in completed projects
+		self editing code: 
 	reward program opens up (gives permanent reward)
 		AI buddy = permanent money/s bonus
 		AI buddy = button next to muster used to earn money
+		AI buddy = 25% bonus to a selected resource
 	self improving ai becomes available
 	each one reduces cost of next one (and other cs stuff maybe?)
 	when cost is at 0 you win the game
@@ -57,6 +86,11 @@ CS SUPER PROJECT
 	button brings up yes/no menu
 	if yes, reset game keeping permanent bonus
 	new game has new font
+
+PHYSICS SUPER PROJECT
+	Time dilator - permanent 15% bonus to speed
+	Time machine - travel to the past
+	Sepia tone on everything
 
 Acheivements tab
 	1 for each school up
@@ -126,8 +160,7 @@ Make each button have its own inner html data, -> do textify, counts automagical
 
 Clean up button look/fix size bugs
 
-Remove button.disable, replace with is_disabled/color change
-Change button code so that there can be popups when button is disabled
+
 	
 
 better tab highlighting when something new appears in them

@@ -31,6 +31,11 @@ border:2px solid #a1a1a1;
 background: #dddddd;
 }
 
+#flavor_text{
+font-size: 12px;
+font-style:italic;
+}
+
 #main_body{
 height: calc(100% - 1000px);
 }
@@ -63,6 +68,22 @@ position: fixed;
 right:15px;
 }
 
+#export_popup{
+    position:absolute;
+    left: 5px;
+    bottom: 30px;
+    width: 400px;
+    height: 70px;
+    border: 2px solid #aaaaaa;
+    background-color: #dddddd;
+    word-wrap: break-word;
+    overflow: scroll;
+    -moz-user-select: text; 
+    -webkit-user-select: text; 
+    -ms-user-select: text; 
+    user-select: text;
+}
+
 button{
 width:150px;
 height:23px;
@@ -76,8 +97,14 @@ height:42px;
 }
 
 .tab_button{
-width:57px;
+width:50px; 
 margin:0px;
 border-style: solid;
-border-bottom-style: none;
+border-bottom-color: #dddddd;
+}
+
+.foot_button{
+    width:56px; 
+    border:1px solid #aaaaaa;
+    background-color:#FFFFFF;
 }

@@ -30,6 +30,10 @@
             <div id="code_label" class="table_label">Code</div>
             <div id="code_count" class="table_count">None</div>
         </td>
+        <td id="gflops_box" style="display:none;">
+            <div id="gflops_label" class="table_label">GFLOPS</div>
+            <div id="gflops_count" class="table_count">None</div>
+        </td>
     </tr>
     <tr>
         <td id="effort_box">
@@ -42,31 +46,7 @@
         </td>
     </tr>
 </table>
-<!--
-<table id="resources" class="fixed">
-    <col width="100px" />
-    <col width="100px" />
-    <col width="100px" />
-    <col width="100px" />
-    <col width="100px" />
-    <tr>
-        <td id="effort_label">Effort</td>
-        <td id="money_label">Money</td>
-        <td id="calculations_label" style="display:none;">Calculations</td>
-        <td id="code_label" style="display:none;">Code</td>
-        <td id="math_skill_label" style="display:none;">Math Skill</td>
-        <td id="cs_skill_label" style="display:none;">CS Skill</td>
-    </tr>
-    <tr>
-        <td id="effort_count" class="count">None</td>
-        <td id="money_count" class="count">None</td>  
-        <td id="calculations_count" class="count" style="display:none;">None</td>
-        <td id="code_count" class="count" style="display:none;">None</td>
-        <td id="math_skill_count" class="count" style="display:none;">None</td>
-        <td id="cs_skill_count" class="count" style="display:none;">None</td>
-    </tr>
-</table>
--->
+
 <button id="muster" style="display:none;">Muster 0/4</button>
 <p>
 <div id="tab_bar" style="display:none;">
@@ -124,7 +104,7 @@
         <div><button id="buy_answers">Test Answers</button></div> 
     </div>
     <div id="math_research" style="float:left;">
-        <div><button id="do_math_super_project">Start Super Project</button></div>
+        <div><button id="start_math_super_project">Start Math Super Project</button></div>
         <div><button id="do_math_contest">Solve Problem</button></div>
         <div><button id="start_math_contest">Start Math Contest</button></div>
         <div><button id="start_math_research">Start Research Project</button></div>
@@ -153,7 +133,7 @@
         <div><button id="buy_computer_cs">Computer</button></div>
     </div>
     <div id="cs_projects" style="float:left;">
-        <div><button id="create_cs_super_project">Start Super Project</button></div>
+        <div><button id="start_cs_super_project">Start CS Super Project</button></div>
         <div><button id="create_neural_net">Make Neural Net</button></div>
         <div><button id="create_language">Design Language</button></div>
         <div><button id="create_website">Create Website</button></div>
@@ -165,7 +145,31 @@
     </div>
 </div>
 <div id="special_section" style="display:none;">
-    <div>Comming Soon...</div>
+    <div id='math_specail_section'>
+    </div>
+    <div>Coming Soon...</div>
+    <div id="cs_special_section">
+        <div><button id="enter_matrix">Enter Computer Matrix</button></div>
+        <div id="cs_special_store" style="float:left;">
+            <div><button id="buy_super_computer">Super Computer</button></div>
+            <div><button id="buy_bot_net">Bot Net</button></div>
+            <div><button id="buy_server">Server</button></div>
+        </div>
+        <div id="cs_super_projects" style="float:left;">
+            <div><button id="ai_node"></button>Create AI Node</div>
+            <div><button id="design_ai_node"></button>Design AI Node</div>
+            <div><button id="ai_buddy">AI Companion</button></div>
+            <div><button id="design_ai_buddy">Design AI Companion</button></div>
+            <div><button id="self_editing_code">Self Editing Program</button></div>
+            <div><button id="design_self_editing_code">Design Self Editing Program</button></div>
+            <div><button id="self_correcting_code">Self Correcting Code</button></div>
+            <div><button id="design_self_correcting_code">Design Self Correcting Code</button></div>
+            <div><button id="code_analizer">Code Analyzer</button></div>
+            <div><button id="design_code_analizer">Design Code Analyzer</button></div>
+        </div>
+        
+    </div>
+    
 </div>
 <div id="footer_copy"></div>
 
@@ -175,17 +179,20 @@
     <div id = "popup_special_text"></div>
     <div id = "popup_cost"></div>
     <div id = "popup_reward"></div>
+    <div id = "flavor_text"></div>
 </div>
 
 <div id="footer_bar">
     <div id="save_buttons" style="float:left;">
-        <button id="save_game">Save Game</button>
-        <button id="reset_game">Reset Game</button>
+        <button id="save_game" class="foot_button">Save</button>
+        <button id="reset_game" class="foot_button">Reset</button>
+        <button id="export_game" class="foot_button">Export</button>
+        <button id="import_game" class="foot_button">Import</button>
     </div>
     <div id="autosaving"  style="float:left;"> autosaving...</div>
     <div id="timer"  style="float:left;">00:00:00</div>
-    <button id="speed_up" style="float:left; display:none;">x2</button>
-    <button id="slow_down" style="float:left; display:none;">/2</button>
+    <button id="speed_up" class="foot_button" style="float:left; display:none;">x2</button>
+    <button id="slow_down" class="foot_button" style="float:left; display:none;">/2</button>
     <div id="multiplier_text" style="float:left; display:none;">x1</div>
     <div id="credits">Created by Wilkowski</div>
 </div>
@@ -194,6 +201,21 @@
     Donation stuff goes here
 </div>
 
+<div id="export_popup" style="display:none;">
+    Save game text goes here.  
+</div>
+
 
 <script src="ButtonData.js"></script>
 <script src="Scholar.js"></script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-51404251-1', 'scholarclicker.com');
+  ga('send', 'pageview');
+
+</script>
