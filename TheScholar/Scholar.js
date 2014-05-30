@@ -7,7 +7,7 @@
 //Final note, please keep this a secret between the two of us, don't even hint about it
 //When this cheat gets published I will remove it.
 
-var debug = true;
+var debug = false;
 var debug_multiplier = 1;
 
 var math_calc_multiplier = 1.1;
@@ -1532,6 +1532,7 @@ function math_timer(){
         }
     }
 }
+
 
 function cs_project_clicked(button){
     if(!try_to_get_something(button)){
