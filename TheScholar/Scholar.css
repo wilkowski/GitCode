@@ -96,15 +96,19 @@ margin:1px;
 height:42px;
 }
 
-.tab_button{
-width:50px; 
+.large_button{ /* Must match button appears size*/
+height:46px;
+}
+
+.tab_button{ 
+width:60px; /* Must match button appears size*/
 margin:0px;
 border-style: solid;
 border-bottom-color: #dddddd;
 }
 
 .foot_button{
-    width:56px; 
+    width:56px; /* Must match button appears size*/
     border:1px solid #aaaaaa;
     background-color:#FFFFFF;
 }

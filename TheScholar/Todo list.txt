@@ -1,20 +1,29 @@
 TODO LIST FOR GAME:
 
+Adjust size of super project buttons
+
+Test what happens if math level gets over 9.9 bil
+
+Change self editing code to add progress to projects instead of fixing bugs
+
+better layout for math/cs projects
 //added flavor text!
 //flavor text on stuff!
 //Remove button.disable, replace with is_disabled/color change
 //Change button code so that there can be popups when button is disabled
-make poup move up or left if at bottom or right
+//make poup move up or left if at bottom or right
 use undo on cs project cancel button
 test undo
 add in data for super project stuff
 
 grow stuff boxes (animate)
 
-export import buttons for saves, (helpful for testing too)
+//export import buttons for saves, (helpful for testing too)
+
+Do some animated text on button click:+skill thingy
 
 
-FLAVOR TEXT ON POPUPS
+//FLAVOR TEXT ON POPUPS
 
 british/english spelling? (flavour/ flavor, color/colour, analyze/analize)
 
@@ -46,10 +55,10 @@ SUPER PROJECT
 	~10 mil effort cost
 
 possible super project rewards:
-10% faster passage of time (time travel reward)
-clicks count +1 times (alternate dimension?)
-permanent 25% bonus to code/calc resource
-permanent /s bonus to a resource
+10% faster passage of time (time travel reward, [physics])
+clicks count +1 times (alternate dimension? [math])
+Earn interest on Calculations/Code/Money (Bad idea, interst is unfun)
+permanent /s bonus to a resource && add multiplier on resource max ([CS])
 
 muster adds money
 
@@ -61,7 +70,8 @@ MATH SUPER PROJECT
 		
 	each has only one solution and each has a chance of failure
 	research unlocks new theorems
-	one theorem gives a permanent reward: 
+	one theorem gives a permanent reward:
+		+x% on all skill rewards
 	ulocks [mathematical universe theorem]
 	Build portal to new dimesion
 	New dimension has little squiggles on some of the letters
@@ -78,7 +88,7 @@ CS SUPER PROJECT
 	reward program opens up (gives permanent reward)
 		AI buddy = permanent money/s bonus
 		AI buddy = button next to muster used to earn money
-		AI buddy = 25% bonus to a selected resource
+		AI buddy = 50% bonus to a selected resource (calc/code)
 	self improving ai becomes available
 	each one reduces cost of next one (and other cs stuff maybe?)
 	when cost is at 0 you win the game
@@ -100,6 +110,9 @@ Acheivements tab
 	minimal other stuff wins
 	graduate without cs/other classes
 	graduate without cheating.  
+	Multipling matricies: win cs multiple times
+
+
 	
 Add colors! (art class)
 money -> dark green
@@ -128,13 +141,11 @@ main section teaching job:
 	cs teacher:	reward money/s based on cs skill
 			costs effort/s and code/s
 
-#some level requirements on cs stuff? maybe not
-
-more testing of cs project bugs
-
-Do some animated text on button click+skill thingy
-
-FIX BUGS
+God Mode tab (last thing to do):
+	Requires All other acheivements
+	Initially Show all true/false values and allow player to change them
+	One of the bools unlocks larger god mode with acess to variables
+	One of the variables unlocks access to full god mode with access to *everything*
 
 Figure out what happens when numbers get too large & how to beat limits
 
@@ -158,36 +169,8 @@ in high school require pysics/x and math/x
 Make each button have its own inner html data, -> do textify, counts automagically
 (hard since innerHTML may contain other buttons, not really a requirement)
 
-Clean up button look/fix size bugs
-
-
-	
-
 better tab highlighting when something new appears in them
-Clean up popup text code (see todo)
 fix popup bug (empty popup sometimes)
 
 balance so that it is significantly faster to stick to one subject
 	(completion amount of money takes a while if effort is divided, faster if focused)
-
-
-FINISHED (ish)
-
-make cs projects
-	FEATURES:
-	Exponential cost
-	Gives a semi-permanent bonus to something (+$/s, calc/s, code/s, -bugs/s, etc)
-	Player Names the project
-	Random number of bugs appear =rand(current # -1)
-	At each interval there is a small chance project will break 
-		(requires small number of bug fixes to restore use)
-
-
-make math researches
-	FEATURES:
-	random name (if reasonable to do)
-	random bonus to something (has a chance of no bonus = hit research dead end)
-		bonus/chance of failure is based on math level
-	already gotten bonuses are less likely
-	exponential cost
-	can start a bunch a once but not really useful to do so

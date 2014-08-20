@@ -7,10 +7,10 @@
 
 </div>
 <table id="resources" class="fixed">
-    <col width="230px" />
-    <col width="230px" />
-    <col width="230px" />
-    <col width="230px" />
+    <col width="233px" />
+    <col width="233px" />
+    <col width="233px" />
+    <col width="233px" />
     <tr>
         <td id="math_skill_box" style="display:none;">
             <div id="math_skill_label" class="table_label">Math Skill</div>
@@ -30,9 +30,9 @@
             <div id="code_label" class="table_label">Code</div>
             <div id="code_count" class="table_count">None</div>
         </td>
-        <td id="gflops_box" style="display:none;">
-            <div id="gflops_label" class="table_label">GFLOPS</div>
-            <div id="gflops_count" class="table_count">None</div>
+        <td id="tflops_box" style="display:none;">
+            <div id="tflops_label" class="table_label">TFLOPS</div>
+            <div id="tflops_count" class="table_count">None</div>
         </td>
     </tr>
     <tr>
@@ -82,6 +82,8 @@
 </div>
 <div id="math_section" style="display:none;">
     <div id="math_classes" style="float:left;">
+        <div><button id="learn_representation_theory">Representation Theory</button></div>
+        <div><button id="learn_topology">Topology</button></div>
         <div><button id="learn_complex_analysis">Complex Analysis</button></div>
         <div><button id="learn_linear_algebra">Linear Algebra</button></div>
         <div><button id="learn_number_theory">Number Theory</button></div>
@@ -106,7 +108,7 @@
     <div id="math_research" style="float:left;">
         <div><button id="start_math_super_project">Start Math Super Project</button></div>
         <div><button id="do_math_contest">Solve Problem</button></div>
-        <div><button id="start_math_contest">Start Math Contest</button></div>
+        <div><button id="start_math_contest">Math Contest</button></div>
         <div><button id="start_math_research">Start Research Project</button></div>
         <div><button id="do_tutoring">Tutoring</button> </div>
         <div><button id="do_calculation">Calculate</button></div>
@@ -147,26 +149,30 @@
 <div id="special_section" style="display:none;">
     <div id='math_specail_section'>
     </div>
-    <div>Coming Soon...</div>
     <div id="cs_special_section">
         <div><button id="enter_matrix">Enter Computer Matrix</button></div>
+        <div>
+            <button id="ai_buddy_code">AI Code Focus</button>
+            <button id="ai_buddy_calculations">AI Calculation Focus</button>
+        </div>
         <div id="cs_special_store" style="float:left;">
             <div><button id="buy_super_computer">Super Computer</button></div>
             <div><button id="buy_bot_net">Bot Net</button></div>
             <div><button id="buy_server">Server</button></div>
         </div>
         <div id="cs_super_projects" style="float:left;">
-            <div><button id="ai_node"></button>Create AI Node</div>
-            <div><button id="design_ai_node"></button>Design AI Node</div>
-            <div><button id="ai_buddy">AI Companion</button></div>
-            <div><button id="design_ai_buddy">Design AI Companion</button></div>
-            <div><button id="self_editing_code">Self Editing Program</button></div>
-            <div><button id="design_self_editing_code">Design Self Editing Program</button></div>
-            <div><button id="self_correcting_code">Self Correcting Code</button></div>
-            <div><button id="design_self_correcting_code">Design Self Correcting Code</button></div>
-            <div><button id="code_analizer">Code Analyzer</button></div>
-            <div><button id="design_code_analizer">Design Code Analyzer</button></div>
+            <div><button id="ai_node" class="large_button">Create AI Node</button></div>
+            <div><button id="design_ai_node" class="large_button">Design AI Node</button></div>
+            <div><button id="ai_buddy" class="large_button">AI Companion</button></div>
+            <div><button id="design_ai_buddy" class="large_button">Design AI Companion</button></div>
+            <div><button id="self_editing_code" class="large_button">Self Editing Program</button></div>
+            <div><button id="design_self_editing_code" class="large_button">Design Self Editing Program</button></div>
+            <div><button id="self_correcting_code" class="large_button">Self Correcting Code</button></div>
+            <div><button id="design_self_correcting_code" class="large_button">Design Self Correcting Code</button></div>
+            <div><button id="code_analizer" class="large_button">Code Analyzer</button></div>
+            <div><button id="design_code_analizer" class="large_button">Design Code Analyzer</button></div>
         </div>
+        
         
     </div>
     
@@ -175,12 +181,7 @@
 
 </div>
 
-<div id ="popup">
-    <div id = "popup_special_text"></div>
-    <div id = "popup_cost"></div>
-    <div id = "popup_reward"></div>
-    <div id = "flavor_text"></div>
-</div>
+
 
 <div id="footer_bar">
     <div id="save_buttons" style="float:left;">
@@ -203,6 +204,13 @@
 
 <div id="export_popup" style="display:none;">
     Save game text goes here.  
+</div>
+
+<div id ="popup">
+    <div id = "popup_special_text"></div>
+    <div id = "popup_cost"></div>
+    <div id = "popup_reward"></div>
+    <div id = "flavor_text"></div>
 </div>
 
 
