@@ -54,6 +54,7 @@
     <button id="math_tab_button" class="tab_button">math</button>
     <button id="cs_tab_button" class="tab_button">cs</button>
     <button id="special_tab_button" class="tab_button">special</button>
+    <button id="bonus_tab_button" class="tab_button">bonus</button>
 </div>
 </p>
 <div id="main_section" style="display:none;">
@@ -139,29 +140,30 @@
         <div><button id="create_neural_net">Make Neural Net</button></div>
         <div><button id="create_language">Design Language</button></div>
         <div><button id="create_website">Create Website</button></div>
-        <div><button id="create_math_solver">Create Math Solver</button></div>
+        <div><button id="create_math_solver">Make Math Solver</button></div>
         <div><button id="create_game">Create Game</button></div>
         <div><button id="write_code">Write Code</button></div>
     </div>
     <div id="cs_ongoing" style="float:left;">
+        <div id="net_projects" class="cs_projects_section"></div>
+        <div id="language_projects" class="cs_projects_section"></div>
+        <div id="website_projects" class="cs_projects_section"></div>
+        <div id="solver_projects" class="cs_projects_section"></div>
+        <div id="game_projects" class="cs_projects_section"></div>
     </div>
 </div>
 <div id="special_section" style="display:none;">
     <div id='math_specail_section'>
     </div>
     <div id="cs_special_section">
-        <div><button id="enter_matrix">Enter Computer Matrix</button></div>
-        <div>
-            <button id="ai_buddy_code">AI Code Focus</button>
-            <button id="ai_buddy_calculations">AI Calculation Focus</button>
-        </div>
+        <div><button id="enter_matrix" class="large_button">Enter Computer Matrix</button></div>
         <div id="cs_special_store" style="float:left;">
             <div><button id="buy_super_computer">Super Computer</button></div>
             <div><button id="buy_bot_net">Bot Net</button></div>
             <div><button id="buy_server">Server</button></div>
         </div>
         <div id="cs_super_projects" style="float:left;">
-            <div><button id="ai_node" class="large_button">Create AI Node</button></div>
+            <div><button id="ai_node" class="large_button">AI Node</button></div>
             <div><button id="design_ai_node" class="large_button">Design AI Node</button></div>
             <div><button id="ai_buddy" class="large_button">AI Companion</button></div>
             <div><button id="design_ai_buddy" class="large_button">Design AI Companion</button></div>
@@ -172,11 +174,16 @@
             <div><button id="code_analizer" class="large_button">Code Analyzer</button></div>
             <div><button id="design_code_analizer" class="large_button">Design Code Analyzer</button></div>
         </div>
-        
-        
+        <div style="float:left;">
+            <div><button id="ai_buddy_calculations">AI Calculation Focus</button></div>
+            <div><button id="ai_buddy_code">AI Code Focus</button></div>
+        </div>
     </div>
-    
 </div>
+<div id="bonus_section" style="display:none;">
+
+</div>
+
 <div id="footer_copy"></div>
 
 </div>
@@ -195,25 +202,31 @@
     <button id="speed_up" class="foot_button" style="float:left; display:none;">x2</button>
     <button id="slow_down" class="foot_button" style="float:left; display:none;">/2</button>
     <div id="multiplier_text" style="float:left; display:none;">x1</div>
-    <div id="credits">Created by Wilkowski</div>
-</div>
-
-<div id="donate_popup" style="display:none;">
-    Donation stuff goes here
+    
+    <div id="credits">
+        <button id="donate_button" class="foot_button">Donate</button>
+        Created by Wilkowski
+    </div>
 </div>
 
 <div id="export_popup" style="display:none;">
     Save game text goes here.  
 </div>
 
-<div id ="popup">
+<div id="donate_popup" style="display:none;">
+    <div style="float:center;">Help support this games developer</div>
+    <div>Dogecoin: DScXNsUrMhLwvoQoDSSfvDBNyu15x6mUg9</div>
+</div>
+
+<div id ="popup" style="display:none;">
     <div id = "popup_special_text"></div>
     <div id = "popup_cost"></div>
     <div id = "popup_reward"></div>
     <div id = "flavor_text"></div>
 </div>
 
-
+<script src="jquery-1.11.1.min.js"></script>
+<script src="EndAnimation.js"></script>
 <script src="ButtonData.js"></script>
 <script src="Scholar.js"></script>
 
