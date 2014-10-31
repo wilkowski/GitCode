@@ -1,65 +1,93 @@
 TODO LIST FOR GAME:
 
-Adjust size of super project buttons
+fix popup repositioning when page is scrolled down
 
-Test what happens if math level gets over 9.9 bil
+set default font for end text
 
-Change self editing code to add progress to projects instead of fixing bugs
+/donation button:
+//	dogecoin 
+		icons
+//	paypal
+//	bitcoin
 
-better layout for math/cs projects
-//added flavor text!
-//flavor text on stuff!
-//Remove button.disable, replace with is_disabled/color change
-//Change button code so that there can be popups when button is disabled
-//make poup move up or left if at bottom or right
-use undo on cs project cancel button
-test undo
-add in data for super project stuff
+find better font for cs reset
+//slightly better
+//Nixie one? from google fonts: (does it do italics?)
 
-grow stuff boxes (animate)
+navigation bar/favorites icon thingy
 
-//export import buttons for saves, (helpful for testing too)
+new layout for math/cs projects
+Group projects together by type with box around them
+	+/- button or ^ V button to expand/minimize box thingy (top left)
+	label on box with description (after +/-)
+	[finished/ (shown iff <total)]total item count (top right)
+
+
+Stats/options menu (treat it like a tab button but place it on bottom row)
+	show time played?
+	import/export
+	reset
+	rename button (on next renameable button click get option to rename it)
+
+Possible special reset effects:
+	need glasses: (everything is slightly blurry until glasses purchased)
+	Dating section: pick a person
+		+relationship buttons
+		marriage gives a bunch of bonuses to stuff depending on partner
+	Chance to get into fight and lose a bunch of money
 
 Do some animated text on button click:+skill thingy
 
-
-//FLAVOR TEXT ON POPUPS
-
 british/english spelling? (flavour/ flavor, color/colour, analyze/analize)
 
-round extra digits off of long numbers (like contest prizes)
-
-adjust grade up 1 cost to 4 or something easy like that
 update google drives site to redirect to scholarclicker.com
 
 add web adress icon thingy for game
 
-force capitalization of project names
-
-make cancel button work for naming projects
-(alternately rework the way projects are named)
-
-add google analytics
-
-math requirements for grade up should show up properly too
-(and or add more math classes corresponding to grade up requirements)
 (add more cs classes)
 
 Figure out how to make each button column be only as wide as necessary
 (with some max width in case people put long names of stuff in)
 
-add confirmation box after hitting super project start button
+
+
+Current milestone times:
+	middle school:	2:40 min
+	high school:	28:40 min
+	college:	3 hrs
+	grad school:	16 hrs
+	graduation:	75 hrs
+	ai buddy	180 hrs
+	infinite nodes	330 hrs
+
 SUPER PROJECT
-	new tab for super project items
-	button to start super project
+
 	~10 mil effort cost
+
+
+formula for X items of cost C and exponent E
+infinite:
+S = 1/E sum C*E^N from N = X to -infin
+SE = 1/E sum C E^N from N=X+1 to -infin
+SE-S = CE^X
+S = CE^(X) / (E-1)
+non infinite sum = CE^X+1 /1-E - CE/(E-1) = C/(E-1) * (E^(X) - 1)
+current cs super costs:
+	super computers: $ 166M
+	bot nets: $48M, 16M code
+	servers: $11M
+		sum: $225M *5/6
+			days: ~12 at best
+	AI buddy:  12M effort, 30M code
+		days: ~1.0, ~.3 days
+	design: 1M effort, 2M code
+	
 
 possible super project rewards:
 10% faster passage of time (time travel reward, [physics])
 clicks count +1 times (alternate dimension? [math])
 Earn interest on Calculations/Code/Money (Bad idea, interst is unfun)
-permanent /s bonus to a resource && add multiplier on resource max ([CS])
-
+//permanent /s bonus to a resource && add multiplier on resource max ([CS])
 muster adds money
 
 
@@ -77,24 +105,22 @@ MATH SUPER PROJECT
 	New dimension has little squiggles on some of the letters
 
 CS SUPER PROJECT
-	Gflops item needed
-	Get some ais, have graduated school
-	hit super project button (very large requirements, yes/ no option)
-	button opens up super project tab
-	a few programs need to be made and debugged
-		code analizer: less bugs show up in completed projects
-		self correcting code: bugs no longer show up in completed projects
-		self editing code: 
-	reward program opens up (gives permanent reward)
-		AI buddy = permanent money/s bonus
-		AI buddy = button next to muster used to earn money
-		AI buddy = 50% bonus to a selected resource (calc/code)
-	self improving ai becomes available
-	each one reduces cost of next one (and other cs stuff maybe?)
-	when cost is at 0 you win the game
-	button appears that allows you to [enter the matrix]
-	button brings up yes/no menu
-	if yes, reset game keeping permanent bonus
+//	Gflops item needed
+//	Get some ais, have graduated school
+//	hit super project button (very large requirements, yes/ no option)
+//	button opens up super project tab
+//	a few programs need to be made and debugged
+//		code analizer: less bugs show up in completed projects
+//		self correcting code: bugs no longer show up in completed projects
+//		self editing code: 
+//	reward program opens up (gives permanent reward)
+//		AI buddy = 50% bonus to a selected resource (calc/code)
+//	self improving ai becomes available
+//	each one reduces cost of next one (and other cs stuff maybe?)
+//	when cost is at 0 and they go out of control you win the game
+//	button appears that allows you to [enter the matrix]
+//	button brings up yes/no menu
+//	if yes, reset game keeping permanent bonus
 	new game has new font
 
 PHYSICS SUPER PROJECT
@@ -151,8 +177,6 @@ Figure out what happens when numbers get too large & how to beat limits
 
 Test in multiple browsers/window sizes
 
-(donation button?)
-
 Test everything, test at normal speed
 
 Physics section (also uses calculations)
@@ -174,3 +198,46 @@ fix popup bug (empty popup sometimes)
 
 balance so that it is significantly faster to stick to one subject
 	(completion amount of money takes a while if effort is divided, faster if focused)
+
+
+
+
+/////////////Completed stuff
+
+//Adjust size of super project buttons
+//SUPER PROJECT
+//add confirmation box after hitting super project start button
+//	new tab for super project items
+//	button to start super project
+//Test what happens if math level gets over 9.9 bil
+
+//Change self editing code to add progress to projects instead of fixing bugs
+
+//force capitalization of project names
+
+//make cancel button work for naming projects
+
+//add google analytics
+
+//math requirements for grade up should show up properly too
+//(and or add more math classes corresponding to grade up requirements)
+
+//added flavor text!
+//flavor text on stuff!
+//Remove button.disable, replace with is_disabled/color change
+//Change button code so that there can be popups when button is disabled
+//make poup move up or left if at bottom or right
+//use undo on cs project cancel button
+//test undo
+//add in data for super project stuff
+
+//grow stuff boxes (animate)
+
+//export import buttons for saves, (helpful for testing too)
+
+//round extra digits off of long numbers (like contest prizes)
+
+//adjust grade up 1 cost to 4 or something easy like that (now start with enough effort)
+
+
+//FLAVOR TEXT ON POPUPS
