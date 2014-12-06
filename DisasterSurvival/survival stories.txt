@@ -1,0 +1,82 @@
+Story lines
+
+Any story lines where characters cooperate will strengthen their bonds
+Where they fight or are separated will weaken bonds
+## - story marker
+##& - repeatable story line
+unjustified fight/steal option hurts loyalty of ethical people, reduced penalty if action is justified
+lack of fighting will hurt loyalty of unethical people
+
+
+Overarching plots:
+alien invasion, nucular war, foreign invaders, massive earthquake, zombies, deadly disease, only 10% survive
+(secret everything at once option: aliens invade causing the other problems)
+
+
+
+
+Generic
+
+## Revenge A - Adult parent intro
+intro -	Daughter is killed by bandits, MC shoots one of them in the leg giving them a permanent limp.  
+	(bandits group added to world map)
+middle - Encounter bandits in camp they set up, one has a limp.  Some of their actions are suspicious.  They supposedly 
+had been living there for a while
+
+choice - send someone (or no one) to investigate 
+	(choose MC)- MC catches on and (fight check) kills or (gets killed) bandits
+	(choose other) char catches on too late (unless very good skill tests pass)
+	
+resolution (MC) - Bad guy confesses to all crimes, trys sneak attack on MC and gets killed.
+resolution other - Bad guy confesses, trys sneak attack on char and gets killed.
+
+
+
+##& Romantic outing - 2 romance compatible characters on scouting mission
+Characters enter old building, they get trapped for some reason - they are stuck for a while, one character talks about their past
+Eventually they escape through ingenuity/ luck/ whatever
+
+##& Friendly outing - 2 characters on long drive together
+One talks about their past
+
+##& Friendly outing - 2 characters on drive together
+Vehicle breaks down, repair attempted while (past discussion)
+If success mission proceeds, if failure eventually picked up by rest of group.
+
+## Religious Cult
+Encounter a group of survivors that have formed a religious cult
+
+choice - avoid them (can encounter again with repeat choice)
+		- talk to them (they preach to you, have some trade offers)
+		
+next meeting (can investigate them further or continue trade)
+	investigate: discover unusual/suspicious activity
+	no investiage but trade: (they will sap loyalty of your chars, some could be converted)
+	
+next meeting:
+	if lost characters auto ask to see them (chance that they are happy, chance they are unable to talk)
+	trade: (same as before)
+	take action: (requires investigation or unreachable chars) - leads to fight
+		combat with other group (win forces return of lost chars)
+		
+##& Bandits Attack - characters on outing
+	choice - fight, run or surrender
+	
+##& Discover hermit
+	talk - learn their story, possible to recruit
+	trade
+	fight
+	steal
+	
+##& meet other group
+	talk
+	trade
+	fight
+	steal
+	
+## individual in house
+	regular options
+	-talk: gets angry that you're poking around, asks you to leave
+	-fight: if victory then discover woman in basement
+	-steal: discover woman in basement, fight is forced
+	
