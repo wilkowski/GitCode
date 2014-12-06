@@ -1,20 +1,73 @@
 TODO LIST FOR GAME:
 
 fix popup repositioning when page is scrolled down
+Make buttons be disabled while they are growing so you cant accidentally click one
 
-set default font for end text
 
-/donation button:
-//	dogecoin 
-		icons
-//	paypal
-//	bitcoin
+MATH SUPER PROJECT
+	Special research project has a chance of appearing if math level is high enough
+		(twin prime research, or colatz conjecture, odd perfect numbers)
+		gildbreath's conjecture: repeated prime differences = 1
+	When completed unlocks math super
+	Math super project
+	insight button is enabled for 2 seconds out of every 15 seconds, disabled on click, +1 insight
 
-find better font for cs reset
+	Research areas:
+		solution to navier-stokes equation: improves physics? 50%
+		no solution to navier-stokes: improve math?
+		P=NP: massive money/s boost (but not $1M), 10% chance
+		P!=NP: small money/s boost, 90% chance
+		Reimann Hypothesis: + calculations/s boost
+		Problem classification theorem: shows % chance of success for all research
+			/i Provides a method to estimate the computational difficulty of a problem
+
+	millenium problems all have $1mil prize
+
+	Finished advanced math research, graduated school
+	hit super project button (very large requirements, yes/ no option)
+	a few research projects become available to try to prove or disprove.
+		
+	each has only one solution and each has a chance of failure
+	research unlocks new theorems
+	one theorem gives a permanent reward:
+		+x% on all skill rewards
+	ulocks [mathematical universe theorem]
+	Build portal to new dimesion
+	New dimension has little squiggles on some of the letters
+
+
+Physics section:
+	Basic physics
+	Chemistry
+	Advanced physics
+	Quantum physics
+	String theory
+	Laser stuff
+		Introduce materials for experiments: (straight up purchaseable item, flat price)
+		(purchase 1x 10x 100x etc, buying 10 of one teir unlocks next one)
+	
+
+Special thing(s):
+	Build experiment has %chance of success, can spend as much effort as you want building to success odds
+	Silicon/transistor/cs experiemnt gives +5% code and +5% calc /s
+	Pure physics experiment +improve odds of sucess for future experiments
+	Material experiment: reduce material costs by 10%
+	Money Experiment: earn permanent $/s
+
+Engineering section:
+	Heavy physics, materials, calculations requirements
+	Special: Build stuff
+	
+
+//find better font for cs reset
 //slightly better
 //Nixie one? from google fonts: (does it do italics?)
 
-navigation bar/favorites icon thingy
+Inspiration - Insipiration button appears next to muster for ~10 seconds (color/text countdown)
+	Active for 30 seconds: all +skills clicks get +50% bonus
+	Long ass cooldown ~ once per 15 min to 30 min?
+
+create a navigation bar/favorites icon thingy (a graduation cap? a book?)
 
 new layout for math/cs projects
 Group projects together by type with box around them
@@ -91,18 +144,6 @@ Earn interest on Calculations/Code/Money (Bad idea, interst is unfun)
 muster adds money
 
 
-MATH SUPER PROJECT
-	Finished advanced math research, graduated school
-	hit super project button (very large requirements, yes/ no option)
-	a few research projects become available to try to prove or disprove.
-		
-	each has only one solution and each has a chance of failure
-	research unlocks new theorems
-	one theorem gives a permanent reward:
-		+x% on all skill rewards
-	ulocks [mathematical universe theorem]
-	Build portal to new dimesion
-	New dimension has little squiggles on some of the letters
 
 CS SUPER PROJECT
 //	Gflops item needed
@@ -203,6 +244,14 @@ balance so that it is significantly faster to stick to one subject
 
 
 /////////////Completed stuff
+
+//set default font for end text
+
+/donation button:
+//	dogecoin 
+		icons
+//	paypal
+//	bitcoin
 
 //Adjust size of super project buttons
 //SUPER PROJECT

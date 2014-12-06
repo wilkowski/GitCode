@@ -34,6 +34,10 @@
             <div id="tflops_label" class="table_label">TFLOPS</div>
             <div id="tflops_count" class="table_count">None</div>
         </td>
+		<td id="insights_box" style="display:none;">
+            <div id="insights_label" class="table_label">Insights</div>
+            <div id="insights_count" class="table_count">None</div>
+        </td>
     </tr>
     <tr>
         <td id="effort_box">
@@ -55,12 +59,13 @@
     <button id="cs_tab_button" class="tab_button">cs</button>
     <button id="special_tab_button" class="tab_button">special</button>
     <button id="bonus_tab_button" class="tab_button">bonus</button>
+	<button id="options_tab_button" class="tab_button">options</button>
 </div>
 </p>
 <div id="main_section" style="display:none;">
     <div id="main_classes" style="float:left;">
         <div><button id="learn_logic">Logic</button></div>
-        <div><button id="learn_art">Art</button></div>          
+        <div><button id="learn_art">Coloring</button></div>          
         <div><button id="learn_math">Numbers</button> </div>
         <div><button id="learn_reading">Reading</button></div>
     </div>
@@ -154,7 +159,29 @@
     </div>
 </div>
 <div id="special_section" style="display:none;">
-    <div id='math_specail_section'>
+    <div id="math_special_section">
+		<div><button id="enter_protal" class="end_game_button black">Enter Dimensional Portal</button></div>
+		<div><button id="gain_insight">Insight</button></div>
+		<div><button id="contruct_portal">Construct Dimensional Portal</button></div>
+		<div><button id="mathematical_universe_theory">Mathematical Universe Theorem</button></div>
+		<div>
+			<button id="riemann_hypothesis">Riemann Hypothesis</button>
+			<button id="not_riemann_hypothesis">Counterexample to Riemann Hypothesis</button>
+		</div>
+		<div><button id="goldbach_conjecture">Goldbach Conjecture</button></div>
+		<div>
+			<button id="navier_stokes_equation">Navier-Stokes Equation</button>
+			<button id="not_navier_stokes_equation">Impossibility of Navier-Stokes Equation</button>
+		</div>
+		<div>
+			<button id="p_equals_np">P=NP</button>
+			<button id="not_p_equals_np">P!=NP</button>
+		</div>
+		<div>
+			<button id="unique_games_conjecture">Unique Games Conjecture</button>
+			<button id="not_unique_games_conjecture">Disprove Unique Games Conjecture</button>
+		</div>
+		<div><button id="problem_classification_theorem">Problem Classification Theorem</button></div>
     </div>
     <div id="cs_special_section">
         <div><button id="enter_matrix" class="end_game_button black">Enter Computer Matrix</button></div>
@@ -184,6 +211,15 @@
 <div id="bonus_section" style="display:none;">
 
 </div>
+<div id="options_section" style="display:none;">
+	<div><button id="reset_game">Reset</button></div>
+	<div><button id="export_game">Export</button></div>
+	<div><button id="import_game">Import</button></div>
+	<div><button id="animate_option">Animations</button></div>
+</div>
+
+<div id="achievements_section" style="display:none;">
+</div>
 
 <div id="footer_copy"></div>
 
@@ -192,11 +228,10 @@
 
 
 <div id="footer_bar">
-    <div id="save_buttons" style="float:left;">
+    <div id="footer_buttons" style="float:left;">
         <button id="save_game" class="foot_button">Save</button>
-        <button id="reset_game" class="foot_button">Reset</button>
-        <button id="export_game" class="foot_button">Export</button>
-        <button id="import_game" class="foot_button">Import</button>
+		<button id="options" class="foot_button">Options</button>
+		<button id="achievements" class="foot_button">Achievements</button>
     </div>
     <div id="autosaving"  style="float:left;"> autosaving...</div>
     <div id="timer"  style="float:left;">00:00:00</div>
@@ -242,7 +277,7 @@
 <link href='http://fonts.googleapis.com/css?family=Jura' rel='stylesheet' type='text/css'>
 
 <script src="jquery-1.11.1.min.js"></script>
-<script src="EndAnimation.js"></script>
+<script src="Utility.js"></script>
 <script src="ButtonData.js"></script>
 <script src="Scholar.js"></script>
 

@@ -1,5 +1,9 @@
 //this file sets up the data used for each button
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~Resource Table Section ~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var effort_box = document.getElementById('effort_box');
 var money_box = document.getElementById('money_box');
 var calculations_box = document.getElementById('calculations_box');
@@ -8,12 +12,13 @@ var code_box = document.getElementById('code_box');
 code_box.requirements = {show_code: 1};
 var tflops_box = document.getElementById('tflops_box');
 tflops_box.requirements = {show_tflops: 1};
+var insights_box = document.getElementById('insights_box');
+insights_box.requirements = {show_insights: 1};
 var math_skill_box = document.getElementById('math_skill_box');
 math_skill_box.requirements = {show_math_level: 1};
 var cs_skill_box = document.getElementById('cs_skill_box');
 cs_skill_box.requirements = {show_cs_level: 1};
 
-/*
 var effort_label_element = document.getElementById('effort_label');
 var effort_count_element = document.getElementById('effort_count');
 var money_label_element = document.getElementById('money_label');
@@ -22,15 +27,23 @@ var calculations_label_element = document.getElementById('calculations_label');
 var calculations_count_element = document.getElementById('calculations_count');
 var code_label_element = document.getElementById('code_label');
 var code_count_element = document.getElementById('code_count');
+var tflops_label_element = document.getElementById('tflops_label');
+var tflops_count_element = document.getElementById('tflops_count');
+var insights_label_element = document.getElementById('insights_label');
+var insights_count_element = document.getElementById('insights_count');
 var math_label_element = document.getElementById('math_skill_label');
 var math_count_element = document.getElementById('math_skill_count');
 var cs_label_element = document.getElementById('cs_skill_label');
 var cs_count_element = document.getElementById('cs_skill_count');
-*/
+
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~Tab bar and other top buttons ~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 var muster_button = document.getElementById('muster');
 muster_button.requirements = {grade: 3};
-muster_button.reward = {musters: 1, text: "4 musters = 1 effort"}; //gets updated by main
+muster_button.reward = {musters: 1, text: "3 musters = 1 effort"}; //gets updated by main
 muster_button.flavor = "Work is hard work";
 
 var tab_bar = document.getElementById('tab_bar');
@@ -57,7 +70,13 @@ special_tab_button.requirements = {super_project_started: 1};
 var bonus_tab_button = document.getElementById('bonus_tab_button');
 bonus_tab_button.requirements = {math_level: 5, bonuses: 1}; //MAYBE DO: change to immidiately visible on reset
 
-//main classes
+var options_tab_button = document.getElementById('options_tab_button');
+options_tab_button.requirements = {options_opened: 1}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~main section~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var learn_logic_button = document.getElementById('learn_logic');
 learn_logic_button.requirements = {school: 3, math_level:3000};
 learn_logic_button.cost = {effort: 25};
@@ -66,9 +85,9 @@ learn_logic_button.disable = {cs_level: 10};
 learn_logic_button.flavor = "if logic then cs"
 
 var learn_art_button = document.getElementById('learn_art');
-learn_art_button.requirements = {school: 2};
+learn_art_button.requirements = {grade: 4};
 learn_art_button.disable = {art_level: 10};
-learn_art_button.cost = {effort: 10};
+learn_art_button.cost = {effort: 8};
 learn_art_button.reward = {art_level: 1};
 learn_art_button.flavor = "You found a purple crayon!";
 
@@ -85,7 +104,9 @@ learn_reading_button.cost = {effort: 1};
 learn_reading_button.disable = {reading_level: 5};
 learn_reading_button.reward = {reading_level: 1};
 learn_reading_button.flavor = "These are words";
-//main grades/schools
+
+//~~~~~~~~~~~~~~~~~~~~~main grades/schools~~~~~~~~~~~~~~~~~~~~~
+
 //graduated:6
 var school_up_5_button = document.getElementById('school_up_5');
 school_up_5_button.requirements = {school: 4, math_level: 500000000, grade:20};
@@ -122,7 +143,7 @@ school_up_3_button.requirements = {school: 2, math_level: 200000, grade:12};
 school_up_3_button.disable = {school: 4};
 school_up_3_button.cost = {effort: 10000};
 school_up_3_button.reward = {school: 1, grade:1, effort_per_second: 4.0, money_per_second:1.0, max_effort: 90000};
-school_up_3_button.flavor = "Grades, Sleep, Friends: Choose 2";
+school_up_3_button.flavor = "Grades, Sleep, Social life: Choose 2";
 
 var grade_up_2_button = document.getElementById('grade_up_2'); //special disable condition at 12
 grade_up_2_button.requirements = {school: 3};
@@ -165,6 +186,8 @@ school_up_0_button.cost = {effort: 2};
 school_up_0_button.reward = {school: 1, grade: 1, effort_per_second: 0.5};
 school_up_0_button.flavor = "Hello World!";
 
+//~~~~~~~~~~~~~~~~~~~~~main shop~~~~~~~~~~~~~~~~~~~~~
+
 var buy_vacation_button = document.getElementById('buy_vacation');
 buy_vacation_button.requirements = {school: 6};
 buy_vacation_button.cost = {money: 250000};
@@ -180,7 +203,9 @@ buy_motivation_button.reward = {motivations: 1, text: "+1 muster reward"}; //tex
 buy_motivation_button.text_counter = 'motivations'
 buy_motivation_button.flavor = '"You can do it!" - Famous Person';
 
-//MATH section buttons
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~MATH section buttons~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 var learn_representation_theory_button = document.getElementById('learn_representation_theory');
 learn_representation_theory_button.requirements = {school: 5, math_level: 50000000};
@@ -258,9 +283,10 @@ learn_arithmetic_button.cost = {effort: 3};
 learn_arithmetic_button.reward = {math_level: 2};
 learn_arithmetic_button.flavor = "6*9 = 42";
 
-//do math things
+//~~~~~~~~~~~~~~~~~~~~~math projects and other~~~~~~~~~~~~~~~~~~~~~
+
 var start_math_super_project_button = document.getElementById('start_math_super_project');
-start_math_super_project_button.requirements = {school: 6, math_level:1000000000, math_research_calculation_bonus: 4};
+start_math_super_project_button.requirements = {school: 6, math_level:1000000000, math_research_calculation_bonus: 4, math_research_specialty_project_success: 1};
 start_math_super_project_button.cost = {effort:1000000, money: 100000.00};//subject to change
 start_math_super_project_button.disable = {super_project_started: 1};
 start_math_super_project_button.reward = {super_project_started: 1, math_super_project_status: 1, text:"Start math super project"};
@@ -289,7 +315,9 @@ do_calculation_button.requirements = {show_calculations: 1};
 do_calculation_button.cost = {effort:2};
 do_calculation_button.reward = {calculations: 1};
 do_calculation_button.flavor = "Math stuff";
-//math shop
+
+//~~~~~~~~~~~~~~~~~~~~~math shop~~~~~~~~~~~~~~~~~~~~~
+
 var buy_chalkboard_button = document.getElementById('buy_chalkboard');
 buy_chalkboard_button.requirements = {max_calculations:100000};
 buy_chalkboard_button.cost = {money:1000};
@@ -339,7 +367,9 @@ buy_answers_button.flavor = "Wanna buy some answers?";
 
 var math_ongoing_section = document.getElementById('math_ongoing');
 
-//cs section buttons
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~cs section buttons~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 var learn_haskell_button =  document.getElementById('learn_haskell');
 learn_haskell_button.requirements = {cs_level: 150000, school:5};//22000e
@@ -392,7 +422,7 @@ learn_logo_button.cost = {effort: 10};
 learn_logo_button.reward = {cs_level: 2};
 learn_logo_button.flavor = "Turtle goes forward 10";
 
-//CS shop
+//~~~~~~~~~~~~~~~~~~~~~CS shop~~~~~~~~~~~~~~~~~~~~~
 var buy_memory_button = document.getElementById('buy_memory');
 buy_memory_button.requirements = {computers:2};
 buy_memory_button.cost = {money: 100};
@@ -425,7 +455,8 @@ buy_computer_cs_button.reward = buy_computer_math_button.reward;
 buy_computer_cs_button.text_counter = buy_computer_math_button.text_counter;
 buy_computer_cs_button.flavor = "Can't live without it";
 
-//CS projects
+//~~~~~~~~~~~~~~~~~~~~~CS projects~~~~~~~~~~~~~~~~~~~~~
+
 var start_cs_super_project_button = document.getElementById('start_cs_super_project');
 start_cs_super_project_button.requirements = {school:6, cs_level:1000000, cs_active_neural_nets: 3};
 start_cs_super_project_button.cost = {effort:1000000, money: 500000.00};
@@ -481,10 +512,120 @@ write_code_button.flavor = "TODO: write some flavor text";
 
 var cs_ongoing_section = document.getElementById('cs_ongoing');
 
-//SUPER project section
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~SUPER project section~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~SUPER Math section~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-//SUPER Math section
-//SUPER CS section
+var math_special_section = document.getElementById('math_special_section');
+math_special_section.requirements = {math_super_project_status: 1};
+
+var enter_protal_button = document.getElementById('enter_protal');
+enter_protal_button.requirements = {contruct_portal_done:1};
+
+var gain_insight_button = document.getElementById('gain_insight');
+gain_insight_button.reward = {insights: 1};
+gain_insight_button.requirements = {show_insights: 1};
+
+var contruct_portal_button = document.getElementById('contruct_portal');
+contruct_portal_button.cost = {effort: 10000, calculations: 100000, money: 100000, insights:6};
+contruct_portal_button.reward = {text: ""}
+contruct_portal_button.disable = {contruct_portal_done:1};
+
+var mathematical_universe_theory_button = document.getElementById('mathematical_universe_theory');
+mathematical_universe_theory_button.cost = {effort: 5000, calculations:50000, insights:5};
+mathematical_universe_theory_button.reward = {text: ""}
+mathematical_universe_theory_button.disable = {mathematical_universe_done:1};
+mathematical_universe_theory_button.odds = .5;
+
+var riemann_hypothesis_button = document.getElementById('riemann_hypothesis');
+riemann_hypothesis_button.requirements = {goldbach_done:1};
+riemann_hypothesis_button.cost = {effort: 3000, calculations:20000, insights:4};
+riemann_hypothesis_button.reward = {money: 1000000, text: ""}
+riemann_hypothesis_button.disable = {riemann_done:1};
+riemann_hypothesis_button.odds = .48;
+riemann_hypothesis_button.paired_button = not_riemann_hypothesis_button
+riemann_hypothesis_button.text_counter = 'riemann_failures';
+
+var not_riemann_hypothesis_button = document.getElementById('not_riemann_hypothesis');
+not_riemann_hypothesis_button.requirements = {goldbach_done:1};
+not_riemann_hypothesis_button.cost = {effort: 3000, calculations:20000, insights:4};
+not_riemann_hypothesis_button.reward = {money: 1000000, text: ""}
+not_riemann_hypothesis_button.disable = {riemann_done:1};
+not_riemann_hypothesis_button.odds = .02;
+not_riemann_hypothesis_button.paired_button = riemann_hypothesis_button;
+not_riemann_hypothesis_button.text_counter = 'riemann_failures';
+
+var goldbach_conjecture_button = document.getElementById('goldbach_conjecture');
+goldbach_conjecture_button.cost = {effort: 2000, calculations: 10000, insights:3};
+goldbach_conjecture_button.reward = {text: ""}
+goldbach_conjecture_button.disable = {goldbach_done:1};
+goldbach_conjecture_button.odds = .5;
+goldbach_conjecture_button.text_counter = 'goldbach_conjecture_failures';
+goldbach_conjecture_button.flavor = "All even numbers greater than 2 are the sum of two primes";
+
+var navier_stokes_equation_button = document.getElementById('navier_stokes_equation');
+navier_stokes_equation_button.cost = {effort: 1500, calculations: 7500, insights:2};
+navier_stokes_equation_button.reward = {money: 1000000, text: ""}
+navier_stokes_equation_button.disable = {navier_stokes_done: 1};
+navier_stokes_equation_button.odds = .25;
+navier_stokes_equation_button.paired_button = not_navier_stokes_equation_button;
+navier_stokes_equation_button.text_counter = 'navier_stokes_failures';
+
+var not_navier_stokes_equation_button = document.getElementById('not_navier_stokes_equation');
+not_navier_stokes_equation_button.cost = {effort: 1500, calculations: 7500, insights:2};
+not_navier_stokes_equation_button.reward = {money: 1000000, text: ""}
+not_navier_stokes_equation_button.disable = {navier_stokes_done: 1};
+not_navier_stokes_equation_button.odds = .25;
+not_navier_stokes_equation_button.paired_button = navier_stokes_equation_button;
+not_navier_stokes_equation_button.text_counter = 'not_navier_stokes_failures';
+
+var p_equals_np_button = document.getElementById('p_equals_np');
+p_equals_np_button.requirements = {unique_games_done: 1};
+p_equals_np_button.cost = {effort: 1250, calculations: 5000, insights:1};
+p_equals_np_button.reward = {money: 1000000, text: ""}
+p_equals_np_button.disable = {p_equals_np_done: 1};
+p_equals_np_button.odds = .05;
+p_equals_np_button.paired_button = not_p_equals_np_button;
+p_equals_np_button.text_counter = 'p_equals_np_failures'
+
+var not_p_equals_np_button = document.getElementById('not_p_equals_np');
+not_p_equals_np_button.requirements = {unique_games_done: 1};
+not_p_equals_np_button.cost = {effort: 1250, calculations: 5000, insights:1};
+not_p_equals_np_button.reward = {money: 1000000, money_per_second: 1000, text: ""}
+not_p_equals_np_button.disable = {p_equals_np_done: 1};
+not_p_equals_np_button.odds = .45;
+not_p_equals_np_button.paired_button = p_equals_np_button;
+not_p_equals_np_button.text_counter = 'not_p_equals_np_failures'
+
+var unique_games_conjecture_button = document.getElementById('unique_games_conjecture');
+unique_games_conjecture_button.requirements = {math_classification_done: 1};
+unique_games_conjecture_button.cost = {effort: 1250, calculations: 5000, insights:1};
+unique_games_conjecture_button.reward = {text: ""}
+unique_games_conjecture_button.disable = {unique_games_done: 1};
+unique_games_conjecture_button.odds = .25;
+unique_games_conjecture_button.paired_button = not_unique_games_conjecture_button;
+unique_games_conjecture_button.text_counter = 'unique_games_conjecture_failures';
+
+var not_unique_games_conjecture_button = document.getElementById('not_unique_games_conjecture');
+not_unique_games_conjecture_button.requirements = {math_classification_done: 1};
+not_unique_games_conjecture_button.cost = {effort: 1250, calculations: 5000, insights:1};
+not_unique_games_conjecture_button.reward = {text: ""}
+not_unique_games_conjecture_button.disable = {unique_games_done: 1};
+not_unique_games_conjecture_button.odds = .5;
+not_unique_games_conjecture_button.paired_button = unique_games_conjecture_button;
+not_unique_games_conjecture_button.text_counter = 'not_unique_games_conjecture_failures';
+
+var problem_classification_theorem_button = document.getElementById('problem_classification_theorem');
+problem_classification_theorem_button.requirements = {math_super_project_status: 1};
+problem_classification_theorem_button.cost = {effort: 1000, calculations: 2000};
+problem_classification_theorem_button.reward = {text: "Reveal likelihood of completing research"}
+problem_classification_theorem_button.disable = {math_classification_done: 1};
+problem_classification_theorem_button.odds = .65;
+problem_classification_theorem_button.text_counter = 'math_classification_failures';
+
+//~~~~~~~~~~~~~~~~~~~~~SUPER CS section~~~~~~~~~~~~~~~~~~~~~
 var cs_super_section = document.getElementById('cs_special_section');
 cs_super_section.requirements = {cs_super_project_status: 1};
 
@@ -506,8 +647,8 @@ ai_buddy_code_button.reward = {cs_ai_buddy_chosen: 1, text: "+25% Code/s, +50% M
 ai_buddy_code_button.disable = {cs_ai_buddy_chosen: 1};
 ai_buddy_code_button.flavor = "\"I'll write code for you\"";
 
+//~~~~~~~~~~~~~~~~~~~~~~~~cs special store~~~~~~~~~~~~~~~~~~~~~
 
-//cs special store
 var buy_super_computer_button = document.getElementById('buy_super_computer');
 buy_super_computer_button.requirements = {show_tflops: 1, servers: 20};
 buy_super_computer_button.cost = {money: 750000};
@@ -597,15 +738,32 @@ design_code_analizer_button.reward = {analizer_design_progress: 1, text: "helps 
 design_code_analizer_button.disable = {analizer_design_progress: 100};
 design_code_analizer_button.flavor = "Identifies problem code areas"
 
-//Footer section
-
-var save_game_button = document.getElementById('save_game');
-//save_game_button.flavor = "Salvation without terms and conditions";
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~Options section~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+var options_button = document.getElementById('options');
 var reset_game_button = document.getElementById('reset_game');
 reset_game_button.flavor = "RESET EVERYTHING.  Yes, even that.";
 var export_game_button = document.getElementById('export_game');
 export_game_button.flavor = "Copy this somewhere safe";
 var import_game_button = document.getElementById('import_game');
 import_game_button.flavor = "Insert exported save here";
+var animate_option_button = document.getElementById('animate_option');
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~Footer section~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+var save_game_button = document.getElementById('save_game');
+//save_game_button.flavor = "Salvation without terms and conditions";
+
+var achievements_button = document.getElementById('achievements');
+achievements_button.requirements = {acheivements:1} //must have at least 1 to view
 
 var autosaving = document.getElementById('autosaving');
+
+var timer = document.getElementById('timer');
+
+var donate_button = document.getElementById('donate_button');
+
+var export_popup = document.getElementById('export_popup');
+var donate_popup = document.getElementById('donate_popup');
