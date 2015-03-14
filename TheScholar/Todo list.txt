@@ -1,7 +1,14 @@
 TODO LIST FOR GAME:
 
+Update reset function to account for extra stuff in button sections and the math super
+stuff
+
+//Make sure that game is resetable if errors occur after loading bad data
+
 fix popup repositioning when page is scrolled down
-Make buttons be disabled while they are growing so you cant accidentally click one
+//Make buttons be disabled while they are growing so you cant accidentally click one
+
+flavor for math researches
 
 
 MATH SUPER PROJECT

@@ -1,3 +1,23 @@
+Writing notes:
+	Visualize the scene, then write only what's necessary for the reader to visualize it as well
+
+	Everything in past tense (more natural to write/reads better)
+	Goals- constant tension: always something important that the characters are trying to accomplish.  
+	Mystery- Always have unanswered and interesting questions:
+		Whats up with so-and-so's history?
+		Mysterious item? whats that about?
+		Whats the main cause/source of the disaster?
+		Is there a way to fix the disaster?
+	Consistent characters?
+		-Characters should only be involved in stories that are suitable for them.  Characters should behave uniquely
+	Describe effect of emotions and situation, not the emotions themselves. (Let them be apparent from context)
+	Cut out anything redundant or unnecessary to the scene.  
+	Foreshadowing
+
+	Whenever something happens as a result of a players choice or a character's stats give some indication as to why they were successful or not
+
+	
+	
 Story lines
 
 Any story lines where characters cooperate will strengthen their bonds
@@ -12,10 +32,32 @@ Overarching plots:
 alien invasion, nucular war, foreign invaders, massive earthquake, zombies, deadly disease, only 10% survive
 (secret everything at once option: aliens invade causing the other problems)
 
+Base discovery solo:
+	find a large empty warehouse (boring base, metal doors, no windows, no supplies)
+	find a two story house (zombie family inside...sad) (pictures of family foreshadow the zombie attack)
+	fire station (good defence, maybe weapons)
+	RV (very poor location, small size)
 
+Introductions::
 
+Crazy + fighter intro
+	Encounter some zombies, avoid them, return later and they are dead... Find more zombies, try to avoid them but they notice player, crazy person appears and kills zombies
+
+parent+small child pair
+
+zombies:
+	a few different ways to start; Various discussions about the role/ effect of the zombie disease.  The disease 
+	effectively puts a person to sleep and they are effectively sleepwalking.  
+Eventually meet up with a scientist, he suggests that the infection might be preventable with a large dose of 
+adrenalin.  The scientist dies, of course.  A character gets a chance to test the theory, it only half works.  
+The virus still effects them but they retain their humanity.  More discussions about the disease and the 'cure'.
+Eventually someone in the group decides to use it on a zombie that has been effected for a while.  They end up waking
+up the person, they have some of their memories but can't control their killing urges.  The medicine wears off after
+a little while.  
 
 Generic
+
+drug addict character
 
 ## Revenge A - Adult parent intro
 intro -	Daughter is killed by bandits, MC shoots one of them in the leg giving them a permanent limp.  
@@ -30,18 +72,15 @@ choice - send someone (or no one) to investigate
 resolution (MC) - Bad guy confesses to all crimes, trys sneak attack on MC and gets killed.
 resolution other - Bad guy confesses, trys sneak attack on char and gets killed.
 
+wrong genre savy, character thinks they are in a certain type of story, maybe thinks they are a hero etc, they die.
+
+token black character gets worried about being the only black guy in a group in a scary setting for humor
 
 
-##& Romantic outing - 2 romance compatible characters on scouting mission
-Characters enter old building, they get trapped for some reason - they are stuck for a while, one character talks about their past
-Eventually they escape through ingenuity/ luck/ whatever
 
-##& Friendly outing - 2 characters on long drive together
-One talks about their past
+##& 
 
-##& Friendly outing - 2 characters on drive together
-Vehicle breaks down, repair attempted while (past discussion)
-If success mission proceeds, if failure eventually picked up by rest of group.
+##& 
 
 ## Religious Cult
 Encounter a group of survivors that have formed a religious cult
@@ -80,3 +119,11 @@ next meeting:
 	-fight: if victory then discover woman in basement
 	-steal: discover woman in basement, fight is forced
 	
+##Z
+character uses a bathroom, knocking is heard at the door.  Character gets annoyed at friend who was with them.  Character
+opens door and discovers a zombie is knocking.
+
+
+##character death (for low stability char)
+	character appears to die in some way but 'miraculously survives'.  Later we find out that they had been dead the whole time and was just imagining it.  
+

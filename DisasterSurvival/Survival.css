@@ -1,0 +1,63 @@
+body {
+    background-color:#ffffff;
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
+}
+
+div{
+	color: white;
+	max_width:50%;
+	overflow-x:hidden;
+}
+
+#background_frame{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    background-color: black;
+}
+
+.pane{
+	position:absolute;
+	float:left;
+	height:100%;
+	border:1px solid #dddddd;
+	margin:-1;
+	padding:3px;
+	font-size:large;
+}
+
+#character_pane{
+	left:0%;
+	width:calc(25% - 6px);
+}
+
+#main_pane{
+	left:25%;
+	width:calc(50% - 6px);
+}
+
+
+#inventory_pane{
+	left:75%;
+	width:calc(25% - 6px);
+}
+
+#cover_pane{
+	position: absolute;
+	height:0%;
+	width:100%;
+	opacity: 0;
+}
+
+.choice_button{
+	border:1px solid #dddddd;
+	background-color: black;
+	color: white;
+	margin:3px;
+}

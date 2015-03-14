@@ -72,13 +72,12 @@ function enable(button){
     button.style.color = 'black'; //black text means enabled
 }
 
-color_list = ['red', 'yellow', 'green', 'grey_green', 'black'];
+color_list = ['red', 'yellow', 'green', 'grey_green', 'grey_red', 'black'];
 function clear_colors(button){
     for(var i = 0; i<color_list.length; i++){
         button.classList.remove(color_list[i]);
     }
 }
-
 function set_color(button, color){
     clear_colors(button); //get rid of any other colors first
     if(player.art_level >= 10){
@@ -93,7 +92,7 @@ function set_button_size(button, x_size, y_size){
 
 function grow_button(button, x_size, y_size){
     var steps = 24.0; //currently 80fps
-    var n = 1.0
+    var n = 1.0;
 	set_button_size(button, x_size/steps, y_size/steps); //so button doesn't start large
 	button.disabled = true; //so that it can't be clicked while growing (also turns off popup)
     var id = setInterval(function(){
@@ -143,6 +142,10 @@ function insert_after(element, target){
     }else{
         parent.insertBefore(element, next_sibling);
     }   
+}
+
+function remove_element(element){
+	element.parentNode.removeChild(element);
 }
 
 //on click animations section

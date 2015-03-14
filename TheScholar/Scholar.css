@@ -76,8 +76,8 @@ td{
     position:absolute;
     left: 5px;
     bottom: 30px;
-    width: 400px;
-    height: 70px;
+    width: 500px;
+    height: 150px;
     border: 2px solid #aaaaaa;
     background-color: #dddddd;
     word-wrap: break-word;
@@ -86,6 +86,7 @@ td{
     -webkit-user-select: text; 
     -ms-user-select: text; 
     user-select: text;
+	font-size: xx-small;
 }
 
 #donate_popup{
@@ -118,7 +119,48 @@ button{
 
 .large_button{ /* Must match button appears size*/
     height:46px;
+	vertical-align:middle;
 }
+
+.button_section{
+	padding: 0;
+}
+
+.grouper_div{
+	padding:3;
+	padding-top:-5;
+    border-left: 1px solid #a1a1a1;
+    border-right: 1px solid #a1a1a1;
+    border-top: 1px solid #a1a1a1;
+    border-bottom: 1px solid #a1a1a1;
+}
+
+.grouper_title{
+	position:relative;
+	float:left;
+	margin-bottom:-8px;
+	top:-11px;
+	background: #FFFFFF;
+	height: 14px;
+	font-size:small;
+}
+
+.corner_button{
+	position:relative;
+	float:right;
+	margin-bottom:-8px;
+	top:-11px;
+	background: #FFFFFF;
+	height: 14px;
+	width: 14px;
+	padding: 0px;
+	font-size:small;
+	border-left: 1px solid #a1a1a1;
+    border-right: 1px solid #a1a1a1;
+    border-top: 1px solid #a1a1a1;
+    border-bottom: 1px solid #a1a1a1;
+}
+
 
 .end_game_button{ /* Must match button appears size*/
     height:46px;
@@ -137,6 +179,7 @@ button{
     border:1px solid #aaaaaa;
     background-color:#FFFFFF;
 }
+
 
 #cover_frame{
     position: absolute;
@@ -173,6 +216,10 @@ button{
 
 .grey_green{
     background-color: #AAFFAA;
+}
+
+.grey_red{
+	background-color: #FFAAAA;
 }
 
 .yellow{

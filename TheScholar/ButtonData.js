@@ -210,7 +210,7 @@ buy_motivation_button.flavor = '"You can do it!" - Famous Person';
 var learn_representation_theory_button = document.getElementById('learn_representation_theory');
 learn_representation_theory_button.requirements = {school: 5, math_level: 50000000};
 learn_representation_theory_button.cost = {effort: 500, calculations: 4000};
-learn_representation_theory_button.reward = {math_level: 200000};
+learn_representation_theory_button.reward = {math_level: 250000};
 learn_representation_theory_button.flavor = "Grouping abstract mathematical fields"
 
 var learn_topology_button = document.getElementById('learn_topology');
@@ -321,7 +321,7 @@ do_calculation_button.flavor = "Math stuff";
 var buy_chalkboard_button = document.getElementById('buy_chalkboard');
 buy_chalkboard_button.requirements = {max_calculations:100000};
 buy_chalkboard_button.cost = {money:1000};
-buy_chalkboard_button.exponent = {chalkboards: 1.03};
+buy_chalkboard_button.exponent = {chalkboards: 1.025};
 buy_chalkboard_button.reward = {max_calculations: 10000, chalkboards:1};
 buy_chalkboard_button.text_counter = 'chalkboards';
 buy_chalkboard_button.flavor = "Fundamental for a mathematician";
@@ -529,97 +529,119 @@ gain_insight_button.reward = {insights: 1};
 gain_insight_button.requirements = {show_insights: 1};
 
 var contruct_portal_button = document.getElementById('contruct_portal');
-contruct_portal_button.cost = {effort: 10000, calculations: 100000, money: 100000, insights:6};
-contruct_portal_button.reward = {text: ""}
+contruct_portal_button.requirements = {mathematical_universe_done:1};
+contruct_portal_button.cost = {effort: 200000, calculations: 1000000, money: 200000, insights:4};
+contruct_portal_button.max_progress = 100;
+contruct_portal_button.reward = {text: ""};
 contruct_portal_button.disable = {contruct_portal_done:1};
+contruct_portal_button.odds = 1;
 
 var mathematical_universe_theory_button = document.getElementById('mathematical_universe_theory');
-mathematical_universe_theory_button.cost = {effort: 5000, calculations:50000, insights:5};
+mathematical_universe_theory_button.requirements = {riemann_done:1, };
+mathematical_universe_theory_button.cost = {effort: 200000, calculations:750000, insights:3};
+mathematical_universe_theory_button.max_progress = 75;
 mathematical_universe_theory_button.reward = {text: ""}
 mathematical_universe_theory_button.disable = {mathematical_universe_done:1};
 mathematical_universe_theory_button.odds = .5;
 
 var riemann_hypothesis_button = document.getElementById('riemann_hypothesis');
 riemann_hypothesis_button.requirements = {goldbach_done:1};
-riemann_hypothesis_button.cost = {effort: 3000, calculations:20000, insights:4};
-riemann_hypothesis_button.reward = {money: 1000000, text: ""}
+riemann_hypothesis_button.cost = {effort: 25000, calculations:100000, insights:2};
+riemann_hypothesis_button.max_progress = 50;
+riemann_hypothesis_button.reward = {money: 1000000, calculations_per_second: 20, text: ""}
 riemann_hypothesis_button.disable = {riemann_done:1};
 riemann_hypothesis_button.odds = .48;
-riemann_hypothesis_button.paired_button = not_riemann_hypothesis_button
 riemann_hypothesis_button.text_counter = 'riemann_failures';
 
 var not_riemann_hypothesis_button = document.getElementById('not_riemann_hypothesis');
 not_riemann_hypothesis_button.requirements = {goldbach_done:1};
-not_riemann_hypothesis_button.cost = {effort: 3000, calculations:20000, insights:4};
-not_riemann_hypothesis_button.reward = {money: 1000000, text: ""}
+not_riemann_hypothesis_button.cost = {effort: 25000, calculations:100000, insights:2};
+not_riemann_hypothesis_button.max_progress = 50;
+not_riemann_hypothesis_button.reward = {money: 1000000, calculations_per_second: 50, text: ""}
 not_riemann_hypothesis_button.disable = {riemann_done:1};
 not_riemann_hypothesis_button.odds = .02;
-not_riemann_hypothesis_button.paired_button = riemann_hypothesis_button;
 not_riemann_hypothesis_button.text_counter = 'riemann_failures';
 
+not_riemann_hypothesis_button.paired_button = riemann_hypothesis_button;
+riemann_hypothesis_button.paired_button = not_riemann_hypothesis_button;
+
 var goldbach_conjecture_button = document.getElementById('goldbach_conjecture');
-goldbach_conjecture_button.cost = {effort: 2000, calculations: 10000, insights:3};
-goldbach_conjecture_button.reward = {text: ""}
+goldbach_conjecture_button.requirements = {math_classification_done: 1, navier_stokes_done: 1};
+goldbach_conjecture_button.cost = {effort: 4000, calculations: 20000, insights:1};
+goldbach_conjecture_button.max_progress = 40;
+goldbach_conjecture_button.reward = {math_level:5000000000 ,text: ""}
 goldbach_conjecture_button.disable = {goldbach_done:1};
 goldbach_conjecture_button.odds = .5;
 goldbach_conjecture_button.text_counter = 'goldbach_conjecture_failures';
 goldbach_conjecture_button.flavor = "All even numbers greater than 2 are the sum of two primes";
 
 var navier_stokes_equation_button = document.getElementById('navier_stokes_equation');
-navier_stokes_equation_button.cost = {effort: 1500, calculations: 7500, insights:2};
+navier_stokes_equation_button.requirements = {};
+navier_stokes_equation_button.cost = {effort: 25000, calculations: 100000, insights:2};
+navier_stokes_equation_button.max_progress = 50;
 navier_stokes_equation_button.reward = {money: 1000000, text: ""}
 navier_stokes_equation_button.disable = {navier_stokes_done: 1};
 navier_stokes_equation_button.odds = .25;
-navier_stokes_equation_button.paired_button = not_navier_stokes_equation_button;
 navier_stokes_equation_button.text_counter = 'navier_stokes_failures';
 
 var not_navier_stokes_equation_button = document.getElementById('not_navier_stokes_equation');
-not_navier_stokes_equation_button.cost = {effort: 1500, calculations: 7500, insights:2};
+not_navier_stokes_equation_button.requirements = {};
+not_navier_stokes_equation_button.cost = {effort: 25000, calculations: 100000, insights:2};
+not_navier_stokes_equation_button.max_progress = 50;
 not_navier_stokes_equation_button.reward = {money: 1000000, text: ""}
 not_navier_stokes_equation_button.disable = {navier_stokes_done: 1};
 not_navier_stokes_equation_button.odds = .25;
-not_navier_stokes_equation_button.paired_button = navier_stokes_equation_button;
 not_navier_stokes_equation_button.text_counter = 'not_navier_stokes_failures';
+
+navier_stokes_equation_button.paired_button = not_navier_stokes_equation_button;
+not_navier_stokes_equation_button.paired_button = navier_stokes_equation_button;
 
 var p_equals_np_button = document.getElementById('p_equals_np');
 p_equals_np_button.requirements = {unique_games_done: 1};
-p_equals_np_button.cost = {effort: 1250, calculations: 5000, insights:1};
-p_equals_np_button.reward = {money: 1000000, text: ""}
+p_equals_np_button.cost = {effort: 25000, calculations: 100000, insights:2};
+p_equals_np_button.max_progress = 50;
+p_equals_np_button.reward = {money: 1000000, money_per_second: 5, text: ""}
 p_equals_np_button.disable = {p_equals_np_done: 1};
-p_equals_np_button.odds = .05;
-p_equals_np_button.paired_button = not_p_equals_np_button;
-p_equals_np_button.text_counter = 'p_equals_np_failures'
+p_equals_np_button.odds = .01;
+p_equals_np_button.text_counter = 'p_equals_np_failures';
 
 var not_p_equals_np_button = document.getElementById('not_p_equals_np');
 not_p_equals_np_button.requirements = {unique_games_done: 1};
-not_p_equals_np_button.cost = {effort: 1250, calculations: 5000, insights:1};
+not_p_equals_np_button.cost = {effort: 25000, calculations: 100000, insights:2};
+not_p_equals_np_button.max_progress = 50;
 not_p_equals_np_button.reward = {money: 1000000, money_per_second: 1000, text: ""}
 not_p_equals_np_button.disable = {p_equals_np_done: 1};
-not_p_equals_np_button.odds = .45;
+not_p_equals_np_button.odds = .49;
+not_p_equals_np_button.text_counter = 'not_p_equals_np_failures';
+
+p_equals_np_button.paired_button = not_p_equals_np_button;
 not_p_equals_np_button.paired_button = p_equals_np_button;
-not_p_equals_np_button.text_counter = 'not_p_equals_np_failures'
 
 var unique_games_conjecture_button = document.getElementById('unique_games_conjecture');
 unique_games_conjecture_button.requirements = {math_classification_done: 1};
-unique_games_conjecture_button.cost = {effort: 1250, calculations: 5000, insights:1};
-unique_games_conjecture_button.reward = {text: ""}
+unique_games_conjecture_button.cost = {effort: 7500, calculations: 30000, insights:1};
+unique_games_conjecture_button.max_progress = 40;
+unique_games_conjecture_button.reward = {code_per_second: 25, text: ""}
 unique_games_conjecture_button.disable = {unique_games_done: 1};
-unique_games_conjecture_button.odds = .25;
-unique_games_conjecture_button.paired_button = not_unique_games_conjecture_button;
+unique_games_conjecture_button.odds = .30;
 unique_games_conjecture_button.text_counter = 'unique_games_conjecture_failures';
 
 var not_unique_games_conjecture_button = document.getElementById('not_unique_games_conjecture');
 not_unique_games_conjecture_button.requirements = {math_classification_done: 1};
-not_unique_games_conjecture_button.cost = {effort: 1250, calculations: 5000, insights:1};
-not_unique_games_conjecture_button.reward = {text: ""}
+not_unique_games_conjecture_button.cost = {effort: 7500, calculations: 30000, insights:1};
+not_unique_games_conjecture_button.max_progress = 40;
+not_unique_games_conjecture_button.reward = {code_per_second: 50, text: ""}
 not_unique_games_conjecture_button.disable = {unique_games_done: 1};
-not_unique_games_conjecture_button.odds = .5;
-not_unique_games_conjecture_button.paired_button = unique_games_conjecture_button;
+not_unique_games_conjecture_button.odds = .20;
 not_unique_games_conjecture_button.text_counter = 'not_unique_games_conjecture_failures';
+
+not_unique_games_conjecture_button.paired_button = unique_games_conjecture_button;
+unique_games_conjecture_button.paired_button = not_unique_games_conjecture_button;
 
 var problem_classification_theorem_button = document.getElementById('problem_classification_theorem');
 problem_classification_theorem_button.requirements = {math_super_project_status: 1};
-problem_classification_theorem_button.cost = {effort: 1000, calculations: 2000};
+problem_classification_theorem_button.cost = {effort: 2000, calculations: 5000};
+problem_classification_theorem_button.max_progress = 25;
 problem_classification_theorem_button.reward = {text: "Reveal likelihood of completing research"}
 problem_classification_theorem_button.disable = {math_classification_done: 1};
 problem_classification_theorem_button.odds = .65;

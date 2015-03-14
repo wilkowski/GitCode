@@ -52,6 +52,7 @@
 </table>
 
 <button id="muster" style="display:none;">Muster 0/4</button>
+<button id="gain_insight">Insight</button>
 <p>
 <div id="tab_bar" style="display:none;">
     <button id="main_tab_button" class="tab_button">main</button>
@@ -113,14 +114,16 @@
         <div><button id="buy_answers">Test Answers</button></div> 
     </div>
     <div id="math_research" style="float:left;">
-        <div><button id="start_math_super_project">Start Math Super Project</button></div>
+        <div><button id="start_math_super_project">Math Super Project</button></div>
         <div><button id="do_math_contest">Solve Problem</button></div>
         <div><button id="start_math_contest">Math Contest</button></div>
         <div><button id="start_math_research">Start Research Project</button></div>
         <div><button id="do_tutoring">Tutoring</button> </div>
         <div><button id="do_calculation">Calculate</button></div>
     </div>
-    <div id="math_ongoing" style="float:left;">
+    <div id="math_ongoing" style="float:left;" class="grouper_div">
+		<button id="math_ongoing_dropdown" class="corner_button" style="float:right">-</button>
+		<div id="math_ongoing_title" class="grouper_title">Math Research</div>
     </div>
 </div>
 <div id="cs_section" style="display:none;">
@@ -161,27 +164,26 @@
 <div id="special_section" style="display:none;">
     <div id="math_special_section">
 		<div><button id="enter_protal" class="end_game_button black">Enter Dimensional Portal</button></div>
-		<div><button id="gain_insight">Insight</button></div>
-		<div><button id="contruct_portal">Construct Dimensional Portal</button></div>
-		<div><button id="mathematical_universe_theory">Mathematical Universe Theorem</button></div>
+		<div><button id="contruct_portal" class="large_button">Construct Dimensional Portal</button></div>
+		<div><button id="mathematical_universe_theory" class="large_button">Mathematical Universe Theorem</button></div>
 		<div>
-			<button id="riemann_hypothesis">Riemann Hypothesis</button>
-			<button id="not_riemann_hypothesis">Counterexample to Riemann Hypothesis</button>
+			<button id="riemann_hypothesis" class="large_button">Riemann Hypothesis</button>
+			<button id="not_riemann_hypothesis" class="large_button">Counterexample to Riemann Hypothesis</button>
 		</div>
-		<div><button id="goldbach_conjecture">Goldbach Conjecture</button></div>
-		<div>
-			<button id="navier_stokes_equation">Navier-Stokes Equation</button>
-			<button id="not_navier_stokes_equation">Impossibility of Navier-Stokes Equation</button>
+		<div><button id="goldbach_conjecture" class="large_button">Goldbach Conjecture</button></div>
+		<div class="button_section">
+			<button id="navier_stokes_equation" class="large_button">Navier-Stokes Equation</button>
+			<button id="not_navier_stokes_equation" class="large_button">Impossibility of Navier-Stokes Equation</button>
 		</div>
-		<div>
-			<button id="p_equals_np">P=NP</button>
-			<button id="not_p_equals_np">P!=NP</button>
+		<div class="button_section">
+			<button id="p_equals_np" class="large_button">P=NP</button>
+			<button id="not_p_equals_np" class="large_button">P!=NP</button>
 		</div>
-		<div>
-			<button id="unique_games_conjecture">Unique Games Conjecture</button>
-			<button id="not_unique_games_conjecture">Disprove Unique Games Conjecture</button>
+		<div class="button_section">
+			<button id="unique_games_conjecture" class="large_button">Unique Games Conjecture</button>
+			<button id="not_unique_games_conjecture" class="large_button">Disprove Unique Games Conjecture</button>
 		</div>
-		<div><button id="problem_classification_theorem">Problem Classification Theorem</button></div>
+		<div><button id="problem_classification_theorem" class="large_button">Problem Classification Theorem</button></div>
     </div>
     <div id="cs_special_section">
         <div><button id="enter_matrix" class="end_game_button black">Enter Computer Matrix</button></div>
