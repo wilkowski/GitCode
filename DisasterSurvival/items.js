@@ -85,7 +85,17 @@ var general_items = {
 	"chalk":{},
 	"spray paint":{},
 	"sharpie":{},
-	"water filter":{}
+	"water filter":{},
+	"plastic tarp":{},
+	"aluminum foil":{}
+}
+
+var crafted_items = {
+	water_collector:{}
+}
+
+var recipies = {
+	
 }
 
 var all_item_groups = {

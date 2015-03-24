@@ -61,3 +61,29 @@ div{
 	color: white;
 	margin:3px;
 }
+
+/*coloring for statuses */
+.Healthy{
+	color: green;
+}
+.Fighting{
+	color: white;
+}
+.Tired{
+	color: white;
+}
+.Sleeping{
+color: white;
+}
+.Sick{
+	color: red;
+}
+.Crying{
+	color: red;
+}
+.Hungry{
+	color: red;
+}
+.Dead{
+	color: red;
+}

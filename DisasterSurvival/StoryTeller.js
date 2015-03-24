@@ -2,23 +2,23 @@ var main_pane = document.getElementById('main_pane');
 var character_pane = document.getElementById('character_pane');
 
 var starter_character = {
-
 }
 
 var all_characters = [starter_character]
 
 
+//var event = [story, [arg1, arg2, ...]];
+
 //TODO: put all these into a dict so they can be saved easily
-var story_so_far = []; //each story passage so far along with its arguments (for saving)
+var events_so_far = []; //each story passage so far along with its arguments (for saving)
 var event_calender = {}; //all scheduled events
-var queued_events = {};
+var queued_events = []; //small so using .push() and .shift() is fine
 var next_story = "Intro1"; //the next text story to show to the player
-var next_args = [starter_character]; //arguments for whatever the next story is
+var current_args = [starter_character]; //arguments for whatever the current story is
 var next_passage = null;
 var passage_sentences = [];
 var sentence_index = 0;
 var after_choice_func = null;
-var base = "none";
 //var run_func = null;
 var resources = {	hours: 0, //hours since the event occurred
 					food: 0,
@@ -48,11 +48,14 @@ var game_state = "run"; //"choice", "pause"
 //var choice_option = false;
 //var in_progress = false;
 
+//TODO: smooth autoscroll?
+
 function add_element(type, text, class_name){
 	var new_element = document.createElement(type);
 	new_element.innerHTML = text;
 	if(class_name){ new_element.className = class_name;}
 	insert_end(new_element, main_pane);
+	main_pane.scrollTop = main_pane.scrollHeight; //autoscroll
 	return new_element;
 }
 var last_text_element;
@@ -64,6 +67,7 @@ function write_text(text){
 
 function append_text(text){
 	last_text_element.innerHTML = last_text_element.innerHTML + text;
+	main_pane.scrollTop = main_pane.scrollHeight; //autoscroll
 }
 
 function error(text){ //smae as write text but red color
@@ -116,12 +120,12 @@ function player_choice(assign_dict, key, choice1, choice2, choice3, choice4, cho
 }
 
 function number_choice_setup(assign_dict, key, input_field, choose_button){
-	choose_button.onclick = function(){
+	function click_enter(){
 		var entered_val = input_field.value;
 		var is_number = new RegExp("-?\\d+.?\\d*"); //optional - followed by number with optional . and more numbers
 		if(entered_val.match(is_number)){
-			var number_converted = entered_val * 1;
-			write_text(number_converted);
+			var number_converted = entered_val * 1; //make it into a number
+			write_text(number_converted); //turn it back into text (gets rid of excess 0s)
 			assign_dict[key] = number_converted;
 			choice_finish();
 		}else{
@@ -129,6 +133,10 @@ function number_choice_setup(assign_dict, key, input_field, choose_button){
 			choice_button_list.push(text_note);
 		}
 	}
+	choose_button.onclick = function(){click_enter();};
+	$(input_field).keydown(function(keypress){
+		if(keypress.which == 13){click_enter();}; //hitting enter also submits text
+	});
 }
 
 function player_choice_number(assign_dict, key){ //probably only used for the age thing
@@ -143,35 +151,48 @@ function player_choice_number(assign_dict, key){ //probably only used for the ag
 	number_choice_setup(assign_dict, key, input_field, choose_button);
 }
 
+//Assemble all possible stories to tell
+function get_story_for(story_type, args){
+	var valid_stories = [];
+	var grouped_stories = story_groups[story_type];
+	for(var possible_story_key in grouped_stories){
+		var possible_story = grouped_stories[possible_story_key];
+		if(possible_story['chars'] == args.length){
+			valid_stories.push(possible_story);
+		}
+	}
+	if(valid_stories.length == 0){
+		error("ERROR: no " + story_type + " found for " + args.length + " arguments");
+	}
+	var result_story = rand_from_list(valid_stories);
+	return result_story;
+}
+
 //var period_match = new RegExp("\\.");
 //var sentence_match = /[^\.]*\./g; //not . followed by a . (return array of all matches)
 //big mess o' fun!
-var sentence_match = /[^\.\?\!]*[\.\?\!$]\"?/g; //[not . ? or !] followed by a [. ? ! or end of line] (return array of all matches) " added to end if found
+var sentence_match = /[^\.\?\!]*[\.\?\!$]\"?/g; //[not . ? or !] followed by a [. ? ! or end of line] (return array of all matches) also " added to end if found
 
 function next_text_passage(){
 	if(next_story == null || next_story == ""){
-		//TODO: figure out next event
-		write_text("error missing story");
+		if(queued_events.length > 0){
+			var q_event = queued_events.shift();
+			next_story = q_event[0];
+			current_args = q_event[1];
+		}else if(game.base == "none"){
+			next_story = get_story_for('base_discovery_stories', all_characters);
+		}else{
+			//TODO: figure out next story
+			error("error missing story");
+		}
 	}
 	next_passage = all_stories[next_story];
-	story_so_far.push([next_story,next_args]); //TODO: figure out how to make it save properly
+	events_so_far.push([next_story,current_args]); //TODO: figure out how to make it save properly
 	next_story = ""; //next story has been used
 	var text = setup_text_passage();
 	passage_sentences = text.match(sentence_match);
-	//for(var i=0; i<passage_sentences.length-1; i++){//don't add a period for the last one
-	//	passage_sentences[i] = passage_sentences[i] + "." //add the . back
-	//}
-	//if(passage_sentences[passage_sentences.length-1] == ""){
-	//	passage_sentences.pop(); //get rid of final empty element
-	//}
 	sentence_index = 0;
 	game_state = "pause";
-	//write_text(text);
-	
-	//var run_func = next_passage.run;
-	//if(run_func){
-	//	run_func(next_args);
-	//}
 }
 
 function next_sentence(){
@@ -179,7 +200,7 @@ function next_sentence(){
 		error("empty text");
 	}
 	var new_sentence = passage_sentences[sentence_index];
-	new_sentence = status_out(new_sentence);
+	new_sentence = status_out(new_sentence,current_args);
 	if(sentence_index == 0){
 		write_text(new_sentence);
 	}else{
@@ -190,25 +211,25 @@ function next_sentence(){
 		game_state = "run";
 		var run_func = next_passage['run'];
 		if(run_func){
-			run_func(next_args);
+			run_func(current_args);
 		}
 	}
 }
 
 function setup_text_passage(){
-	//next_args
+	//current_args
 	var next_text = next_passage['text'];
 	var pre_run_func = next_passage['pre_run'];
 	var choice_run_func = next_passage['choice_run'];
 	if(pre_run_func){
-		next_text = pre_run_func(next_text,next_args);
+		next_text = pre_run_func(next_text,current_args);
 	}
 	if(choice_run_func){
 		//write_text("choice_run found");
 		after_choice_func = choice_run_func;
 	}
 	
-	next_text = edit_text(next_text, next_args);
+	next_text = edit_text(next_text, current_args);
 	return next_text;
 }
 
@@ -237,7 +258,6 @@ function game_continue(){
 //write_text('testing text helloo');
 
 function dead_end(){
-	write_text("There is no one left to continue the story.");
 	var restart_button = add_element('button', "Restart", 'choice_button');
 	restart_button.onclick = function(){location.reload();}
 	game_state = "choice";
@@ -257,7 +277,8 @@ function set_status(character,new_status){
 		}
 	}
 	if(living_chars == 0){
-		dead_end();
+		queued_events.push(['Game_over',[]])
+		//dead_end();
 	}
 }
 
@@ -270,6 +291,10 @@ function kill(character){
 //}
 
 function new_base(base_type){
+	if(game.base == "none"){
+		write_text("The sun was almost setting so this location would have to make due for a place to stay.");
+		game.base = base_type
+	}
 	write_text("Settle in at the " + base_type + "?");
 	player_choice(game, 'base', base_type, "ignore it");
 }

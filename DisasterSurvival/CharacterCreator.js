@@ -8,6 +8,7 @@ var person = {	id: 0,
 				age: 20.0,
 				height: 72, //inches when mature
 				hair: "blond",
+				eye_color: "blue",
 				ethnicity: "white", //also Asian, black or Latino
 				orientation: 'bi', //the more potential pairings the better (possibility for full gay groups is amusing)
 				profession: 'office worker', //mostly cosmetic, some professions have associated job/stat bonuses
@@ -22,7 +23,7 @@ var person = {	id: 0,
 				intelligence: 0,
 				charisma: 0,
 				//skills
-				hunting: 0, //includes tracking
+				raiding: 0, //includes tracking
 				fighting: 0,
 				mechanicing: 0, //inculdes science, crafting, etc
 				leading: 0, //giving out orders
@@ -80,7 +81,7 @@ var stat_ranges_dice = {
 	charisma: [0,10,2],
 	//skills vary from 0 to 10 for everyone but typically start very low
 	//5 is able to perform skill well, 10 is perfect
-	hunting:[0,2,1],
+	raiding:[0,2,1],
 	fighting:[0,3,1],
 	mechanicing:[0,3,1],
 	leading: [0,5,1],
@@ -92,38 +93,38 @@ var gender_list = {	"Male": {'strength':[1,0]},
 				"Female": {'height':[-1,-7]}  };
 				
 var profession_list = {	
-	"Bar Tender": {'charisma': [1,0]},
-	"Barber": {},
-	"Blogger": {'charisma': [1,0],'stability': [0,-2]},
-	"Butcher":{},
-	"Cashier": {},
-	"Chef":{},
-	"Child":{'age':[-20,-70],'money':[0,-2], 'strength':[0,-4],'stability':[0,-2],'fighting':[0,-2],'leading':[0,-3]},
-	"Cop":{'strength':[2,0], 'politics':[0,-3],'stability':[2,0],'intelligence':[0,-1],'hunting':[2,2],'fighting':[4,4],'leading':[1,1]},
-	"Doctor":{'age':[10,0], 'money':[2,1], 'intelligence':[2,0], 'stability':[2,0],'healing':[6,6]},
-	"Farmer":{'strength':[2,0],'hunting':[2,2],'mechanicing':[1,1],'farming': [6,6]},
-	"Journalist": {'charisma': [1,0],'ethics': [1,0]},
-	"Judge":{'age':[10,0],'ethics':[3,0],'money':[1,1],'stability':[1,0],'leading':[1,1]},
-	"Lawyer":{'ethics':[0,-3],'money':[2,1]},
-	"Marine":{'strength':[3,0],'stability':[4,0],'politics':[0,-4],'fighting':[6,6],'leading':[2,2]},
-	"Mechanic":{'strength': [1,0], 'mechanicing':[4,4]},
+	"bar tender": {'charisma': [1,0]},
+	"barber": {},
+	"blogger": {'charisma': [1,0],'stability': [0,-2]},
+	"butcher":{},
+	"cashier": {},
+	"chef":{},
+	"child":{'age':[-20,-70],'religion':[1,-1],'money':[0,-1], 'strength':[0,-4],'stability':[0,-2],'fighting':[0,-2],'leading':[0,-3]},
+	"cop":{'strength':[2,0], 'politics':[0,-3],'stability':[2,0],'intelligence':[0,-1],'raiding':[2,2],'fighting':[4,4],'leading':[1,1]},
+	"doctor":{'age':[10,0], 'money':[2,1], 'intelligence':[2,0], 'stability':[2,0],'healing':[6,6]},
+	"farmer":{'strength':[2,0],'raiding':[2,2],'mechanicing':[1,1],'farming': [6,6]},
+	"journalist": {'charisma': [1,0],'ethics': [1,0]},
+	"judge":{'age':[10,0],'ethics':[3,0],'money':[1,1],'stability':[1,0],'leading':[1,1]},
+	"lawyer":{'ethics':[0,-3],'money':[2,1]},
+	"marine":{'strength':[3,0],'stability':[4,0],'politics':[0,-4],'fighting':[6,6],'leading':[2,2]},
+	"mechanic":{'strength': [1,0], 'mechanicing':[4,4]},
 	//"None":{'stability':[0,-1],'money':[0,-2]},
-	"Nurse":{'stability':[1,0],'fighting':[0,-1],'healing':[3,3]},
-	"Office Worker":{'money':[1,-1]},
-	"Pastor":{'religion':[5,0],'politics':[0,-3],'charisma': [2,0],'leading':[3,2]},
-	"Plumber": {'mechanicing':[1,1]},
-	"Politician":{'age':[10,0],'money':[3,1],'ethics':[0,-3],'charisma':[4,0],'leading':[3,3]},
-	"Student":{'age':[-10,-55], 'money':[0,-1], 'strength':[0,-1], 'stability':[0,-1],'leading':[0,-2]},
-	"Scientist": {'intelligence':[3,0], 'religion': [0,-3],'politics':[3,0],'money':[0,1],'mechanicing':[3,2]},
-	"Store Owner":{'money':[1,1],'leading':[2,2]},
-	"Software Engineer": {'intelligence': [2,0], 'strength': [0,-2],'politics':[2,0],'leading':[0,-2]},
+	"nurse":{'stability':[1,0],'fighting':[0,-1],'healing':[3,3]},
+	"office worker":{'money':[1,-1]},
+	"pastor":{'religion':[5,0],'politics':[0,-3],'charisma': [2,0],'leading':[3,2]},
+	"plumber": {'mechanicing':[1,1]},
+	"politician":{'age':[10,0],'money':[3,1],'ethics':[0,-3],'charisma':[4,0],'leading':[3,3]},
+	"student":{'age':[-10,-55], 'strength':[0,-1], 'stability':[0,-1],'leading':[0,-2]},
+	"scientist": {'intelligence':[3,0], 'religion': [0,-3],'politics':[3,0],'money':[0,1],'mechanicing':[3,2]},
+	"store owner":{'money':[1,1],'leading':[2,2]},
+	"software engineer": {'intelligence': [2,0], 'strength': [0,-2],'politics':[2,0],'leading':[0,-2]},
 	//"Stripper":{},
 	//"Paramedic":{},
 	//"Prostitute:{},
-	"Teacher":{'intelligence':[1,0], 'religion': [0,-1],'politics':[1,0],'ethics':[1,0],'leading':[2,1]},
-	"Truck Driver": {'strength':[1,0],'intelligence':[0,-1]},
-	"Veterinarian":{'money':[2,0],'intelligence':[2,0],'healing':[4,4]},
-	"Waiter":{'age':[0,-30],'charisma':[1,0]},
+	"teacher":{'intelligence':[1,0], 'religion': [0,-1],'politics':[1,0],'ethics':[1,0],'leading':[2,1]},
+	"truck driver": {'strength':[1,0],'intelligence':[0,-1]},
+	"veterinarian":{'age':[5,0], 'money':[2,0],'intelligence':[2,0],'healing':[4,4]},
+	"waiter":{'age':[0,-30],'charisma':[1,0]},
 };
 
 //currently trying to avoid gender neutral names since it can make things a little confusing
@@ -135,6 +136,9 @@ var last_names = ["Ackerman", "Aldrin", "Armstrong", "Barnes", "Beleren", "Black
 //var ethnicities = ["white","hispanic","black","asian"] //(maybe everyone just default to white? or let reader imagine race?)
 
 var starter_weapons = ["axe", "kitchen knife", "cleaver"] //bladed start
+
+var hair_color_list = ["blond", "brown", "black", "red"]
+var eye_color_list = ["blue", "green", "brown"]
 
 var characteristic_lists = {'gender':gender_list, 'profession':profession_list, 'last_name':last_names}
 //d&d style stat creation using dice
@@ -149,9 +153,9 @@ function basic_person(fixed_characteristics_list){
 	var fixed_age = fixed_characteristics_list['age']; //youngins can't have jobs yet (generally)
 	if(fixed_age){
 		if(fixed_age >= 0 && fixed_age < 10){
-			fixed_characteristics_list['profession'] = "Child";
+			fixed_characteristics_list['profession'] = "child";
 		}else if(fixed_age >= 10 && fixed_age < 20){
-			fixed_characteristics_list['profession'] = "Student";
+			fixed_characteristics_list['profession'] = "student";
 		}
 	}
 	
@@ -204,6 +208,10 @@ function basic_person(fixed_characteristics_list){
 	if(fixed_characteristics_list['last_name']){
 		newbie['last_name']=fixed_characteristics_list['last_name'];
 	}
+	newbie['hair'] = rand_from_list(hair_color_list);
+	if(newbie['hair'] == "Red"){newbie['hair'] = rand_from_list('hair_color_list');} //red is rare so reroll;
+	if(newbie['age'] > dice_random(45,70,2)){newbie['hair'] = "Grey"} //old people get grey hair
+	newbie['eye_color'] = rand_from_list(eye_color_list);
 	character_count += 1;
 	newbie['id'] = character_count; //1 indexed, not 0 indexed, which shouldn't matter for uniqueID
 	return newbie;
@@ -216,14 +224,28 @@ function basic_person(fixed_characteristics_list){
 
 
 var copy_traits = ['last_name','hair','height', 'ethnicity','profession']
-function child(parent1, parent2){
+function make_child(parent1, parent2){
+	if(!parent2){ //if we aren't given a second parent then make one randomly
+		parent2 = basic_person({'age':parent1.age}) //copy age from first parent //random gender doesn't matter
+	}
+
 	var fixed_chars = {};
 	
 	for(var stat_key in person){
-		if(Math.random() < .5 || stat_key == 'last_name'){ //50% chance of copying a stat from a parent
-			
+		if(Math.random() < .5 || stat_key == 'last_name' || stat_key == 'hair' || stat_key == 'eye_color' || stat_key == 'ethnicity'){ //50% chance of copying a stat from a parent, some stats are always copied
+			if(stat_key != 'gender' && stat_key != 'first_name'){//some are never copied
+				if(Math.random() < .5){ //get the stat from a random parent
+					fixed_chars[stat_key] = parent1[stat_key];
+				}else{
+					fixed_chars[stat_key] = parent2[stat_key];
+				}
+			}
 		}
 	}
+	var max_age = Math.min(parent1.age-17,parent2.age-17) //17 years younger than the younger of the two parents
+	var min_age = Math.max(parent1.age-40,parent2.age-40) //40 years younger than the older of the two parents
+	fixed_chars['age'] = dice_random(min_age,max_age,2); //random in between
+	//profession gets fixed automatically based on age
 	return basic_person(fixed_chars);
 }
 				
@@ -242,13 +264,57 @@ function aged_height(character){
 	return height;
 }
 
+var stat_descriptors = {
+	'low_religion': "is not religious",
+	'very_high_religion': "is very religious",
+	//politics
+	'very_low_money': "comes from a poor family.",
+	'high_money': "has a rich family.",
+	'high_strength': "is fairly strong",
+	'very_low_intelligence': "is not the brightest",
+	'very_high_intelligence': "is quite clever",
+	'high_charisma': "gets along well with others",
+	'average_raiding':"knows where to find supplies",
+	'high_raiding': "knows where to find supplies",
+	'average_fighter': "has been in a few fights",
+	'high_fighter': "has significant combat experience",
+	'average_mechanicing': "is good with machines",
+	'high_mechanicing': "is very good with machines",
+	//high_leading
+	'high_healing': "has treated a few injuries",
+	'high_healing': "is skilled at treating wounds"
+	//farming //farming is boring, might not be worthwhile to include
+}
+
 function generate_bio(character){
 	//"[Name] [Last_Name]"
 	var height = aged_height(character);
-	var result_text = "Age " + round_to(character.age,0) + " and " + Math.floor(height/12) + "'" + Math.floor(height%12) + "''";
-	if(character.profession != "Child"){ result_text = result_text + ", " + character.profession;}
+	var result_text = "" //"Age " + round_to(character.age,0) + " and " + Math.floor(height/12) + "'" + Math.floor(height%12) + "''";
+	//if(character.profession != "Child"){ result_text = result_text + ", " + character.profession;}
 	//character.first_name;
-	return result_text;
+	
+	var description_text = "[Name] is a [Age] year old [man] with [hair_color] hair and [eye_color] eyes.  ";
+	if(character.profession != "child"){ description_text = description_text + "[He] is a [job].  "}
+	var special_descriptors = [];
+	function add_if_found(text_key){ //short function to add found description to special_descriptors
+		if(stat_descriptors[text_key]){ special_descriptors.push(stat_descriptors[text_key])}
+	}
+	for(var stat_key in stat_ranges_dice){//stat_ranges_dice has all the variable stats that the description is based on
+		var stat_val = character[stat_key];
+		if(stat_val < 1){add_if_found("very_low" + stat_key)};
+		if(stat_val < 2.5){add_if_found("low_" + stat_key)};
+		if(stat_val > 3.5 && stat_val <= 7.5){add_if_found("average_" + stat_key)};
+		if(stat_val > 7.5){add_if_found("high_" + stat_key)};
+		if(stat_val > 9){add_if_found("very_high_" + stat_key)};
+	}
+	while(special_descriptors.length > 0){
+		description_text = description_text + "[Name] " + special_descriptors.shift();
+		if(special_descriptors.length > 0){
+			description_text = description_text + " and " + special_descriptors.shift();
+		}
+		description_text = description_text + ".  ";
+	}
+	return result_text + edit_text(description_text,[character]);
 }
 
 function add_text_line(text, location){
@@ -262,8 +328,11 @@ function add_text_line(text, location){
 function make_character_pane(character){
 	var new_character_div = add_text_line("", character_pane);
 	var status_text = add_text_line(character.status,new_character_div);
-	status_text.style.cssFloat = "right"; 
+	status_text.style.cssFloat = "right";
+	status_text.className = character.status; //statuses get colored by their classname
 	var char_name_div = add_text_line(character.first_name + " " + character.last_name, new_character_div);
+	var appearance_text = (character.gender == "Male" ? "M" : "F");
+	appearance_text = appearance_text + " " + aged_height(character);
 	//char_name_div.style.cssFloat = "left";
 	var char_bio_div = add_text_line(generate_bio(character), new_character_div);
 	return new_character_div;

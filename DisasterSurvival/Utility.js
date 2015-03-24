@@ -4,7 +4,8 @@ function round_to(num, digits){
 }
 
 function capitalize(text){
-     return text.charAt(0).toUpperCase() + text.slice(1);
+	text = text + "" //force text to be a string (this way numbers can safely be passed as the argument, this did cause problems before)
+    return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function rand_from_list(list_array){

@@ -1,4 +1,9 @@
 //[Bla] in text gets replaced by the result of function Bla
+
+//The text "[Name] went to the store and talked to [Name1] about [his] day" with arguments [Bob,Amy] becomes:
+//"Bob went to the store and talked to Amy about his day"
+//Works nicely for most things, however it can be confusing if both args have matching gender
+
 var f = {
 	'Name':	function(args,arg_num){
 		return args[arg_num]['first_name'];
@@ -19,7 +24,7 @@ var f = {
 //	'Job': function (args,arg_num){
 //		return capitalize(args[arg_num]['profession']);
 //	},
-	'Age': function(args,arg_num){
+	'age': function(args,arg_num){
 		return round_to(args[arg_num]['age'],0);
 	},
 	'base': function(args,arg_num){
@@ -57,17 +62,31 @@ var f = {
 				return 'woman';
 			}
 		}
+	},
+	'hair_color': function(args,arg_num){
+		return args[arg_num]['hair'];
+	},
+	'eye_color': function(args,arg_num){
+		return args[arg_num]['eye_color'];
 	}
 }
 
 //automagically add a capitalize version of all these functions
+
+
 for(var f_key in f){
 	var cap_key = capitalize(f_key);
 	if(cap_key != f_key){
-		var un_cap_func = f[f_key];
-		f[cap_key] = function(args,arg_num){
-			return capitalize(un_cap_func(args,arg_num));
+		function make_capitizer(ccap_key, ff_key){
+			var un_cap_func = f[ff_key];
+			f[ccap_key] = function(args,arg_num){
+				return capitalize(un_cap_func(args,arg_num));
+			}
 		}
+		make_capitizer(cap_key, f_key);
+		//f[cap_key] = function(args,arg_num){
+		//	return capitalize(un_cap_func(args,arg_num));
+		//}
 	}
 }
 
@@ -125,10 +144,18 @@ function edit_text(text, args){
 			text_funct = text_funct.slice(0,arg_number_index); //remove the number at the end
 		}
 		var f_to_use = f[text_funct];
+		if(!f_to_use){
+			error("ERROR: " + text_funct + " text function not found");
+			break;
+		}
 		var replacement_text = f_to_use(args,arg_number); //get the text
 		var text_start = text.slice(0,left_brace_index);
 		var text_end = text.slice(right_brace_index+1);
 		text = text_start + replacement_text + text_end; //replace the middle part with the new text
+	}
+	var vowel_list = ['a','e','i','o','u'];
+	for(var vowel in vowel_list){
+		text = text.replace(" a " + vowel_list[vowel], " an " + vowel_list[vowel]); //occasionally articles end up wrong so just fix these
 	}
 	return text;
 }
