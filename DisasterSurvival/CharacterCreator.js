@@ -99,7 +99,7 @@ var profession_list = {
 	"butcher":{},
 	"cashier": {},
 	"chef":{},
-	"child":{'age':[-20,-70],'religion':[1,-1],'money':[0,-1], 'strength':[0,-4],'stability':[0,-2],'fighting':[0,-2],'leading':[0,-3]},
+	"child":{'age':[-12,-70],'religion':[1,-1],'money':[0,-1], 'strength':[0,-4],'stability':[0,-2],'fighting':[0,-2],'leading':[0,-3]},
 	"cop":{'strength':[2,0], 'politics':[0,-3],'stability':[2,0],'intelligence':[0,-1],'raiding':[2,2],'fighting':[4,4],'leading':[1,1]},
 	"doctor":{'age':[10,0], 'money':[2,1], 'intelligence':[2,0], 'stability':[2,0],'healing':[6,6]},
 	"farmer":{'strength':[2,0],'raiding':[2,2],'mechanicing':[1,1],'farming': [6,6]},
@@ -111,7 +111,7 @@ var profession_list = {
 	//"None":{'stability':[0,-1],'money':[0,-2]},
 	"nurse":{'stability':[1,0],'fighting':[0,-1],'healing':[3,3]},
 	"office worker":{'money':[1,-1]},
-	"pastor":{'religion':[5,0],'politics':[0,-3],'charisma': [2,0],'leading':[3,2]},
+	"pastor":{'religion':[6,0],'politics':[0,-3],'charisma': [2,0],'leading':[3,2]},
 	"plumber": {'mechanicing':[1,1]},
 	"politician":{'age':[10,0],'money':[3,1],'ethics':[0,-3],'charisma':[4,0],'leading':[3,3]},
 	"student":{'age':[-10,-55], 'strength':[0,-1], 'stability':[0,-1],'leading':[0,-2]},
@@ -129,7 +129,7 @@ var profession_list = {
 
 //currently trying to avoid gender neutral names since it can make things a little confusing
 //Half of the names of interesting famous people or fictional people are good (subtle names are best)(need tons and tons of last names)
-var male_names = ["Aaron", "Adam", "Anthony", "Ash", "Bill", "Ben", "Chris", "Charlie", "David", "Eric", "George", "Hector", "Isaac", "Jack", "Jake", "Joel", "Joseph", "Joshua", "Luke", "Malcolm", "Michael", "Morty", "Noah", "Patrick", "Paul", "Rick", "Sam", "Simon", "Thomas", "Tony", "Tyler", "Wesley", "Xander"];
+var male_names = ["Aaron", "Adam", "Anthony", "Ash", "Bill", "Ben", "Chris", "Charlie", "David", "Eric", "Francis", "George", "Hector", "Isaac", "Jack", "Jake", "Joel", "Joseph", "Joshua", "Luke", "Malcolm", "Michael", "Morty", "Noah", "Patrick", "Paul", "Rick", "Sam", "Simon", "Thomas", "Tony", "Tyler", "Wesley", "Xander"];
 var female_names = ["Anne", "Aria", "Betty", "Caitlyn", "Chandra", "Chelsea", "Christina", "Diana", "Elizabeth", "Ellie", "Hannah", "Jane", "Jessica", "Kate", "Lauren", "Lisa", "Lois", "Lucy", "Lyra", "Maria", "Mary", "Megan", "Nia", "River", "Rose", "Sabriel", "Sabrina", "Sarah", "Sasha", "Trisha", "Willow", "Zelda"];
 var nick_names = {David:"Dave", Joseph: "Joe", Joshua:"Josh", Michael: "Mike", Thomas: "Tom", Trisha: "Trish"}
 var last_names = ["Ackerman", "Aldrin", "Armstrong", "Barnes", "Beleren", "Black", "Blouse", "Brando", "Burkle", "Buvelle", "Chase", "Clegane", "Comstock", "Costa", "Deel", "Dian", "Dixon", "Ford", "Franks", "Fredricksen", "Fuller", "Gallagher", "Gecko", "Gerald", "Goodwin", "Hastur", "Jefferson", "Johnson", "Kent", "Lars", "Leonhart", "Liebert", "Lockhart", "MacGuffin", "Macintosh", "Makise", "McDonald", "Meruem", "Muntz", "Newell", "Nimoy", "North", "Organa", "Parr", "Reynolds", "Robinson", "Russo", "Shepard", "Slate", "Smith", "Spade", "Sparrow", "Stanfield", "Stark", "Stinson", "Sutton", "Swanson", "Tam", "Tenma", "Tepplin", "Titor", "Todd", "Troyard", "Vess", "Walker", "Wallace", "White", "Wilkowski", "Williams"];
@@ -140,7 +140,7 @@ var starter_weapons = ["axe", "kitchen knife", "cleaver"] //bladed start
 var hair_color_list = ["blond", "brown", "black", "red"]
 var eye_color_list = ["blue", "green", "brown"]
 
-var characteristic_lists = {'gender':gender_list, 'profession':profession_list, 'last_name':last_names}
+var characteristic_lists = {'gender':gender_list, 'profession':profession_list}
 //d&d style stat creation using dice
 function basic_person(fixed_characteristics_list){
 	var newbie = {};
@@ -163,17 +163,19 @@ function basic_person(fixed_characteristics_list){
 	for(var stat in stat_ranges_dice){
 		stat_bonuses[stat] = [0,0];
 	}
-	function set_characteristic(characteristic,list,value){
+	function set_characteristic(characteristic,char_list,value){
 		newbie[characteristic] = value;
-		var charteristic_bonuses = list[characteristic]
+		var charteristic_bonuses = char_list[value]; 
+		//error("setting characteristic: " + characteristic + " as " + value);
 		for(var bonus_type in charteristic_bonuses){
 			stat_bonuses[bonus_type][0] += charteristic_bonuses[bonus_type][0];
 			stat_bonuses[bonus_type][1] += charteristic_bonuses[bonus_type][1];
+			//error("added bonuses for " + bonus_type + ".  with vals " + charteristic_bonuses[bonus_type][0] + "," + charteristic_bonuses[bonus_type][1])
 		}
 	}
 	
 	for(var characteristic in characteristic_lists){
-		var char_list = characteristic_lists[characteristic];
+		var char_list = characteristic_lists[characteristic]; //either gender_list or profession_list
 		if(fixed_characteristics_list[characteristic]){
 			set_characteristic(characteristic,char_list,fixed_characteristics_list[characteristic]); //use predetermined one
 		}else{
@@ -185,12 +187,12 @@ function basic_person(fixed_characteristics_list){
 		if(fixed_characteristics_list[stat]){
 			newbie[stat] = fixed_characteristics_list[stat];
 		}else{
-			
 			var array = stat_ranges_dice[stat];
 			var min = array[0] + stat_bonuses[stat][0];
 			var max = array[1] + stat_bonuses[stat][1];
 			var dice = array[2];
 			newbie[stat] = dice_random(min,max,dice);
+			//error("stat name: " + stat + " bonuses: " + stat_bonuses[stat][0] + "," + stat_bonuses[stat][1] + " result: " + newbie[stat]);
 			//write_text(stat + " being added " + newbie[stat] + " " + min +" " + max + " " +dice );
 		}
 	}
@@ -248,10 +250,52 @@ function make_child(parent1, parent2){
 	//profession gets fixed automatically based on age
 	return basic_person(fixed_chars);
 }
-				
-function get_compatability(person1,person2){
 
+var comparison_stat_ranges = { //the difference is divided by this number to get the impact on compatibility
+	height: 50, //height difference has a relatively low impact
+	age: 25, //age has a much larger impact on compatibility than other stats (since the difference can be fairly large)
+	religion: 8, //bigger impact
+	politics: 10,
+	ethics: 10,
+	stability: 15, //smaller impact
+	money: 10, 
+	strength: 20, //small impact
+	intelligence: 10,
+	charisma: 10
 }
+
+function get_compatability(person1,person2){ //the closer to zero, the more compatible they are
+	var stats_being_compared = 0;
+	var stats_compared = 0;
+	var difference_sum = 0; //square so that large differences hurt compatibility more than small differences
+	for(var key in comparison_stat_ranges){
+		var stat_diff = person1[key]-person2[key];
+		difference_sum += Math.pow(Math.abs(stat_diff),1.5)/(comparison_stat_ranges[key]); //tried squared, felt too biased, linear wasn't baised enough
+		stats_being_compared +=1;
+	}
+	return difference_sum / stats_being_compared;
+}
+
+function run_compatability_stats(){
+	//currently the average compatibility is about  .89
+	//the median is roughly .77
+	var average_compatability = 0;
+	var test_count = 10000
+	var mid = .77;
+	var over_count = 0;
+	for(var i = 0; i<test_count; i++){
+		var p1 = basic_person();
+		var p2 = basic_person();
+		var compat = get_compatability(p1,p2);
+		average_compatability += compat;
+		if(compat>mid){over_count+=1}
+		//error(" " + p1['first_name'] + " and " + p2['first_name'] + " got a score of: " + compat);
+	}
+	error("average of " + average_compatability/test_count);
+	error(100*over_count/test_count + "% over " + mid);
+}
+run_compatability_stats()
+
 function update_relationships(person1,person2,bonus){
 
 }

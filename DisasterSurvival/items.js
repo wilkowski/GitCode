@@ -1,18 +1,18 @@
-var melee_weapon_items = {"wrench":{}, 
-	"metal bat":{}, 
-	"wooden bat":{}, 
-	"machete":{}, 
-	"wood board":{},
-	"katana":{},
-	"golf club":{}, 
-	"metal pipe":{}, 
-	"kitchen knife":{}, 
-	"cleaver":{},
-	"fire poker":{},
-	"sharp stick": {},
-	"lead candletick": {},
-	"wood axe":{}
-	"fire axe":{}
+var melee_weapon_items = {
+	"wrench":{actions:["swung"]}, 
+	"metal bat":{actions:["swung"]}, 
+	"wooden bat":{actions:["swung"]}, 
+	"machete":{actions:["swung"]}, 
+	"wood board":{actions:["swung"]},
+	"katana":{actions:["swung","stabbed","slashed","thrust"]},
+	"golf club":{actions:["swung"]}, 
+	"metal pipe":{actions:["swung"]}, 
+	"kitchen knife":{actions:["stabbed","thrust"]}, 
+	"cleaver":{actions:["swung","stabbed"]},
+	"fire poker":{actions:["swung","stabbed"]},
+	"lead candletick": {actions:["swung"]},
+	"wooden axe":{actions:["swung"]},
+	"fire axe":{actions:["swung"]}
 }
 
 var gun_items = {
@@ -87,7 +87,9 @@ var general_items = {
 	"sharpie":{},
 	"water filter":{},
 	"plastic tarp":{},
-	"aluminum foil":{}
+	"aluminum foil":{},
+	"box of matches":{},
+	"lighter":{}
 }
 
 var crafted_items = {
@@ -113,7 +115,7 @@ var all_item_groups = {
 function set_type(group, group_type){ //add each group as a tag within the item
 	for(var key in group){
 		var item = group[key];
-		item[category] = group_type;
+		item['category'] = group_type;
 	}
 }
 for(var group_type in all_item_groups){
@@ -124,3 +126,4 @@ for(var group_type in all_item_groups){
 function random_item(type){
 
 }
+

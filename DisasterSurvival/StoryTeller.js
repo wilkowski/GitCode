@@ -38,7 +38,8 @@ var group_states = {
 }
 
 var game = {
-	base: "none"
+	base: "none",
+	new_base: "none"
 }
 //TODO: any setup
 //TODO: load game
@@ -76,7 +77,6 @@ function error(text){ //smae as write text but red color
 	last_text_element = text_line;
 	return text_line;
 }
-
 
 var choice_button_list = [];
 
@@ -158,21 +158,24 @@ function get_story_for(story_type, args){
 	for(var possible_story_key in grouped_stories){
 		var possible_story = grouped_stories[possible_story_key];
 		if(possible_story['chars'] == args.length){
-			valid_stories.push(possible_story);
+			valid_stories.push(possible_story_key);
 		}
 	}
 	if(valid_stories.length == 0){
 		error("ERROR: no " + story_type + " found for " + args.length + " arguments");
 	}
+	
 	var result_story = rand_from_list(valid_stories);
+	//error(valid_stories.length
 	return result_story;
 }
 
 //var period_match = new RegExp("\\.");
 //var sentence_match = /[^\.]*\./g; //not . followed by a . (return array of all matches)
 //big mess o' fun!
-var sentence_match = /[^\.\?\!]*[\.\?\!$]\"?/g; //[not . ? or !] followed by a [. ? ! or end of line] (return array of all matches) also " added to end if found
+var sentence_match = /[^.?!]*([.?!]\"?|$)/g; //[not . ? or !] followed by a [. ? !] (return array of all matches) also " added to end if found
 
+//Find something to show to the player
 function next_text_passage(){
 	if(next_story == null || next_story == ""){
 		if(queued_events.length > 0){
@@ -189,14 +192,33 @@ function next_text_passage(){
 	next_passage = all_stories[next_story];
 	events_so_far.push([next_story,current_args]); //TODO: figure out how to make it save properly
 	next_story = ""; //next story has been used
+	
+	//parse the text and prepare it to be written out
+	function setup_text_passage(){
+		//current_args
+		var next_text = next_passage['text'];
+		var pre_run_func = next_passage['pre_run'];
+		var choice_run_func = next_passage['choice_run'];
+		if(pre_run_func){
+			next_text = pre_run_func(next_text,current_args);
+		}
+		if(choice_run_func){
+			//write_text("choice_run found");
+			after_choice_func = choice_run_func;
+		}
+		next_text = edit_text(next_text, current_args);
+		return next_text;
+	}
 	var text = setup_text_passage();
 	passage_sentences = text.match(sentence_match);
+	if(passage_sentences == null){passage_sentences = [""]}; //force it to be an array of one element if no matches found
+	if(passage_sentences[passage_sentences.length-1] == ""){ passage_sentences.pop()} //remove the "" element that appears at the end for some reason
 	sentence_index = 0;
 	game_state = "pause";
 }
 
 function next_sentence(){
-	if(passage_sentences.length == 0){
+	if( passage_sentences.length == 0){
 		error("empty text");
 	}
 	var new_sentence = passage_sentences[sentence_index];
@@ -216,22 +238,7 @@ function next_sentence(){
 	}
 }
 
-function setup_text_passage(){
-	//current_args
-	var next_text = next_passage['text'];
-	var pre_run_func = next_passage['pre_run'];
-	var choice_run_func = next_passage['choice_run'];
-	if(pre_run_func){
-		next_text = pre_run_func(next_text,current_args);
-	}
-	if(choice_run_func){
-		//write_text("choice_run found");
-		after_choice_func = choice_run_func;
-	}
-	
-	next_text = edit_text(next_text, current_args);
-	return next_text;
-}
+
 
 function game_continue(){
 	if(game_state == "choice"){
@@ -294,9 +301,16 @@ function new_base(base_type){
 	if(game.base == "none"){
 		write_text("The sun was almost setting so this location would have to make due for a place to stay.");
 		game.base = base_type
+	}else{
+		write_text("Settle in at the " + base_type + "?");
+		player_choice(game, 'new_base', base_type, "move on");
+		if(after_choice_func){
+			error("Error: current after_choice_function overwritten by new base after_choice_func");
+		}
+		after_choice_func = function(){
+			if(game.new_base != "move on"){ game.base = game.new_base } //after the choice is run, copy the new base value 
+		}
 	}
-	write_text("Settle in at the " + base_type + "?");
-	player_choice(game, 'base', base_type, "ignore it");
 }
 
 $(document.body).click(function(){game_continue();})

@@ -33,6 +33,13 @@ var f = {
 	'weapon': function(args,arg_num){
 		return args[arg_num]['melee_weapon'];
 	},
+	'weapon_action': function(args,arg_num){
+		var player_weapon = args[arg_num]['melee_weapon'];
+		return melee_weapon_items[player_weapon]['actions'][0]; //default to first one for now, TODO: use other action words
+	},
+	'weapon_hit':function(args,arg_num){
+		return "hit" //TODO: make this customized for each weapon
+	}
 	'young': function(args,arg_num){
 		var player_age = round_to(args[arg_num]['age'],0);
 		if(age <13){
@@ -149,6 +156,9 @@ function edit_text(text, args){
 			break;
 		}
 		var replacement_text = f_to_use(args,arg_number); //get the text
+		if(replacement_text + "" == "undefined"){ //this happens if there is some error in the f_to_use
+			error("text func failed: " + text_funct);
+		}
 		var text_start = text.slice(0,left_brace_index);
 		var text_end = text.slice(right_brace_index+1);
 		text = text_start + replacement_text + text_end; //replace the middle part with the new text
