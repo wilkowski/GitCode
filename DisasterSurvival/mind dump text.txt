@@ -1,0 +1,25 @@
+Mind dump text:
+
+Zombie apocalypse story.  
+
+* The basic ideas
+Most of the game is actually a story with a few decisions made by the player.  The story follows a group of people trying to survive in a zombie apocalypse.  Rather than just have items appear in someone's inventory or just say someone has an injury now, the game will tell a story about how the event happened.  This does mean that a very large amount of text will be necessary for a complete game so that will probably be the main bottleneck in development.  The player will have to manage their resources to survive as long as possible.  
+
+* Implementation details
+Characters are randomly generated and the player gets a different stories depending on what they choices they've made, what their characters attributes are.  The player begins with a large amount of resources and must decide how to allocate the time of the characters to gather more resources or preform other actions.  In general it should become more difficult to manage resources over time.  When a resource runs out they player will lose some of their characters or suffer other penalties.  
+	
+* Feedback wanted:
+What aspects of the game should the player be able to control?  How can the player be given interesting and relevant decisions to make?  For example choosing between entering building A or building B can be interesting but its not meaningful if the player is picking at random.  It is very important that the player feels like their choices make an impact on the game.  What else should be included to make the game fun/interesting/addicting?
+	
+Should NSFW text content be included? Should it optional? If it is included how much should there be?
+	
+Any ideas for story lines to be included in the story?  I have a few dozen ideas already and have started writing out some but for a game like this I want as many as possible.  Story lines generally fit into a few categories: 1. Introducing a new character 2. Exploring a new location 3.Random event or event triggered by a certain condition 4. A conversation between two characters 5. Long term multi-part story, spread throughout the game.  
+	
+Is the game incremental enough?  I feel like the current concept is on the edge of being classified as an incremental game.  Should I add more incremental aspects to the game?  And what would they be?
+	
+	
+//To ask at a later date:
+	Any other feedback?
+	Name for the game?
+	How should the game start out?
+	Artwork? Should I add some? of what? How will I get the artwork?

@@ -1,0 +1,299 @@
+TODO LIST FOR GAME:
+
+Update reset function to account for extra stuff in button sections and the math super
+stuff
+
+//Make sure that game is resetable if errors occur after loading bad data
+
+fix popup repositioning when page is scrolled down
+//Make buttons be disabled while they are growing so you cant accidentally click one
+
+flavor for math researches
+
+
+MATH SUPER PROJECT
+	Special research project has a chance of appearing if math level is high enough
+		(twin prime research, or colatz conjecture, odd perfect numbers)
+		gildbreath's conjecture: repeated prime differences = 1
+	When completed unlocks math super
+	Math super project
+	insight button is enabled for 2 seconds out of every 15 seconds, disabled on click, +1 insight
+
+	Research areas:
+		solution to navier-stokes equation: improves physics? 50%
+		no solution to navier-stokes: improve math?
+		P=NP: massive money/s boost (but not $1M), 10% chance
+		P!=NP: small money/s boost, 90% chance
+		Reimann Hypothesis: + calculations/s boost
+		Problem classification theorem: shows % chance of success for all research
+			/i Provides a method to estimate the computational difficulty of a problem
+
+	millenium problems all have $1mil prize
+
+	Finished advanced math research, graduated school
+	hit super project button (very large requirements, yes/ no option)
+	a few research projects become available to try to prove or disprove.
+		
+	each has only one solution and each has a chance of failure
+	research unlocks new theorems
+	one theorem gives a permanent reward:
+		+x% on all skill rewards
+	ulocks [mathematical universe theorem]
+	Build portal to new dimesion
+	New dimension has little squiggles on some of the letters
+
+
+Physics section:
+	Basic physics
+	Chemistry
+	Advanced physics
+	Quantum physics
+	String theory
+	Laser stuff
+		Introduce materials for experiments: (straight up purchaseable item, flat price)
+		(purchase 1x 10x 100x etc, buying 10 of one teir unlocks next one)
+	
+
+Special thing(s):
+	Build experiment has %chance of success, can spend as much effort as you want building to success odds
+	Silicon/transistor/cs experiemnt gives +5% code and +5% calc /s
+	Pure physics experiment +improve odds of sucess for future experiments
+	Material experiment: reduce material costs by 10%
+	Money Experiment: earn permanent $/s
+
+Engineering section:
+	Heavy physics, materials, calculations requirements
+	Special: Build stuff
+	
+
+//find better font for cs reset
+//slightly better
+//Nixie one? from google fonts: (does it do italics?)
+
+Inspiration - Insipiration button appears next to muster for ~10 seconds (color/text countdown)
+	Active for 30 seconds: all +skills clicks get +50% bonus
+	Long ass cooldown ~ once per 15 min to 30 min?
+
+create a navigation bar/favorites icon thingy (a graduation cap? a book?)
+
+new layout for math/cs projects
+Group projects together by type with box around them
+	+/- button or ^ V button to expand/minimize box thingy (top left)
+	label on box with description (after +/-)
+	[finished/ (shown iff <total)]total item count (top right)
+
+
+Stats/options menu (treat it like a tab button but place it on bottom row)
+	show time played?
+	import/export
+	reset
+	rename button (on next renameable button click get option to rename it)
+
+Possible special reset effects:
+	need glasses: (everything is slightly blurry until glasses purchased)
+	Dating section: pick a person
+		+relationship buttons
+		marriage gives a bunch of bonuses to stuff depending on partner
+	Chance to get into fight and lose a bunch of money
+
+Do some animated text on button click:+skill thingy
+
+british/english spelling? (flavour/ flavor, color/colour, analyze/analize)
+
+update google drives site to redirect to scholarclicker.com
+
+add web adress icon thingy for game
+
+(add more cs classes)
+
+Figure out how to make each button column be only as wide as necessary
+(with some max width in case people put long names of stuff in)
+
+
+
+Current milestone times:
+	middle school:	2:40 min
+	high school:	28:40 min
+	college:	3 hrs
+	grad school:	16 hrs
+	graduation:	75 hrs
+	ai buddy	180 hrs
+	infinite nodes	330 hrs
+
+SUPER PROJECT
+
+	~10 mil effort cost
+
+
+formula for X items of cost C and exponent E
+infinite:
+S = 1/E sum C*E^N from N = X to -infin
+SE = 1/E sum C E^N from N=X+1 to -infin
+SE-S = CE^X
+S = CE^(X) / (E-1)
+non infinite sum = CE^X+1 /1-E - CE/(E-1) = C/(E-1) * (E^(X) - 1)
+current cs super costs:
+	super computers: $ 166M
+	bot nets: $48M, 16M code
+	servers: $11M
+		sum: $225M *5/6
+			days: ~12 at best
+	AI buddy:  12M effort, 30M code
+		days: ~1.0, ~.3 days
+	design: 1M effort, 2M code
+	
+
+possible super project rewards:
+10% faster passage of time (time travel reward, [physics])
+clicks count +1 times (alternate dimension? [math])
+Earn interest on Calculations/Code/Money (Bad idea, interst is unfun)
+//permanent /s bonus to a resource && add multiplier on resource max ([CS])
+muster adds money
+
+
+
+CS SUPER PROJECT
+//	Gflops item needed
+//	Get some ais, have graduated school
+//	hit super project button (very large requirements, yes/ no option)
+//	button opens up super project tab
+//	a few programs need to be made and debugged
+//		code analizer: less bugs show up in completed projects
+//		self correcting code: bugs no longer show up in completed projects
+//		self editing code: 
+//	reward program opens up (gives permanent reward)
+//		AI buddy = 50% bonus to a selected resource (calc/code)
+//	self improving ai becomes available
+//	each one reduces cost of next one (and other cs stuff maybe?)
+//	when cost is at 0 and they go out of control you win the game
+//	button appears that allows you to [enter the matrix]
+//	button brings up yes/no menu
+//	if yes, reset game keeping permanent bonus
+	new game has new font
+
+PHYSICS SUPER PROJECT
+	Time dilator - permanent 15% bonus to speed
+	Time machine - travel to the past
+	Sepia tone on everything
+
+Acheivements tab
+	1 for each school up
+	1 for each win
+	for large numbers of stuff
+	muster less win
+	minimal other stuff wins
+	graduate without cs/other classes
+	graduate without cheating.  
+	Multipling matricies: win cs multiple times
+
+
+	
+Add colors! (art class)
+money -> dark green
+effort -> dark yellow
+calc -> dark red
+code -> dark blue? (TODO: figure out code color)
+bug-> red
+in progress -> yellow
+complete-> bright green
+color highlighting for tabs
+
+Icons for tabs and popups
+effort->fist
+money -> ($)
+calculations -> [+-*/]
+code -> circuit board?
+math skill -> thought bubbled math equation?
+cs skill -> thought bubbled code?
+
+
+main section teaching job:
+	no job option	(move tutoring here maybe?)
+			startup effort cost
+	math teacher: 	reward money/s based on math skill
+			costs effort/s and calculations/s
+	cs teacher:	reward money/s based on cs skill
+			costs effort/s and code/s
+
+God Mode tab (last thing to do):
+	Requires All other acheivements
+	Initially Show all true/false values and allow player to change them
+	One of the bools unlocks larger god mode with acess to variables
+	One of the variables unlocks access to full god mode with access to *everything*
+
+Figure out what happens when numbers get too large & how to beat limits
+
+Test in multiple browsers/window sizes
+
+Test everything, test at normal speed
+
+Physics section (also uses calculations)
+
+Engineering section
+
+Make grade up button dependencies depend on all skill levels (math level +5*cs level)
+								(or multiply all cs levels by 5
+Only for college +
+in high school require pysics/x and math/x 
+
+	Code Cleanup
+
+Make each button have its own inner html data, -> do textify, counts automagically
+(hard since innerHTML may contain other buttons, not really a requirement)
+
+better tab highlighting when something new appears in them
+fix popup bug (empty popup sometimes)
+
+balance so that it is significantly faster to stick to one subject
+	(completion amount of money takes a while if effort is divided, faster if focused)
+
+
+
+
+/////////////Completed stuff
+
+//set default font for end text
+
+/donation button:
+//	dogecoin 
+		icons
+//	paypal
+//	bitcoin
+
+//Adjust size of super project buttons
+//SUPER PROJECT
+//add confirmation box after hitting super project start button
+//	new tab for super project items
+//	button to start super project
+//Test what happens if math level gets over 9.9 bil
+
+//Change self editing code to add progress to projects instead of fixing bugs
+
+//force capitalization of project names
+
+//make cancel button work for naming projects
+
+//add google analytics
+
+//math requirements for grade up should show up properly too
+//(and or add more math classes corresponding to grade up requirements)
+
+//added flavor text!
+//flavor text on stuff!
+//Remove button.disable, replace with is_disabled/color change
+//Change button code so that there can be popups when button is disabled
+//make poup move up or left if at bottom or right
+//use undo on cs project cancel button
+//test undo
+//add in data for super project stuff
+
+//grow stuff boxes (animate)
+
+//export import buttons for saves, (helpful for testing too)
+
+//round extra digits off of long numbers (like contest prizes)
+
+//adjust grade up 1 cost to 4 or something easy like that (now start with enough effort)
+
+
+//FLAVOR TEXT ON POPUPS

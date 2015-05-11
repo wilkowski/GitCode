@@ -1,0 +1,108 @@
+body {
+    background-color:#ffffff;
+    -moz-user-select: none; 
+    -webkit-user-select: none; 
+    -ms-user-select: none; 
+    user-select: none;
+}
+
+div{
+	color: white;
+	max_width:50%;
+	overflow-x:hidden;
+}
+
+#background_frame{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+	height: -moz-calc(100% - 28px);
+    height: -webkit-calc(100% - 28px);
+    height: calc(100% - 28px);
+    opacity: 1;
+    background-color: black;
+}
+
+.pane{
+	position:absolute;
+	float:left;
+	height:100%;
+	border:1px solid #dddddd;
+	margin:-1;
+	padding:3px;
+	font-size:large;
+}
+
+#character_pane{
+	left:0%;
+	width:calc(25% - 6px);
+}
+
+#main_pane{
+	left:25%;
+	width:calc(50% - 6px);
+}
+
+
+#inventory_pane{
+	left:75%;
+	width:calc(25% - 6px);
+}
+
+#cover_pane{
+	position: absolute;
+	height:0%;
+	width:100%;
+	opacity: 0;
+}
+
+#footer_bar{
+    position: fixed; 
+    bottom: 0px; 
+    left: 0px;
+    padding-left: 5px;
+    width: 100%;
+    height: 27px;
+    margin: 0;
+    background-color:#000000;
+	border-top:1px solid #dddddd;
+}
+
+#credits{
+    position: fixed; 
+    right:15px;
+}
+
+.choice_button{
+	border:1px solid #dddddd;
+	background-color: black;
+	color: white;
+	margin:3px;
+}
+
+/*coloring for statuses */
+.Healthy{
+	color: green;
+}
+.Fighting{
+	color: white;
+}
+.Tired{
+	color: white;
+}
+.Sleeping{
+color: white;
+}
+.Sick{
+	color: red;
+}
+.Crying{
+	color: red;
+}
+.Hungry{
+	color: red;
+}
+.Dead{
+	color: red;
+}
