@@ -2,7 +2,31 @@
 	<link rel="stylesheet" type="text/css" href="Styling.css">
 	<title>QCell</title>
 </head>
-<canvas id="workspace" width="1000" height="400"></canvas>
+<div id="control_bar">
+	Load Example
+	<select id="examples_menu">
+	</select>
+	<button id = "load_button">Load</button>
+</div>
+
+<div id="left_button_pannel">
+<table>
+    
+	<tr><td><button id="drag_button" class="tool_button">Drag</button></div></td></tr>
+	<tr><td><button id="make_cell_button" class="tool_button">Cell</button></td></tr>
+	<tr><td><button id="make_charger_link_button" class="tool_button">Charge Link</button></td></tr>
+	<tr><td><button id="make_discharger_link_button" class="tool_button">Discharge Link</button></td></tr>
+	<tr><td><button id="charge_button" class="tool_button">Charge</button></td></tr>
+	<tr><td><button id="increase_max_charge_button" class="tool_button">+ Max Charge</button></td></tr>
+	<tr><td><button id="decrease_max_charge_button" class="tool_button">- Max Charge</button></td></tr>
+	<tr><td><button id="label_button" class="tool_button">Add Label</button></td></tr>
+	<tr><td><button id="clear_cell_button" class="tool_button">Clear</button></td></tr>
+</table>
+</div>
+
+<canvas id="workspace" width="1000" height="600"></canvas>
+
+<div id="notifications"> </div>
 <div id="background_frame">
 
 </div>
@@ -12,12 +36,13 @@
 		<button id = "run_button">Run</button>
 		<button id = "stop_button">Pause</button>
 		<button id = "step_button">Step</button>
+		<button id = "faster_button">Faster</button>
+		<button id = "slower_button">Slower</button>
 		|
-		<button id = "drag_button">Drag</button>
-		<button id = "make_cell_button">Cell</button>
-		<button id = "make_charger_link_button">Charge Link</button>
-		<button id = "make_discharger_link_button">Discharge Link</button>
-		<button id = "charge_button">Charge</button>
+
+		<button id = "clear_all_button">CLEAR ALL</button>
+		<button id = "string_export_button">String Export</button>
+		<button id = "string_import_button">String Import</button>
         Created by Wilkowski
     </div>
 </div>
@@ -26,4 +51,5 @@
 <script src="victor.min.js"></script>
 <script src="QCell.js"></script>
 <script src="Interface.js"></script>
+<script src="Examples.js"></script>
 <script src="test.js"></script>

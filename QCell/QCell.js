@@ -4,11 +4,16 @@ var base_cell = { //this is a special base cell that other cells are copied from
 	charge: 0,
 	max_charge: 1,
 	outputs: [],
+	pos: new Victor(50,50),
+	connected_cells: {},
+	changed: true,
+	image: null, //used to reference the images that gets added to the screen
 	special_func: null,
-	pos: new Victor(50,50)
+	output_text: null, //displayed when the cell is executed
+	label: null
 }
 
-var all_cells = [base_cell];
+var all_cells = [base_cell]; //imaginary cell at 0 position, does nothing but makes array start at 1.  
 
 var action_queue = [];
 
@@ -19,6 +24,7 @@ function make_cell(cell_pos){
 		new_cell[key] = base_cell[key];
 	}
 	new_cell.outputs = [];
+	new_cell.connected_cells = {};
 	new_cell.id = cell_counter;
 	new_cell.pos = new Victor(70*(cell_counter%10), 50);
 	if(cell_pos){
@@ -27,30 +33,6 @@ function make_cell(cell_pos){
 	cell_counter += 1;
 	all_cells.push(new_cell);
 	return new_cell.id;
-}
-
-function charge_cell(cell_no){
-	var cell_ref = all_cells[cell_no];
-	cell_ref.charge += 1;
-	if(cell_ref.charge >= cell_ref.max_charge){
-		action_queue.push(cell_no);
-	}
-}
-
-function cycle_charge_cell(cell_no){
-	var cell_ref = all_cells[cell_no];
-	cell_ref.charge += 1;
-	if(cell_ref.charge > cell_ref.max_charge){
-		cell_ref.charge = 0;
-	}
-	if(cell_ref.charge >= cell_ref.max_charge){
-		action_queue.push(cell_no);
-	}
-}
-
-function discharge_cell(cell_no){
-	var cell_ref = all_cells[cell_no];
-	cell_ref.charge = 0;
 }
 
 function get_cell(cell_id){
@@ -66,41 +48,207 @@ function next_in_queue(){
 	var node = all_cells[next_action];
 	if(node.charge >= node.max_charge){ //cell goes off
 		node.charge = 0;  //discarges itself
+		cell_small_update(next_action)
 		for(var i = 0; i< node.outputs.length; i++){
 			var out_val = node.outputs[i];
 			if(out_val > 0){
 				charge_cell(out_val);
+				animate_charging(out_val, node.id, 'charge');
+				update_cell_image(node.id);
 			}else{
 				discharge_cell(-out_val);
+				//MAYBE DO: remove all instances of the cell from the queue
 			}
 		}
 		if(node.special_func){
 			node.special_func();
 		}
+		if(node.output_text){
+			add_note(node.output_text);
+		}
+		return true;
+	}else{ //nothing triggered so skip ahead to next one (makes animation much smoother)
+		return next_in_queue();
 	}
-	return true;
 }
 
 var running_queue_function = null;
 
+var queue_interval = 250
+
 function run_all_queue(){
+	clearTimeout(running_queue_function); //prevents queue from being run twice at once (doesn't actually cause many problems but is weird behaviour)
 	if(next_in_queue()){
-		running_queue_function = setTimeout(function(){run_all_queue()},500);
+		running_queue_function = setTimeout(function(){run_all_queue()}, queue_interval);
 	};
-	update_screen();
+	setTimeout(function(){update_screen()}, queue_interval*.73);
+}
+
+function cell_small_update(cell_no){ //only changes the appearance of this one cell
+	var cell_ref = all_cells[cell_no];
+	cell_ref.changed = true; 
+}
+
+function cell_large_update(cell_no){ //also visually effects all the cells connected to this one
+	var cell_ref = all_cells[cell_no];
+	cell_ref.changed = true;
+	for(var connected_cell_id in cell_ref.connected_cells){
+		all_cells[connected_cell_id].changed = true; //this one makes changes to all the connected cells as well
+	}
+}
+
+function cell_link_update(cell_no, other_cell_no){//only changes the appearance of this one cell and adds a connection to another cell
+	var cell_ref = all_cells[cell_no];
+	cell_ref.connected_cells[other_cell_no] = true; //add the other cell number to the list
+	all_cells[other_cell_no].connected_cells[cell_no] = true; //add this one to the other guy as well
+	cell_ref.changed = true;
+}
+
+function charge_cell(cell_no){
+	var cell_ref = all_cells[cell_no];
+	cell_ref.charge += 1;
+	if(cell_ref.charge >= cell_ref.max_charge){ //maybe do: only queue up on exact equality
+		action_queue.push(cell_no);
+	}
+	cell_small_update(cell_no);
+}
+
+function cycle_charge_cell(cell_no){
+	var cell_ref = all_cells[cell_no];
+	cell_ref.charge += 1;
+	if(cell_ref.charge > cell_ref.max_charge){
+		cell_ref.charge = 0;
+	}
+	if(cell_ref.charge >= cell_ref.max_charge){
+		action_queue.push(cell_no);
+	}
+	cell_small_update(cell_no);
+}
+
+function discharge_cell(cell_no){
+	var cell_ref = all_cells[cell_no];
+	cell_ref.charge = 0;
+	cell_small_update(cell_no);
+}
+
+function update_cell_position(cell_no, new_position){
+	var cell_ref = all_cells[cell_no];
+	cell_ref.pos = new_position;
+	cell_large_update(cell_no);
 }
 
 function charge_link(from_cell_no, to_cell_no){
 	var from_cell = all_cells[from_cell_no];
 	from_cell.outputs.push(to_cell_no);
+	cell_link_update(from_cell_no, to_cell_no);
 }
 
 function discharge_link(from_cell_no, to_cell_no){
 	var from_cell = all_cells[from_cell_no];
 	from_cell.outputs.push(-to_cell_no); //just the negation of the value
+	cell_link_update(from_cell_no, to_cell_no);
 }
 
+function increase_cell_max_charge(cell_no){
+	var cell_ref = all_cells[cell_no];
+	cell_ref.max_charge += 1;
+	cell_large_update(cell_no);
+}
 
+function decrease_cell_max_charge(cell_no){
+	var cell_ref = all_cells[cell_no];
+	cell_ref.max_charge -= 1;
+	if(cell_ref.max_charge < 1){ //max charge cannot be 0;
+		cell_ref.max_charge = 1; //MAYBE DO: make special option where 0 max charge cells auto fire every time
+	}
+	cell_large_update(cell_no);
+}
 
+function clear_cell(cell_no){
+	var cell_ref = all_cells[cell_no];
+	cell_large_update(cell_no);
+	//TODO: remove connection history from the other cells
+	cell_ref.outputs = [];
+}
 
+function add_label(cell_no, new_label){
+	var cell_ref = all_cells[cell_no];
+	if(new_label == "" || new_label == null){
+		cell_ref.label = null;
+	}else{
+		cell_ref.label = new_label;
+	}
+	cell_small_update(cell_no);
+}
 
+function delete_all(){ //delete all the images and then reset all the cell data and stuff
+	for(var i = 1; i<all_cells.length; i++){
+		var cell_ref = all_cells[i];
+		if(cell_ref.image){
+			for(var j in cell_ref.image){
+				canvas.remove(cell_ref.image[j]);
+			}
+		}
+	}
+	all_cells = [base_cell];
+	cell_counter = 1;
+	action_queue = [];
+}
+
+//export all the cells currently on screen to a save friendly format
+function export_cells(){
+	var copied_cells = [];
+	for(var i = 0; i<all_cells.length; i++){
+		cell_to_copy = all_cells[i];
+		var new_cell = {};
+		for(var key in cell_to_copy){
+			if(key != 'pos' && key != 'image' && key != 'special_func'){
+				new_cell[key] = cell_to_copy[key];
+			}
+		}
+		new_cell.pos_x = cell_to_copy.pos.x;
+		new_cell.pos_y = cell_to_copy.pos.y;
+		copied_cells[i] = new_cell;
+	}
+	return [copied_cells, action_queue]; //important to copy the queue as well
+}
+
+function import_cells(import_array){
+	var addendum = all_cells.length-1; //how much to add to each ref id so that everything works out nicely;
+	for(var i = 1; i<import_array.length; i++){
+		var copy_cell_ref = import_array[i];
+		var new_cell = {}
+		for(var key in copy_cell_ref){
+			if(key != 'pos_x' && key != 'pos_x'){
+				new_cell[key] = copy_cell_ref[key];
+			}
+		}
+		new_cell.changed = true; //so that the change gets copied
+		new_cell.pos = new Victor(copy_cell_ref.pos_x, copy_cell_ref.pos_y);
+		new_cell.outputs = [];
+		for(var n = 0; n< copy_cell_ref.outputs.length; n++){
+			new_cell.outputs[n] = copy_cell_ref.outputs[n] + addendum;
+		}
+		new_cell.connected_cells = {};
+		for(var key in copy_cell_ref.connected_cells){
+			new_cell.connected_cells[(Number(key) + addendum) + ""] = true //key to number and then back to a string
+		}
+		all_cells[i + addendum] = new_cell;
+	}
+	update_screen();
+}
+
+function save_workspace(){
+	var export_array = export_cells();
+	localStorage['q_cell_save'] = btoa(JSON.stringify(export_array));
+}
+
+function load_workspace(){
+	if(localStorage['q_cell_save']){
+		var save_array = JSON.parse(atob(localStorage['q_cell_save']));
+		delete_all();
+		import_cells(save_array[0]);
+		action_queue = save_array[1];
+	}
+}
+//load_workspace();
