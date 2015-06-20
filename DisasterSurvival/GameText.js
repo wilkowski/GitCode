@@ -73,7 +73,11 @@ Base_warehouse:	{text:"An old warehouse a few blocks down the street caught [Nam
 			run: function(){new_base('warehouse');}},
 Base_house:	{text:"[Name] spotted a large two story house down the block with small windows and a clear view of the street.  The first floor was raised about 5 feet above street level, so something attempting to break in would have to use one of the small staircases at the front or back.  [Name] ascended the front stairs and tried the door.  \nUnlocked.  \n  Someone had probably been here already.  As [Name] opened the door [he] was hit by the stench of rotten flesh.  Something dead was definitely inside.  Weighing [his] options, [Name] decided to continue investigating the house.  It looked as though it had once been kept in a pristine condition, but now papers were and knick-knacks were scattered over the floor.  [Name] decided to investigate the downstairs area first, it would be easier to escape if [he] got into a fight.  As [he] walked down the hallway a crooked picture on the wall caught [his] eye: A perfect family portrait of a mother and father enjoying a picnic with their daughter in a grassy field.  They all looked so perfectly ignorant of the horrors that would befall them.  [Name] walked slowly into the kitchen where dozens of tiny black flies buzzed around a pile of unidentifiable rotten food on the floor.  A shoe poked out from behind the kitchen island.  [He] held [his] nose and walked slowly around the counter.  The body of a woman in a black dress lay sideways across the floor.  She was pale and there were black streaks across her face, she appeared to be one of the undead but [he] had never heard of one of them sleeping before.  [Name] withdrew [his] [weapon] and [weapon_action] it down at the zombie's head.  ",
 			chars:1,
-			run: function(){new_base('house');}}
+			run: function(){new_base('house');}},
+			
+base_utility_building: { text:"[He] turned a corner and there it was, the strongest building in the town.  It was a two-story monolith of concrete and glass that looked like it was built to survive a nuclear bomb strike.  The second floor reached far past the first floor, supported by massive concrete beams.  The building had a clear view from all sides, anyone approaching would be an easy shot for a sniper.  Thinking this, [Name] drew [him]self close up against a fence; it was unlikely that such an ideal building would have gone unnoticed to the other survivors.  [Name] peeked [his] head around the side of the fence to see if anyone was watching him approach.  Looking at it again, the building seemed not unlike a castle with wedges of concrete jutting from the roof like battlements.  Adjoined to the first floor was a large fenced off parking lot containing a few dozen utility trucks.  This building had been built so sturdy because it would have been the base of operations for repairs after a natural disaster.  \n Satisfied that no one was watching [Name] walked up to the front door of the building.  [Name] checked the door first finding it locked and pondered how to get inside without making a huge racket.  [He] walked to the fence conncected to the side of the building and continued down to a tree nearby.  ", //TODO: choice option: knock, break in or leave
+			chars:1,
+			run: function(){new_base('utility building');}}, 
 }
 
 //stories for when the player decides to send characters out to get supplies.  
@@ -131,6 +135,9 @@ var characters_past_stories = {
 }
 
 var discussion_stories = {
+	dead_ex: { text: "I've never told you this before but I was in a relationship before all this happened.  In college I met a ",
+	chars: 2
+	}
 
 }
 var story_groups = {'introduction_stories':introduction_stories, 'raid_stories':raid_stories, 'base_discovery_stories':base_discovery_stories, 'random_events': random_events, 'triggered_stories':triggered_stories}
