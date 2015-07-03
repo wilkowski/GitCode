@@ -1,3 +1,4 @@
+
 var examples = {
 toggled_memory:"W1t7ImlkIjowLCJjaGFyZ2UiOjAsIm1heF9jaGFyZ2UiOjEsIm91dHB1dHMiOltdLCJjb25uZWN0ZWRfY2VsbHMiOnt9LCJjaGFuZ2VkIjp0cnVlLCJvdXRwdXRfdGV4dCI6bnVsbCwibGFiZWwiOm51bGwsInBvc194Ijo1MCwicG9zX3kiOjUwfSx7ImlkIjoxLCJjaGFyZ2UiOjEsIm1heF9jaGFyZ2UiOjIsIm91dHB1dHMiOls0LC0yLDFdLCJjb25uZWN0ZWRfY2VsbHMiOnsiMSI6dHJ1ZSwiMiI6dHJ1ZSwiMyI6dHJ1ZSwiNCI6dHJ1ZSwiNiI6dHJ1ZSwiNyI6dHJ1ZX0sImNoYW5nZWQiOmZhbHNlLCJvdXRwdXRfdGV4dCI6bnVsbCwibGFiZWwiOm51bGwsInBvc195IjoyMTksInBvc194IjoyNTN9LHsiaWQiOjIsImNoYXJnZSI6MCwibWF4X2NoYXJnZSI6Miwib3V0cHV0cyI6WzUsLTEsMl0sImNvbm5lY3RlZF9jZWxscyI6eyIxIjp0cnVlLCIyIjp0cnVlLCIzIjp0cnVlLCI1Ijp0cnVlLCI2Ijp0cnVlLCI3Ijp0cnVlfSwiY2hhbmdlZCI6ZmFsc2UsIm91dHB1dF90ZXh0IjpudWxsLCJsYWJlbCI6bnVsbCwicG9zX3kiOjEyNSwicG9zX3giOjI1NX0seyJpZCI6MywiY2hhcmdlIjowLCJtYXhfY2hhcmdlIjoxLCJvdXRwdXRzIjpbMSwyXSwiY29ubmVjdGVkX2NlbGxzIjp7IjEiOnRydWUsIjIiOnRydWV9LCJjaGFuZ2VkIjpmYWxzZSwib3V0cHV0X3RleHQiOm51bGwsImxhYmVsIjoiZ2V0IG91dHB1dCIsInBvc195Ijo2MSwicG9zX3giOjE4MH0seyJpZCI6NCwiY2hhcmdlIjowLCJtYXhfY2hhcmdlIjoxLCJvdXRwdXRzIjpbXSwiY29ubmVjdGVkX2NlbGxzIjp7IjEiOnRydWV9LCJjaGFuZ2VkIjpmYWxzZSwib3V0cHV0X3RleHQiOm51bGwsImxhYmVsIjoidHJ1ZSIsInBvc195IjozMDUsInBvc194IjoyNTN9LHsiaWQiOjUsImNoYXJnZSI6MCwibWF4X2NoYXJnZSI6MSwib3V0cHV0cyI6W10sImNvbm5lY3RlZF9jZWxscyI6eyIyIjp0cnVlfSwiY2hhbmdlZCI6ZmFsc2UsIm91dHB1dF90ZXh0IjpudWxsLCJsYWJlbCI6ImZhbHNlIiwicG9zX3kiOjMwNSwicG9zX3giOjM2MH0seyJpZCI6NiwiY2hhcmdlIjoxLCJtYXhfY2hhcmdlIjoyLCJvdXRwdXRzIjpbMiwtMV0sImNvbm5lY3RlZF9jZWxscyI6eyIxIjp0cnVlLCIyIjp0cnVlLCI4Ijp0cnVlfSwiY2hhbmdlZCI6ZmFsc2UsIm91dHB1dF90ZXh0IjpudWxsLCJsYWJlbCI6bnVsbCwicG9zX3kiOjEyNiwicG9zX3giOjM0OH0seyJpZCI6NywiY2hhcmdlIjowLCJtYXhfY2hhcmdlIjoyLCJvdXRwdXRzIjpbMSwtMl0sImNvbm5lY3RlZF9jZWxscyI6eyIxIjp0cnVlLCIyIjp0cnVlLCI4Ijp0cnVlfSwiY2hhbmdlZCI6ZmFsc2UsIm91dHB1dF90ZXh0IjpudWxsLCJsYWJlbCI6bnVsbCwicG9zX3kiOjIyMCwicG9zX3giOjM5M30seyJpZCI6OCwiY2hhcmdlIjowLCJtYXhfY2hhcmdlIjoxLCJvdXRwdXRzIjpbNiw3XSwiY29ubmVjdGVkX2NlbGxzIjp7IjYiOnRydWUsIjciOnRydWV9LCJjaGFuZ2VkIjpmYWxzZSwib3V0cHV0X3RleHQiOm51bGwsImxhYmVsIjoidG9nZ2xlIG1lbW9yeSIsInBvc195Ijo2MiwicG9zX3giOjM5M31dLFtdXQ==",
 
@@ -27,9 +28,9 @@ var extras={
 }
 
 example_descriptions = {
-xor3: "After getting three inputs, the xor of those three is returned",
-binary_adder_with_carry: "The first two inputs are the 1's place in binary addition, with the output returning the one's place as well.  The following two inputs correspond to the 10's place being added together along with any digit carried from the previous addition.  ",
-'10-n_outputs': "The charge on the large right cell is n (n can be 0 to 9).  When run, the output will fire 10-n times.  Two of these structures in series will fire 10-(10-n) = n times.  This structure is capable of storing an arbitrarily large number in a finite number of cells."
+	xor3: "After getting three inputs, the xor of those three is returned",
+	binary_adder_with_carry: "The first two inputs are the 1's place in binary addition, with the output returning the one's place as well.  The following two inputs correspond to the 10's place being added together along with any digit carried from the previous addition.  ",
+	'10-n_outputs': "The charge on the large right cell is n (n can be 0 to 9).  When run, the output will fire 10-n times.  Two of these structures in series will fire 10-(10-n) = n times.  This structure is capable of storing an arbitrarily large number in a finite number of cells."
 }
 
 var examples_menu = document.getElementById('examples_menu');
@@ -49,10 +50,7 @@ for(var key in examples){
 var load_button = document.getElementById('load_button');
 load_button.onclick = function(){
 	var key_to_load = examples_menu.options[examples_menu.selectedIndex].value;
-	var save_array = JSON.parse(atob(examples[key_to_load]));
-	delete_all();
-	import_cells(save_array[0]);
-	action_queue = save_array[1];
+	clean_import(examples[key_to_load]);
 	if(example_descriptions[key_to_load]){
 		clear_notes(); //clean up the note area first
 		add_note(example_descriptions[key_to_load]);
@@ -79,7 +77,7 @@ save_button.onclick = function(){
 }
 
 function load_saved_examples(){
-	if(localStorage['q_cell_saved_examples']){
+	if(localStorage['q_cell_saved_examples'] != null){
 		var save_array = JSON.parse(atob(localStorage['q_cell_saved_examples']));
 		saved_examples = save_array; //copy everything over from save
 		for(var key in save_array){
@@ -88,7 +86,8 @@ function load_saved_examples(){
 		}
 	}
 }
-load_saved_examples();
+
+//load_saved_examples();
 
 //challenge problems:
 //xor

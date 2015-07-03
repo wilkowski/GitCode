@@ -1,5 +1,6 @@
 
-var base_cell = { //this is a special base cell that other cells are copied from
+var base_cell = { //this is a special prototype base cell.  Also occupies 0 slot of cell list
+	//TODO: sometimes id doesnt match the cells number.  should figure out why and fix it
 	id: 0, //id for normal cells can't be 0 since the negative of the id is meaningful
 	charge: 0,
 	max_charge: 1,
@@ -18,12 +19,9 @@ var all_cells = [base_cell]; //imaginary cell at 0 position, does nothing but ma
 
 var action_queue = [];
 
-var cell_counter = 1;
 function make_cell(cell_pos){
-	var new_cell = {};
-	for(var key in base_cell){
-		new_cell[key] = base_cell[key];
-	}
+	var cell_counter = all_cells.length;
+	var new_cell = Object.create(base_cell);
 	new_cell.outputs = [];
 	new_cell.connected_cells = {};
 	new_cell.id = cell_counter;
@@ -31,7 +29,6 @@ function make_cell(cell_pos){
 	if(cell_pos){
 		new_cell.pos = cell_pos;
 	}
-	cell_counter += 1;
 	all_cells.push(new_cell);
 	return new_cell.id;
 }
@@ -44,21 +41,23 @@ function next_in_queue(){
 	next_action = action_queue.shift();
 	if(next_action == null){
 		console.log("end of queue");
+		end_of_queue(); //part of test.js
 		return false;
 	}
 	var node = all_cells[next_action];
 	if(node.charge >= node.max_charge){ //cell goes off
 		node.charge = 0;  //discarges itself
-		cell_small_update(next_action)
+		cell_small_update(next_action);
+		update_screen();
 		for(var i = 0; i< node.outputs.length; i++){
 			var out_val = node.outputs[i];
 			if(out_val > 0){
 				charge_cell(out_val);
-				animate_charging(out_val, node.id, 'charge');
-				update_cell_image(node.id);
+				animate_charging(out_val, next_action, 'charge');
+				
 			}else{
 				discharge_cell(-out_val);
-				animate_charging(-out_val, node.id, 'discharge');
+				animate_charging(-out_val, next_action, 'discharge');
 				//MAYBE DO: remove all instances of the cell from the queue
 			}
 		}
@@ -67,6 +66,9 @@ function next_in_queue(){
 		}
 		if(node.output_text){
 			add_note(node.output_text);
+		}
+		if(node.type == 'output'){
+			got_output(node.label);
 		}
 		return true;
 	}else{ //nothing triggered so skip ahead to next one (makes animation much smoother)
@@ -195,7 +197,9 @@ function clear_cell(cell_no){
 	//TODO: remove connection history from the other cells
 	if(cell_ref.outputs.length == 0){ //already cleared outputs
 		if(Object.keys(cell_ref.connected_cells).length == 0){ //not connected to anything
-			cell_ref.type = 'deleted';
+			if(cell_ref.type != 'output' && cell_ref.type != 'input'){ //no deleting input/output cells
+				cell_ref.type = 'deleted';
+			}
 		}
 		for(var key in cell_ref.connected_cells){
 			var other_cell = all_cells[key];
@@ -212,6 +216,19 @@ function clear_cell(cell_no){
 		}
 		cell_ref.outputs = [];
 	}
+}
+
+function cycle_cell_type(cell_no){
+	var cell_ref = all_cells[cell_no];
+	if(cell_ref.type == 'input'){
+		cell_ref.type = 'output';
+	}else if(cell_ref.type == 'output'){
+		cell_ref.type = null;
+	}else{ //==null
+		cell_ref.type = 'input';
+	}
+	cell_ref.max_charge = 1; //Input output have max charge fixed at one
+	cell_large_update(cell_no);
 }
 
 function add_label(cell_no, new_label){
@@ -255,7 +272,7 @@ function export_cells(){
 		cell_to_copy = all_cells[i];
 		var new_cell = {};
 		for(var key in cell_to_copy){
-			if(key != 'pos' && key != 'image' && key != 'special_func'){
+			if(key != 'pos' && key != 'image' && key != 'special_func'){ //these things don't export well so skip em
 				new_cell[key] = cell_to_copy[key];
 			}
 		}
@@ -264,6 +281,9 @@ function export_cells(){
 		copied_cells[i] = new_cell;
 	}
 	return [copied_cells, action_queue]; //important to copy the queue as well
+}
+function string_export_workspace(){
+	return btoa(JSON.stringify(export_cells()));
 }
 
 function import_cells(import_array){
@@ -279,6 +299,7 @@ function import_cells(import_array){
 		new_cell.changed = true; //so that the change gets copied
 		new_cell.pos = new Victor(copy_cell_ref.pos_x, copy_cell_ref.pos_y);
 		new_cell.outputs = [];
+		
 		for(var n = 0; n< copy_cell_ref.outputs.length; n++){
 			new_cell.outputs[n] = copy_cell_ref.outputs[n] + addendum;
 		}
@@ -288,6 +309,7 @@ function import_cells(import_array){
 			new_cell.connected_cells[(Number(key) + addendum) + ""] = copy_cell_ref.connected_cells[key] //key to number and then back to a string
 		}
 		*/
+		new_cell.id = i + addendum;
 		all_cells[i + addendum] = new_cell;
 	}
 	//TEMPORARY: reset copy_cell_ref.connected_cells and recalculate (because I updated to new format)
@@ -302,6 +324,14 @@ function import_cells(import_array){
 			cell_link_update(i, out_cell_no);
 		}
 	}
+	update_screen();
+}
+
+function clean_import(save_string){
+	var save_array = JSON.parse(atob(save_string));
+	delete_all();
+	import_cells(save_array[0]);
+	action_queue = save_array[1];
 	update_screen();
 }
 

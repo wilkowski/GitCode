@@ -16,6 +16,11 @@
 	border-top:1px solid #dddddd;
 }
 
+#credits{
+    position: fixed; 
+    right:15px;
+}
+
 #notifications{
 	position: absolute;
 	top: 8px;
@@ -40,7 +45,6 @@
 
 #left_button_pannel{
 	width: 65px; 
-
     float: left;
 }
 
