@@ -2,9 +2,9 @@
 // @name        Imgur Fixur
 // @namespace   wilkowski
 // @description Adds a direct link to the image when imgur is over capacity
-// @include     http://imgur.com/
-// @exclude     http://imgur.com/a/
-// @exclude     http://imgur.com/gallery/
+// @include     http://imgur.com/*
+// @exclude     http://imgur.com/a/*
+// @exclude     http://imgur.com/gallery/*
 // @version     1.0
 // @grant       none
 // ==/UserScript==
