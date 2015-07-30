@@ -155,10 +155,10 @@ function set_up_testing(){
 	input_cells = {};
 	output_cells = {};
 	for(var cell_no = 1; cell_no <all_cells.length; cell_no+=1){
-		var cell_ref = all_cells[cell_no]
+		var cell_ref = all_cells[cell_no];
 		if(cell_ref.type == 'input' || cell_ref.type == 'output'){
 			var cell_label = cell_ref.label;
-			if(! cell_label){ cell_label = cell_no; add_note("error, input missing label")}
+			if(! cell_label){ cell_label = cell_no; add_note("error, input missing label");}
 			if(cell_ref.type == 'input'){
 				input_cells[cell_label] = cell_no;
 			}else{ //== 'output'
@@ -219,7 +219,9 @@ function test_over(success){ //success argument optional
 }
 
 //TODO: small BUG: the second queued test runs at double speed for some reason
+//most likely this is due to the queue being executed twice at once (still works because everything that is changed or required is external)
 function next_queued_test(){
+	add_note("RUN TEST RUN");
 	var testing_list = queued_tests.shift();
 	input_queue = testing_list.input_list.slice(0);//slicing makes copies of the arrays
 	anticipated_outputs = testing_list.output_list.slice(0);
@@ -254,7 +256,8 @@ function next_queued_test(){
 		next_in_queue();
 		update_screen();
 		step -= 1;
-		var speed_up = (anticipated_outputs.length == 0 ? .5 : 1);
+		var speed_up =1;
+		//var speed_up = (anticipated_outputs.length == 0 ? .5 : 1);
 		running_test = setTimeout(function(){run_inputs(input_queue)}, queue_interval*speed_up);
 	}
 	clearTimeout(running_test); //don't want multiple tests running at once

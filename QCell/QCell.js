@@ -1,4 +1,4 @@
-var queue_interval = 350
+var queue_interval = 1000;
 
 var base_cell = { //this is a special prototype base cell.  Also occupies 0 slot of cell list
 	//TODO: sometimes id doesn't match the cells number.  should figure out why and fix it
@@ -14,7 +14,7 @@ var base_cell = { //this is a special prototype base cell.  Also occupies 0 slot
 	output_text: null, //displayed when the cell is executed
 	label: null,
 	type: null
-}
+};
 
 var all_cells = [base_cell]; //imaginary cell at 0 position, does nothing but makes array start at 1.  
 							 //A cell's id is its position in the array, an id<0 represents a discharge (so 0 isn't a valid id)
@@ -92,8 +92,8 @@ var running_queue_function = null;
 function run_all_queue(){
 	clearTimeout(running_queue_function); //prevents queue from being run twice at once (doesn't actually cause many problems but is weird behaviour)
 	if(next_in_queue()){
-		running_queue_function = setTimeout(function(){run_all_queue()}, queue_interval);
-	};
+		running_queue_function = setTimeout(function(){run_all_queue();}, queue_interval);
+	}
 	setTimeout(function(){update_screen()}, queue_interval*.75); //animations take 75% of duration, do the update after those finish.  
 	//nothing moves for 25% of the time queue_interval
 }
@@ -122,7 +122,7 @@ function increment_connection(cell_ref, other_cell_no){
 //MAYBE DO: change cell_ref.connected_cells to be a count of the connections between the cells
 function cell_link_update(cell_no, other_cell_no){//only changes the appearance of this one cell and adds a connection to another cell
 	var cell_ref = all_cells[cell_no];
-	increment_connection(cell_ref,other_cell_no)
+	increment_connection(cell_ref,other_cell_no);
 	//cell_ref.connected_cells[other_cell_no] = true; //add the other cell number to the list
 	//all_cells[other_cell_no].connected_cells[cell_no] = true; //add this one to the other guy as well
 	increment_connection(all_cells[other_cell_no], cell_no);
@@ -193,7 +193,7 @@ function decrease_cell_max_charge(cell_no){
 function remove_from_array(val, array){
 	var index = array.indexOf(val);
 	while(index != -1){
-		array.splice(index,1)
+		array.splice(index,1);
 		index = array.indexOf(val);
 	}
 	return array;
@@ -212,7 +212,7 @@ function clear_cell(cell_no){
 			var other_cell = all_cells[key];
 			other_cell.outputs = remove_from_array(cell_no, other_cell.outputs);
 			other_cell.outputs = remove_from_array(-cell_no, other_cell.outputs);
-			delete other_cell.connected_cells[cell_no]
+			delete other_cell.connected_cells[cell_no];
 		}
 		cell_ref.connected_cells = {};
 	}else{
@@ -276,7 +276,7 @@ function delete_all(){ //delete all the images and then reset all the cell data 
 function export_cells(){
 	var copied_cells = [];
 	for(var i = 0; i<all_cells.length; i++){
-		cell_to_copy = all_cells[i];
+		var cell_to_copy = all_cells[i];
 		var new_cell = {};
 		for(var key in cell_to_copy){
 			if(key != 'pos' && key != 'image' && key != 'special_func'){ //these things don't export well so skip em
@@ -297,7 +297,7 @@ function import_cells(import_array){
 	var addendum = all_cells.length-1; //how much to add to each ref id so that everything works out nicely; (new cells get added to end of existing list)
 	for(var i = 1; i<import_array.length; i++){
 		var copy_cell_ref = import_array[i];
-		var new_cell = {}
+		var new_cell = {};
 		for(var key in copy_cell_ref){
 			if(key != 'pos_x' && key != 'pos_x'){
 				new_cell[key] = copy_cell_ref[key];
@@ -320,6 +320,7 @@ function import_cells(import_array){
 		all_cells[i + addendum] = new_cell;
 	}
 	//TEMPORARY: reset copy_cell_ref.connected_cells and recalculate (because I updated to new format)
+	//Necessary for examples
 	for(var i = 0; i < all_cells.length; i++){
 		var cell_ref = all_cells[i];
 		cell_ref.connected_cells = {};

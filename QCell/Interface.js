@@ -10,13 +10,13 @@ var canvas = new fabric.Canvas('workspace', { selection: false });
 //canvas_container.style.marginLeft = '100';
 fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center'; //all calculations are done based on the center of the object
 fabric.Object.prototype.hasControls = fabric.Object.prototype.hasBorders = false; //remove the annoying selection box around objects
-canvas.renderOnAddRemove = false //makes rendering much faster (only renders after everything's been updated)
+canvas.renderOnAddRemove = false; //makes rendering much faster (only renders after everything's been updated)
 
 //var group_ref
 
 var current_mode = 'drag';
 
-var lines_drawn_dict = {} //contains a,b:n where a<b and counts the lines drawn so far between cells a and b
+var lines_drawn_dict = {}; //contains a,b:n where a<b and counts the lines drawn so far between cells a and b
 
 var tip_length = 9;
 var arrow_angle = 25;
@@ -34,12 +34,12 @@ function draw_arrow(start_point, end_point, line_color, tag2_val){
 		{stroke: line_color, selectable: false, strokeWidth: 2, angle:-arrow_angle});
 	var arrow_half_2 = new fabric.Line([end_point.x-offset_vec.x, end_point.y-offset_vec.y, end_point.x-unit_vec.x*tip_length-offset_vec.x, end_point.y-unit_vec.y*tip_length-offset_vec.y],
 		{stroke: line_color, selectable: false, strokeWidth: 2, angle:arrow_angle});
-	return [new_line,arrow_half_1,arrow_half_2]
+	return [new_line,arrow_half_1,arrow_half_2];
 }
 
 function get_cell_radius(cell_ref){
 	var stroke_width = 1;
-	if(cell_ref.type === 'input' || cell_ref.type === 'output'){ stroke_width = 7 }
+	if(cell_ref.type === 'input' || cell_ref.type === 'output'){ stroke_width = 7; }
 	return 20 * Math.pow(cell_ref.max_charge, .333333) - stroke_width/2;
 }
 
@@ -63,10 +63,10 @@ function update_cell_image(cell_id){
 	
 	var circle_selectable = (current_mode === 'drag');
 	var fill_color = 'white';
-	var stroke_color = 'black'
+	var stroke_color = 'black';
 	var stroke_width = 1;
 	if(cell_ref.charge >= cell_ref.max_charge){
-		fill_color = '#00ff00'
+		fill_color = '#00ff00';
 	}
 	if(cell_ref.type === 'input'){
 		circle_selectable = false;
@@ -92,15 +92,15 @@ function update_cell_image(cell_id){
 	//special condition for displaying partially charged cells
 	if(cell_ref.charge > 0 && cell_ref.charge < cell_ref.max_charge){
 		var fill_portion = cell_ref.charge/cell_ref.max_charge;
-		var light_blue = '#bbeeff'
+		var light_blue = '#bbeeff';
 		var circle_portion = new fabric.Circle({
 			radius: cell_radius, fill: light_blue, left: cell_ref.pos.x, top: cell_ref.pos.y, startAngle: -Math.PI/2, endAngle: 2 * Math.PI * fill_portion - Math.PI/2
 		});
 		circle_element_list = [cell_circle, circle_portion, charge_text];
 		//fill the arc/chord with a triangle to the center of the circle
 		if(cell_ref.charge*2 != cell_ref.max_charge){ //dont need triangle arc filler at half full
-			var fill_color = light_blue;
-			if(fill_portion > .5){ fill_color = 'white'} //at more than half we flip it and fill with white instead
+			fill_color = light_blue;
+			if(fill_portion > .5){ fill_color = 'white';} //at more than half we flip it and fill with white instead
 			var filler_triangle = new fabric.Polygon([//create a triangle to fill in space between the circle chord and center
 			{x: cell_ref.pos.x, y: cell_ref.pos.y}, 
 			{x: cell_ref.pos.x, y: cell_ref.pos.y - cell_radius},  // -y is up
@@ -110,7 +110,7 @@ function update_cell_image(cell_id){
 		}
 	}
 
-	var all_images_list = [new fabric.Group(circle_element_list,{circle_id: cell_id, selectable: circle_selectable})] //text gets grouped together so that its selectable together
+	var all_images_list = [new fabric.Group(circle_element_list,{circle_id: cell_id, selectable: circle_selectable})]; //text gets grouped together so that its selectable together
 	
 	//~~~~~~~~~add lines connecting the circles~~~~~~~~~~
 	for(var x in cell_ref.outputs){
@@ -124,7 +124,7 @@ function update_cell_image(cell_id){
 			var line_counter_ref = (out_id < cell_id) ? (out_id + "," + cell_id): (cell_id + "," + out_id);
 			//add_note(line_counter_ref)
 			if(lines_drawn_dict[line_counter_ref]){
-				lines_drawn_dict[line_counter_ref] += 1
+				lines_drawn_dict[line_counter_ref] += 1;
 			}else{
 				lines_drawn_dict[line_counter_ref] = 1;
 			}
@@ -134,7 +134,7 @@ function update_cell_image(cell_id){
 			var unit_vector = line_vector.clone().normalize();
 			//TODO: count number of lines between cells and adjust so they don't overlap
 			var offset_number = (lines_drawn_dict[line_counter_ref]-1 - (cell_ref.connected_cells[out_id]-1)/2); //offset by a certain amount so it ends up nicelike
-			if(out_id < cell_id){offset_number = - offset_number} //invert for the opposite cell
+			if(out_id < cell_id){offset_number = -offset_number;} //invert for the opposite cell
 			var degree_start_offset = 15*20/cell_radius * offset_number; //offset the arrow position by a constant arc length along the circle
 			var degree_end_offset = 15*20/end_cell_radius * offset_number;
 			var start_point = cell_ref.pos.clone().add(unit_vector.clone().rotateDeg(degree_start_offset).multiply(new Victor(cell_radius,cell_radius)));
@@ -158,7 +158,7 @@ function update_cell_image(cell_id){
 	//Add a label to the circle
 	if(cell_ref.label){
 		var circle_label = new fabric.Text(cell_ref.label, {
-			left: cell_ref.pos.x + cell_radius, top: cell_ref.pos.y - cell_radius, fontSize: 16, originX: 'left', selectable: false})
+			left: cell_ref.pos.x + cell_radius, top: cell_ref.pos.y - cell_radius, fontSize: 16, originX: 'left', selectable: false});
 		all_images_list.push(circle_label);
 	}
 	
@@ -261,15 +261,15 @@ canvas.on('mouse:move', function(options) {
 		if(current_mode === 'make_discharger'){
 			temp_color = 'red';
 		}
-		var new_arrow = draw_arrow(get_cell(current_target_circle).pos, new Victor(options.e.layerX, options.e.layerY), temp_color)
+		var new_arrow = draw_arrow(get_cell(current_target_circle).pos, new Victor(options.e.layerX, options.e.layerY), temp_color);
 		var arrow_group = new fabric.Group(new_arrow, {selectable: false});
-		if(temp_arrow){canvas.remove(temp_arrow)}
+		if(temp_arrow){canvas.remove(temp_arrow);}
 		canvas.add(arrow_group);
-		canvas.sendToBack(arrow_group)
+		canvas.sendToBack(arrow_group);
 		temp_arrow = arrow_group;
 		canvas.renderAll();
     }else{
-		canvas.remove(temp_arrow)
+		canvas.remove(temp_arrow);
 		canvas.renderAll();
 	}
 });
@@ -285,7 +285,7 @@ canvas.on('mouse:down', function(options) {
 		//Could use a switch statement here but the locked condition make it more complicated
 		if(current_mode === 'make_charger' || current_mode === 'make_discharger'){
 			current_target_circle = clicked_circle_id;
-			if(all_cells[clicked_circle_id].type === 'output'){ current_target_circle = null}; //no internal outputs from the system output
+			if(all_cells[clicked_circle_id].type === 'output'){ current_target_circle = null;} //no internal outputs from the system output
 		}else if(current_mode === 'charge' && !locked){
 			cycle_charge_cell(clicked_circle_id);
 		}else if(current_mode === 'increase_max_charge' && !locked){
@@ -298,7 +298,7 @@ canvas.on('mouse:down', function(options) {
 			var cell_label = prompt("Add a label to the cell","");
 			add_label(clicked_circle_id, cell_label);
 		}else if(current_mode === 'text_out' && !locked){
-			var current_output_text = "";
+			var current_output_text = ""; //TODO
 			var cell_text = prompt("Text to display when cell activates","");
 			add_text_output(clicked_circle_id, cell_text);
 		}else if(current_mode === 'cycle_type'){
@@ -363,54 +363,54 @@ function clear_notes(){
 //BUTTONS BE HERE
 
 var drag_button = document.getElementById('drag_button');
-drag_button.onclick = function(){set_mode('drag');}
+drag_button.onclick = function(){set_mode('drag');};
 
 var charger_button = document.getElementById('charge_button');
-charger_button.onclick = function(){set_mode('charge');}
+charger_button.onclick = function(){set_mode('charge');};
 
 var make_cell_button = document.getElementById('make_cell_button');
-make_cell_button.onclick = function(){set_mode('make_cell');}
+make_cell_button.onclick = function(){set_mode('make_cell');};
 
 var make_charger_link_button = document.getElementById('make_charger_link_button');
-make_charger_link_button.onclick = function(){set_mode('make_charger');}
+make_charger_link_button.onclick = function(){set_mode('make_charger');};
 
 var make_discharger_link_button = document.getElementById('make_discharger_link_button');
-make_discharger_link_button.onclick = function(){set_mode('make_discharger');}
+make_discharger_link_button.onclick = function(){set_mode('make_discharger');};
 
 var increase_max_charge_button = document.getElementById('increase_max_charge_button');
-increase_max_charge_button.onclick = function(){set_mode('increase_max_charge');}
+increase_max_charge_button.onclick = function(){set_mode('increase_max_charge');};
 
 var decrease_max_charge_button = document.getElementById('decrease_max_charge_button');
-decrease_max_charge_button.onclick = function(){set_mode('decrease_max_charge');}
+decrease_max_charge_button.onclick = function(){set_mode('decrease_max_charge');};
 
 var label_button = document.getElementById('label_button');
-label_button.onclick = function(){set_mode('label');}
+label_button.onclick = function(){set_mode('label');};
 
 var text_out_button = document.getElementById('text_out_button');
-text_out_button.onclick = function(){set_mode('text_out');}
+text_out_button.onclick = function(){set_mode('text_out');};
 
 var clear_cell_button = document.getElementById('clear_cell_button');
-clear_cell_button.onclick = function(){set_mode('clear');}
+clear_cell_button.onclick = function(){set_mode('clear');};
 
 var cycle_type_button = document.getElementById('cycle_type_button');
-cycle_type_button.onclick = function(){set_mode('cycle_type'); }
+cycle_type_button.onclick = function(){set_mode('cycle_type'); };
 
 //bottom row buttons
 
 var run_button = document.getElementById('run_button');
-run_button.onclick = function(){run_all_queue(); update_screen();}
+run_button.onclick = function(){run_all_queue(); update_screen();};
 
 var stop_button = document.getElementById('stop_button');
-stop_button.onclick = function(){clearTimeout(running_queue_function); test_over(); update_screen();}
+stop_button.onclick = function(){clearTimeout(running_queue_function); test_over(); update_screen();};
 
 var step_button = document.getElementById('step_button');
-step_button.onclick = function(){next_in_queue(); update_screen();}
+step_button.onclick = function(){next_in_queue(); update_screen();};
 
 var faster_button = document.getElementById('faster_button');
-faster_button.onclick = function(){queue_interval = queue_interval/2;}
+faster_button.onclick = function(){queue_interval = queue_interval/2;};
 
 var slower_button = document.getElementById('slower_button');
-slower_button.onclick = function(){queue_interval = queue_interval*2;}
+slower_button.onclick = function(){queue_interval = queue_interval*2;};
 
 //|
 
@@ -422,13 +422,13 @@ clear_all_button.onclick = function(){
 		set_up_level(game.current_level);
 	}
 	update_screen();
-}
+};
 
 var string_export_button = document.getElementById('string_export_button');
 string_export_button.onclick = function(){
 	var exported = export_cells();
 	add_note(btoa(JSON.stringify(exported)));
-}
+};
 
 var string_import_button = document.getElementById('string_import_button');
 string_import_button.onclick = function(){
@@ -439,4 +439,4 @@ string_import_button.onclick = function(){
 	var import_string = prompt("Paste the import string here","");
 	//TODO: test that the import string is valid somehow
 	clean_import(import_string);
-}
+};
