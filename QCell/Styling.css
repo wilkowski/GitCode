@@ -23,8 +23,8 @@
 
 #notifications{
 	position: absolute;
-	top: 8px;
-	right: 8px;
+	top: 33px;
+	right: 15px;
 	width: 400px;
 	height: 600px;
     float:right;
@@ -33,23 +33,27 @@
 
 #control_bar{
 	height: 25px;
-	margin-left: 65px;
+	margin-left: 70px;
 }
 
 .tool_button{
-	width: 50px;
-	height: 50px;
-	border:1px solid #aaaaaa;
+	width: 54px;
+	height: 54px;
+	border-top: 2px solid #cccccc;
+	border-left:2px solid #a0a0a0;
+	border-right:2px solid #aaaaaa;
+	border-bottom: 2px solid #888888;
 	padding:0;
+	margin: 2px;
 }
 
 #left_button_pannel{
-	width: 65px; 
+	width: 70px; 
     float: left;
 }
 
 .canvas-container{
-	margin-left: 65px;
+	margin-left: 70px;
 }
 
 div{

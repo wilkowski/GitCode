@@ -1,12 +1,13 @@
+var queue_interval = 350
 
 var base_cell = { //this is a special prototype base cell.  Also occupies 0 slot of cell list
-	//TODO: sometimes id doesnt match the cells number.  should figure out why and fix it
+	//TODO: sometimes id doesn't match the cells number.  should figure out why and fix it
 	id: 0, //id for normal cells can't be 0 since the negative of the id is meaningful
 	charge: 0,
 	max_charge: 1,
 	outputs: [],
 	pos: new Victor(50,50),
-	connected_cells: {}, 
+	connected_cells: {}, //all the cells that have a link to or this links to
 	changed: true,
 	image: null, //used to reference the images that gets added to the screen
 	special_func: null,
@@ -16,6 +17,7 @@ var base_cell = { //this is a special prototype base cell.  Also occupies 0 slot
 }
 
 var all_cells = [base_cell]; //imaginary cell at 0 position, does nothing but makes array start at 1.  
+							 //A cell's id is its position in the array, an id<0 represents a discharge (so 0 isn't a valid id)
 
 var action_queue = [];
 
@@ -38,54 +40,62 @@ function get_cell(cell_id){
 }
 
 function next_in_queue(){
-	next_action = action_queue.shift();
-	if(next_action == null){
+	if(action_queue.length === 0){
 		console.log("end of queue");
 		end_of_queue(); //part of test.js
 		return false;
 	}
-	var node = all_cells[next_action];
-	if(node.charge >= node.max_charge){ //cell goes off
-		node.charge = 0;  //discarges itself
-		cell_small_update(next_action);
-		update_screen();
-		for(var i = 0; i< node.outputs.length; i++){
-			var out_val = node.outputs[i];
-			if(out_val > 0){
-				charge_cell(out_val);
-				animate_charging(out_val, next_action, 'charge');
-				
-			}else{
-				discharge_cell(-out_val);
-				animate_charging(-out_val, next_action, 'discharge');
-				//MAYBE DO: remove all instances of the cell from the queue
-			}
-		}
-		if(node.special_func){
-			node.special_func();
-		}
-		if(node.output_text){
-			add_note(node.output_text);
-		}
-		if(node.type == 'output'){
-			got_output(node.label);
-		}
-		return true;
-	}else{ //nothing triggered so skip ahead to next one (makes animation much smoother)
+	next_action = action_queue.shift();
+	if(next_action == 0){ //0 means skip
 		return next_in_queue();
 	}
+	var node = all_cells[next_action];
+	if(node.charge < node.max_charge){ //skip over calls when nothing happens (important)
+		return next_in_queue(); 
+	}
+	//cell goes off
+	node.charge = 0;  //discarges itself
+	cell_small_update(next_action);
+	update_screen();
+	for(var i = 0; i< node.outputs.length; i++){ //run the cell's outputs
+		var out_val = node.outputs[i];
+		if(out_val > 0){
+			charge_cell(out_val);
+			animate_charging(out_val, next_action, 'charge');	
+		}else{
+			discharge_cell(-out_val);
+			animate_charging(-out_val, next_action, 'discharge');
+			remove_from_array(-out_val, action_queue);//this prevents weirdness were cell is activated immadiately after getting a charge
+			//for(var j=0; j< action_queue.length; j++){ //remove all instances of the cell from the queue
+			//	if(action_queue[j] == -out_val){	   
+			//		action_queue[j] = 0;
+			//	}
+			//}
+		}
+	}
+	if(node.special_func){
+		node.special_func();
+	}
+	if(node.output_text){
+		add_note(node.output_text);
+	}
+	if(node.type === 'output'){
+		got_output(node.label);
+	}
+	return true;
 }
 
 var running_queue_function = null;
 
-var queue_interval = 250
+//MAYBE DO: have queue restart running when something is added to the action queue
 
 function run_all_queue(){
 	clearTimeout(running_queue_function); //prevents queue from being run twice at once (doesn't actually cause many problems but is weird behaviour)
 	if(next_in_queue()){
 		running_queue_function = setTimeout(function(){run_all_queue()}, queue_interval);
 	};
-	setTimeout(function(){update_screen()}, queue_interval*.73);
+	setTimeout(function(){update_screen()}, queue_interval*.75); //animations take 75% of duration, do the update after those finish.  
+	//nothing moves for 25% of the time queue_interval
 }
 
 function cell_small_update(cell_no){ //only changes the appearance of this one cell
@@ -123,7 +133,7 @@ function cell_link_update(cell_no, other_cell_no){//only changes the appearance 
 function charge_cell(cell_no){
 	var cell_ref = all_cells[cell_no];
 	cell_ref.charge += 1;
-	if(cell_ref.charge >= cell_ref.max_charge){ //maybe do: only queue up on exact equality
+	if(cell_ref.charge >= cell_ref.max_charge){ //MAYBE DO: only queue up on exact equality
 		action_queue.push(cell_no);
 	}
 	cell_small_update(cell_no);
@@ -189,19 +199,16 @@ function remove_from_array(val, array){
 	return array;
 }
 
-//TODO: remove connections to this cell on second click
-//TODO: remove cell completely on third click
 function clear_cell(cell_no){
 	var cell_ref = all_cells[cell_no];
 	cell_large_update(cell_no);
-	//TODO: remove connection history from the other cells
-	if(cell_ref.outputs.length == 0){ //already cleared outputs
-		if(Object.keys(cell_ref.connected_cells).length == 0){ //not connected to anything
+	if(cell_ref.outputs.length === 0){ //already cleared outputs
+		if(Object.keys(cell_ref.connected_cells).length === 0){ //not connected to anything
 			if(cell_ref.type != 'output' && cell_ref.type != 'input'){ //no deleting input/output cells
 				cell_ref.type = 'deleted';
 			}
 		}
-		for(var key in cell_ref.connected_cells){
+		for(var key in cell_ref.connected_cells){ 	//remove connection history from the other cells
 			var other_cell = all_cells[key];
 			other_cell.outputs = remove_from_array(cell_no, other_cell.outputs);
 			other_cell.outputs = remove_from_array(-cell_no, other_cell.outputs);
@@ -220,11 +227,11 @@ function clear_cell(cell_no){
 
 function cycle_cell_type(cell_no){
 	var cell_ref = all_cells[cell_no];
-	if(cell_ref.type == 'input'){
+	if(cell_ref.type === 'input'){
 		cell_ref.type = 'output';
-	}else if(cell_ref.type == 'output'){
+	}else if(cell_ref.type === 'output'){
 		cell_ref.type = null;
-	}else{ //==null
+	}else{ //===null
 		cell_ref.type = 'input';
 	}
 	cell_ref.max_charge = 1; //Input output have max charge fixed at one
@@ -330,6 +337,7 @@ function import_cells(import_array){
 function clean_import(save_string){
 	var save_array = JSON.parse(atob(save_string));
 	delete_all();
+	clearTimeout(running_queue_function);
 	import_cells(save_array[0]);
 	action_queue = save_array[1];
 	update_screen();

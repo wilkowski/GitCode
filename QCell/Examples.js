@@ -30,25 +30,27 @@ var extras={
 example_descriptions = {
 	xor3: "After getting three inputs, the xor of those three is returned",
 	binary_adder_with_carry: "The first two inputs are the 1's place in binary addition, with the output returning the one's place as well.  The following two inputs correspond to the 10's place being added together along with any digit carried from the previous addition.  ",
-	'10-n_outputs': "The charge on the large right cell is n (n can be 0 to 9).  When run, the output will fire 10-n times.  Two of these structures in series will fire 10-(10-n) = n times.  This structure is capable of storing an arbitrarily large number in a finite number of cells."
+	'10-n_outputs': "The charge on the large right cell is n (n can be 0 to 9).  When run, the output will fire 10-n times.  Two of these structures in series will fire 10-(10-n) = n times.  This structure is capable of storing an arbitrarily large number in a finite number of cells.",
+	two_or_three_out_of_three: "After getting 3 inputs outputs whatever was the majority"
 }
 
 var examples_menu = document.getElementById('examples_menu');
 
 //TODO: BUG: when a menu option/save is updated a duplicate option gets created
-function add_menu_option(key, menu_text){ 
+function add_menu_option(key, menu_text, menu_ref){ 
 	var option = document.createElement("option");
 	option.text = menu_text;
 	option.value = key;
-	examples_menu.add(option);
+	menu_ref.add(option);
 }
 
 for(var key in examples){
-	add_menu_option(key, key.replace(/_/g," ")); //replace _'s with spaces
+	add_menu_option(key, key.replace(/_/g," "), examples_menu); //replace _ with spaces
 }
 
 var load_button = document.getElementById('load_button');
 load_button.onclick = function(){
+	if(test_running){return;}
 	var key_to_load = examples_menu.options[examples_menu.selectedIndex].value;
 	clean_import(examples[key_to_load]);
 	if(example_descriptions[key_to_load]){
@@ -61,6 +63,7 @@ var saved_examples = {};
 
 var save_button = document.getElementById('save_button');
 save_button.onclick = function(){
+	if(test_running){return;}
 	var memory_label = prompt("Save current cell structure as:","");
 	if(memory_label == null || memory_label == ""){
 		return;
@@ -73,7 +76,6 @@ save_button.onclick = function(){
 	
 	var all_saves_string = btoa(JSON.stringify(saved_examples)); //saves are double encoded here (maybe not the best idea but shouldn't matter for performance)
 	localStorage['q_cell_saved_examples'] = all_saves_string;
-	//localStorage['q_cell_save'] = btoa(JSON.stringify(export_array));
 }
 
 function load_saved_examples(){
