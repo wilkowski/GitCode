@@ -3,6 +3,9 @@ GitCode
 
 All the code I'm publishing on Github
 
+Current versions hosted on Github: [QCell](http://wilkowski.github.io/QCell/index.html),
+[DisasterSurvival](http://wilkowski.github.io/DisasterSurvival/index.html), [TheScholar](http://wilkowski.github.io/TheScholar/index.html)
+
 /BrilliantHungerGames folder for the programming competition https://brilliant.org/competitions/hunger-games/rules/
 Both files are my own work, started with the example code provided by the website.  
 
